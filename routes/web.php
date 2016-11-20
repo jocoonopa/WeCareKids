@@ -11,6 +11,10 @@
 |
 */
 
+Route::get('/backend/login', array('as' => 'login', 'uses' => 'Auth\LoginController@showLoginForm'));
+Route::post('/backend/login', array('as' => 'login', 'uses' => 'Auth\LoginController@login'));
+Route::get('/backend/logout', 'Auth\LoginController@logout');
 Auth::routes();
-Route::get('/logout', 'Auth\LoginController@logout');
+Route::get('/login', function (){abort(404);});
+
 Route::get('/', 'HomeController@index');
