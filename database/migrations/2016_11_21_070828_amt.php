@@ -42,7 +42,7 @@ class Amt extends Migration
             $table->increments('id');
             $table->integer('col_id')->unsigned()->index();
             $table->boolean('is_intersect')->default(true);
-            $table->integer('group_id')->unsigned()->index()->nullable();
+            $table->integer('group_id')->unsigned()->index()->nullable()->comment('此欄位用來表示cells集群, 用來處理類似 "會轉頭至背後尋找聲源"這種類型的問題');
 
             $table
                 ->foreign('col_id')
@@ -62,7 +62,7 @@ class Amt extends Migration
         Schema::create('amt_qtn_ptes', function (Blueprint $table){
             $table->increments('id');
             $table->text('content');
-            $table->string('available_value');
+            $table->string('available_value')->comment('答案可選用的值: 0表示為是非題, [a,b,c,d]表示為選項題, {m: 0, M: 10}表示範圍題, {step: 3}表示閾值題');
             $table->integer('creater_id')->unsigned()->index();
             $table->timestamps();
 
@@ -78,7 +78,7 @@ class Amt extends Migration
             $table->increments('id');
             $table->integer('aqp_id')->unsigned()->index();
             $table->integer('cell_id')->unsigned()->index();
-            $table->string('condition_value');
+            $table->string('condition_value')->comment('在此amt cell中的允許條件值');
 
             $table
                 ->foreign('aqp_id')
@@ -100,7 +100,7 @@ class Amt extends Migration
             $table->integer('amt_id')->unsigned()->index();
             $table->integer('handler_id')->unsigned()->index();
             $table->integer('child_id')->unsigned()->index();
-            $table->integer('status')->unsigned()->default(0);
+            $table->integer('status')->unsigned()->default(0)->comment('0表示尚未開始, 1表示測試中, 10表示完成, 100表示放棄');
 
             $table
                 ->foreign('amt_id')
@@ -130,7 +130,7 @@ class Amt extends Migration
             $table->increments('id');
             $table->integer('col_id')->unsigned()->index();
             $table->integer('cxt_id')->unsigned()->index();
-            $table->integer('status')->unsigned()->default(0);
+            $table->integer('status')->unsigned()->default(0)->comment('0表示尚未開始, 1表示測試中, 10表示完成');
 
             $table
                 ->foreign('col_id')
@@ -150,8 +150,8 @@ class Amt extends Migration
         Schema::create('amt_cell_cxts', function (Blueprint $table){
             $table->increments('id');
             $table->integer('cell_id')->unsigned()->index();
-            $table->integer('col_cxt_id')->unsigned()->index();
-            $table->integer('status')->unsigned()->default(0);
+            $table->integer('col_cxt_id')->unsigned()->index()->comment('指向所屬ColumnContext');
+            $table->integer('status')->unsigned()->default(0)->comment('0表示尚未開始, 1表示測試中, 10表示完成');
         });
 
         Schema::create('amt_qtn_cxts', function (Blueprint $table){
@@ -159,7 +159,7 @@ class Amt extends Migration
 
             $table->integer('qtn_id')->unsigned()->index();
             $table->integer('cell_cxt_id')->unsigned()->index();
-            $table->integer('status')->unsigned()->default(0);
+            $table->integer('status')->default(0)->comment('0表示尚未作答, 1 表示正確, -1表示錯誤');
             $table->string('value');
         });
     }

@@ -16,5 +16,6 @@ Route::post('/backend/login', array('as' => 'login', 'uses' => 'Auth\LoginContro
 Route::get('/backend/logout', 'Auth\LoginController@logout');
 Auth::routes();
 Route::get('/login', function (){abort(404);});
-
 Route::get('/', 'HomeController@index');
+
+Route::get('/backend/analyze', array('uses' => 'Backend\AnalyzeController@index'));

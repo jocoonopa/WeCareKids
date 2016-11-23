@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AmtDimension extends Migration
+class RelateDimensionAndCol extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,8 @@ class AmtDimension extends Migration
      */
     public function up()
     {
-        Schema::create('amt_dimensions', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name');
+        Schema::table('amt_cols', function (Blueprint $table) {
             $table->integer('adn_id')->unsigned()->index()->nullable();
-            $table->integer('sort')->default(0);
 
             $table
                 ->foreign('adn_id')
@@ -27,8 +24,8 @@ class AmtDimension extends Migration
             ;
         });
 
-        Schema::table('amt_cells', function (Blueprint $table){
-            $table->integer('level')->unsigned();
+        Schema::table('amt_qtn_cxts', function (Blueprint $table) {
+            $table->timestamps();
         });
     }
 
@@ -39,9 +36,8 @@ class AmtDimension extends Migration
      */
     public function down()
     {
-        Schema::drop('amt_dimensions');
-        Schema::table('amt_cells', function ($table) {
-            $table->dropColumn('level');
+        Schema::table('amt_cols', function ($table) {
+            $table->dropColumn('adn_id');
         });
     }
 }
