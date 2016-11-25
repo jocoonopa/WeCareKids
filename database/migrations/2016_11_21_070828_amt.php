@@ -4,6 +4,13 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
+/**
+ * Adn=AssessmentDimension
+ * Amt=Assessment
+ * Cxt=Context
+ * Qtn=Question
+ * Pte=Prototype
+ */
 class Amt extends Migration
 {
     /**

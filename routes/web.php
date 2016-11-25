@@ -10,12 +10,12 @@
 | and give it the controller to call when that URI is requested.
 |
 */
-
-Route::get('/backend/login', array('as' => 'login', 'uses' => 'Auth\LoginController@showLoginForm'));
-Route::post('/backend/login', array('as' => 'login', 'uses' => 'Auth\LoginController@login'));
-Route::get('/backend/logout', 'Auth\LoginController@logout');
+Route::get('/auth/login', 'Auth\LoginController@showLoginForm');
+Route::post('/auth/login', 'Auth\LoginController@login');
+Route::get('/auth/logout', 'Auth\LoginController@logout');
 Auth::routes();
 Route::get('/login', function (){abort(404);});
-Route::get('/', 'HomeController@index');
+Route::get('/backend/home', 'Backend\DefaultController@index');
 
-Route::get('/backend/analyze', array('uses' => 'Backend\AnalyzeController@index'));
+Route::resource('/backend/analysis/r/i/channel', 'Backend\AlsRptChannelController');
+Route::resource('/analysis/r/i/cxt', 'Frontend\AlsRptCxtController');

@@ -27,7 +27,7 @@ class RegisterController extends Controller
 	 *
 	 * @var string
 	 */
-	protected $redirectTo = '/';
+	protected $redirectTo = '/backend/home';
 	protected $registerView = 'auth.register';
 	
 	/**

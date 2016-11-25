@@ -15,7 +15,7 @@ class CustomerAndChildAndGuardian extends Migration
     {
         Schema::create('customers', function (Blueprint $table){
             $table->increments('id');
-            $table->integer('sex')->nullable();
+            $table->integer('sex')->nullable()->comment('0: 男生, 1:女生');
             $table->string('name');
             $table->dateTime('birthday')->nullable();
 
