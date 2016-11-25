@@ -157,6 +157,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\BroadcastServiceProvider::class,
+        App\Providers\AlsRptProvider::class,
 	
 		Thomaswelton\LaravelGravatar\LaravelGravatarServiceProvider::class
     ],
@@ -206,7 +207,9 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 		'Notifiaction' => Illuminate\Support\Facades\Notification::class,
 
-		'Gravatar' => Thomaswelton\LaravelGravatar\Facades\Gravatar::class
+		'Gravatar' => Thomaswelton\LaravelGravatar\Facades\Gravatar::class,
+        'AlsRpt' => App\Utility\Facades\AlsRpt::class,
+        'Wck' => App\Utility\Facades\Wck::class,
     ],
 
 ];

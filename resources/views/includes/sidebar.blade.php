@@ -26,7 +26,12 @@
         <!-- sidebar menu -->
         <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
             <div class="menu_section">
-              
+                <h3>&nbsp;</h3>
+                <ul class="nav side-menu">
+                    <li>
+                        <a href="/backend/analysis/r/i/channel"><i class="fa fa-file-text-o"></i> 剖析量表</a>
+                    </li>
+                </ul>
             </div>
         </div>
         <!-- /sidebar menu -->

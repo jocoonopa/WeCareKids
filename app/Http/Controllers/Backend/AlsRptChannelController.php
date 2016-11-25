@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Backend;
 
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+
+use AlsRpt;
 
 class AlsRptChannelController extends Controller
 {
@@ -16,7 +17,7 @@ class AlsRptChannelController extends Controller
      */
     public function index()
     {
-        return __METHOD__;
+        return view('backend/als_rpt_channel/index');
     }
 
     /**
