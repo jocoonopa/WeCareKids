@@ -17,5 +17,5 @@ Auth::routes();
 Route::get('/login', function (){abort(404);});
 Route::get('/backend/home', 'Backend\DefaultController@index');
 
-Route::resource('/backend/analysis/r/i/channel', 'Backend\AlsRptChannelController');
-Route::resource('/analysis/r/i/cxt', 'Frontend\AlsRptCxtController');
+Route::resource('/backend/analysis/r/i/channel', 'Backend\AlsRptIbChannelController');
+Route::resource('/analysis/r/i/cxt', 'Frontend\AlsRptIbCxtController');

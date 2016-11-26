@@ -5,6 +5,10 @@
         <h1><strong>優尼爾</strong></h1>
         <p>感觉处理能力分析量表</p>
       <h2><strong>基本数据</strong></h2> </div>
+      <form action="">
+        
+      </form>
+      {{ csrf_field() }}
       <!-- #######################################################################################-->
       <table class="table table-bordered table-hover">
         <thead style="background-color: #3498db; color:#eaeaea;">

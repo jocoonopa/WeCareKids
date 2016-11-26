@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Backend;
 
 use AlsRpt;
-use App\Http\Controllers\Controller;
+use Auth;
 use App\Http\Requests;
 use App\Model\AlsRptIbChannel;
 use Illuminate\Http\Request;
 
-class AlsRptChannelController extends Controller
+class AlsRptIbChannelController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -31,7 +31,7 @@ class AlsRptChannelController extends Controller
     {
         /*
         |--------------------------------------------------------------------------
-        | 其實可以不用新增頁面
+        | 不用新增頁面
         |--------------------------------------------------------------------------
         |
         | 對老師來說, 最方便的流程應該是在 @index 按下新增按鈕後
@@ -39,7 +39,6 @@ class AlsRptChannelController extends Controller
         | 畫面重整後直接跳出該 channel 的 QRCode Modal.
         |
         */
-        return view('backend/als_rpt_channel/create');
     }
 
     /**
@@ -50,7 +49,14 @@ class AlsRptChannelController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            $channel = AlsRptIbChannel::createPrototype(Auth::user());
+            $channel->save();
+
+            return redirect('/backend/analysis/r/i/channel')->with('success', "新增成功: {$channel->id}");
+        } catch (\Exception $e) {
+            return redirect('/backend/analysis/r/i/channel')->with('error', "新增失敗: {$e->getMessage()}");
+        }
     }
 
     /**

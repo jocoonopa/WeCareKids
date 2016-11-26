@@ -24,14 +24,19 @@
 
         <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12"">
+                @include('component/flash')
+                
                 <div class="x_content">
                     <span class="text-muted font-13 m-b-30">
                         SomeDescription
                     </span>
                     <div class="pull-right">
-                        <a href="/backend/analysis/r/i/channel/create" class="btn btn-default btn-sm">
-                            <i class="fa fa-plus-circle"></i>
-                        </a>
+                        <form action="/backend/analysis/r/i/channel" method="post">
+                            {{ csrf_field() }}
+                            <button type="submit" class="btn btn-default btn-sm">
+                                <i class="fa fa-plus-circle"></i>
+                            </button>
+                        </form> 
                     </div>
                 </div> 
                 
@@ -53,9 +58,9 @@
                             <td>{{ $channel->id }}</td>
                             <td>{{ $channel->public_key }}</td>
                             <td>{{ $channel->getStatusDesc() }}</td>
-                            <td>{{ $channel->start_ar->format('Y-m-d') }}</td>
-                            <td>{{ $channel->end_ar->format('Y-m-d') }}</td>
-                            <td>{{ $channel->create_at->format('Y-m-d') }}</td>
+                            <td>{{ $channel->open_at }}</td>
+                            <td>{{ $channel->close_at }}</td>
+                            <td>{{ $channel->create_at }}</td>
                             <td>
                                 <a href="#">SomeClickableElement</a>
                             </td>
