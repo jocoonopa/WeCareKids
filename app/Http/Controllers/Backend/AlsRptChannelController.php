@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Backend;
 
-use Illuminate\Http\Request;
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
-
 use AlsRpt;
+use App\Http\Controllers\Controller;
+use App\Http\Requests;
+use App\Model\AlsRptIbChannel;
+use Illuminate\Http\Request;
 
 class AlsRptChannelController extends Controller
 {
@@ -17,7 +17,9 @@ class AlsRptChannelController extends Controller
      */
     public function index()
     {
-        return view('backend/als_rpt_channel/index');
+        $channels = AlsRptIbChannel::all();
+
+        return view('backend/als_rpt_channel/index', compact('channels'));
     }
 
     /**
@@ -27,7 +29,17 @@ class AlsRptChannelController extends Controller
      */
     public function create()
     {
-        //
+        /*
+        |--------------------------------------------------------------------------
+        | 其實可以不用新增頁面
+        |--------------------------------------------------------------------------
+        |
+        | 對老師來說, 最方便的流程應該是在 @index 按下新增按鈕後
+        | 直接 post @store 自動產生一個從今天開始為期七天有效的 channel,
+        | 畫面重整後直接跳出該 channel 的 QRCode Modal.
+        |
+        */
+        return view('backend/als_rpt_channel/create');
     }
 
     /**

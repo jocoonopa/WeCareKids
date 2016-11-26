@@ -159,7 +159,8 @@ return [
         App\Providers\BroadcastServiceProvider::class,
         App\Providers\AlsRptProvider::class,
 	
-		Thomaswelton\LaravelGravatar\LaravelGravatarServiceProvider::class
+		Thomaswelton\LaravelGravatar\LaravelGravatarServiceProvider::class,
+        SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class
     ],
 
     /*
@@ -208,6 +209,7 @@ return [
 		'Notifiaction' => Illuminate\Support\Facades\Notification::class,
 
 		'Gravatar' => Thomaswelton\LaravelGravatar\Facades\Gravatar::class,
+        'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
         'AlsRpt' => App\Utility\Facades\AlsRpt::class,
         'Wck' => App\Utility\Facades\Wck::class,
     ],

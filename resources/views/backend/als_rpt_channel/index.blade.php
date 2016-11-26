@@ -13,12 +13,68 @@
 
     <!-- page content -->
     <div class="right_col" role="main">
+        <div class="page-title">
+            <div class="title_left">
+                <h3>評量頻道列表 
+                    <small>您所建立的評量頻道</small>
+                </h3>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12"">
+                <div class="x_content">
+                    <span class="text-muted font-13 m-b-30">
+                        SomeDescription
+                    </span>
+                    <div class="pull-right">
+                        <a href="/backend/analysis/r/i/channel/create" class="btn btn-default btn-sm">
+                            <i class="fa fa-plus-circle"></i>
+                        </a>
+                    </div>
+                </div> 
+                
+                <table id="datatable" class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>id</th>
+                            <th>公鑰</th>
+                            <th>狀態</th>
+                            <th>開始時間</th>
+                            <th>截止時間</th>
+                            <th>建立時間</th>
+                            <th>檢視QRCode</th>
+                        </tr>
+                    </thead> 
+                    <tbody>
+                        @foreach ($channels as $channel)
+                        <tr>
+                            <td>{{ $channel->id }}</td>
+                            <td>{{ $channel->public_key }}</td>
+                            <td>{{ $channel->getStatusDesc() }}</td>
+                            <td>{{ $channel->start_ar->format('Y-m-d') }}</td>
+                            <td>{{ $channel->end_ar->format('Y-m-d') }}</td>
+                            <td>{{ $channel->create_at->format('Y-m-d') }}</td>
+                            <td>
+                                <a href="#">SomeClickableElement</a>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
         {{-- @include('analyze/form') --}}
     </div>
     <!-- /page content -->
+@endsection
 
-    <!-- footer content -->
-    <footer>
-    </footer>
-    <!-- /footer content -->
+@section('scripts')
+<script>
+    $('#datatable').DataTable({
+        keys: true
+    });
+</script>
 @endsection
