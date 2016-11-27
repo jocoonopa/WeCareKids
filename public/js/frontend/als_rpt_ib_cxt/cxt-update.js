@@ -1,4 +1,4 @@
-(function () {
+$(function () {
     var holdOnOptions = {
         message:"儲存中請稍候..."
     };
@@ -50,7 +50,8 @@
                 content[$(this).attr('name')] = false;
             }
 
-            if ($(this).prop('checked')) {
+            if (($(this).prop('checked') && $(this).is('input[type="radio"]'))
+                || $(this).is('textarea')) {
                 content[$(this).attr('name')] = $(this).val();
             }
         });
@@ -137,7 +138,9 @@
         updateContent($(this).attr('name'), $(this).val());
     }).blur(function () {
         updateContent($(this).attr('name'), $(this).val());
+    }).keyup(function () {
+        updateContent($(this).attr('name'), $(this).val());
     });
 
     initContent();
-})();
+});

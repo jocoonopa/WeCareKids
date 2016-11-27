@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use App\Model\AlsRptIbChannel;
 use App\Model\AlsRptIbCxt;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Symfony\Component\HttpFoundation\Response as SfResponse;
@@ -46,11 +47,9 @@ class AlsRptIbCxtController extends Controller
             abort(404);
         }
 
-
-
         $cxt = $channel->cxts()->where('private_key', $privateKey)->first();
 
-        if (1 === $cxt->channel->is_open) {
+        if (false === $cxt->channel->is_open) {
             abort(403);
         }
       
@@ -80,12 +79,15 @@ class AlsRptIbCxtController extends Controller
             abort(403);
         }
 
-        if (true === $cxt->channel->is_open) {
+        if (false === $cxt->channel->is_open) {
             abort(403);
         }
 
         try {
-            $cxt->update($request->all());
+            $data = $request->all();
+            $data['child_birthday'] = Carbon::instance(new \DateTime(array_get($data, 'child_birthday')));
+
+            $cxt->update($data);
             
             return response()->json([
                 'status' => SfResponse::HTTP_OK,

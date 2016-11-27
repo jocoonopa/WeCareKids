@@ -20,7 +20,6 @@ class AlsRptIbChannel extends Model
      */
     protected $casts = [
         'is_open' => 'boolean',
-       
     ];
 
     /**
