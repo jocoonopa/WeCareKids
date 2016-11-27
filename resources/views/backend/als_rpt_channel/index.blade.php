@@ -62,7 +62,9 @@
                             <td>{{ $channel->close_at }}</td>
                             <td>{{ $channel->create_at }}</td>
                             <td>
-                                <a href="#">SomeClickableElement</a>
+                                <a href="{{"/backend/analysis/r/i/channel/{$channel->id}/qrcode"}}" target="_blank">
+                                    檢視QRCode
+                                </a>
                             </td>
                         </tr>
                         @endforeach

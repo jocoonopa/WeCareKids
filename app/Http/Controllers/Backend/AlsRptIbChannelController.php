@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 
 class AlsRptIbChannelController extends Controller
 {
+    const QRCODE_DEFAULT_SIZE = 350;
+
     /**
      * Display a listing of the resource.
      *
@@ -60,14 +62,28 @@ class AlsRptIbChannelController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * 展示呈現該 Channel 對外 QRCode
      *
-     * @param  int  $id
+     * @param  \App\Model\AlsRptIbChannel  $channel
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function qrcode(AlsRptIbChannel $channel, Request $request)
     {
-        //
+        $size = $request->get('size', static::QRCODE_DEFAULT_SIZE);
+
+        return view('backend/als_rpt_channel/showQrCode', compact('channel', 'size'));
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Model\AlsRptIbChannel  $channel
+     * @return \Illuminate\Http\Response
+     */
+    public function show(AlsRptIbChannel $channel)
+    {
+        return "{$channel->public_key}:{$channel->id}";
     }
 
     /**
