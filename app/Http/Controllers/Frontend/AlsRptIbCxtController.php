@@ -61,7 +61,7 @@ class AlsRptIbCxtController extends Controller
             $privateKey = $cxt->private_key;
         }
 
-        $response = new Response(view('backend/als_rpt_cxt/index', compact('cxt', 'privateKey')));
+        $response = new Response(view('frontend/als_rpt_cxt/index', compact('cxt', 'privateKey')));
 
         return $response->withCookie(cookie('private_key', $privateKey));
     }
