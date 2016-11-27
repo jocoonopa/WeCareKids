@@ -98,4 +98,4 @@
     </tbody>
 </table>
 <p class="lead">其他意见或观察：</p>
-<textarea name="5_11" class="form-control" rows="3"></textarea>
+@include('backend/als_rpt_cxt/index/form/component/textarea', ['name' => '5_11'])

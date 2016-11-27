@@ -14,6 +14,19 @@ class AlsRptIbCxt extends Model
     const STATUS_HASNOT_SUBMIT = 0;
     const STATUS_HAS_SUBMIT = 1;
 
+    protected $fillable = [
+        'child_name', 
+        'child_sex', 
+        'content', 
+        'child_birthday', 
+        'filler_name', 
+        'relation', 
+        'school_name', 
+        'grade_num', 
+        'phone', 
+        'email'
+    ];
+
     public static function createPrototype(AlsRptIbChannel $channel)
     {
         $cxt = new AlsRptIbCxt;
@@ -22,6 +35,13 @@ class AlsRptIbCxt extends Model
         $cxt->status = static::STATUS_HASNOT_SUBMIT;
 
         return $cxt;
+    }
+
+    public function getContentValue($name)
+    {
+        $content = json_decode($this->content, true);
+
+        return array_get($content, $name);
     }
 
     public function channel()

@@ -8,6 +8,7 @@ use App\Model\AlsRptIbChannel;
 use App\Model\AlsRptIbCxt;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Symfony\Component\HttpFoundation\Response as SfResponse;
 
 class AlsRptIbCxtController extends Controller
 {
@@ -62,13 +63,34 @@ class AlsRptIbCxtController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @param  \App\Model\AlsRptIbCxt $cxt
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, AlsRptIbCxt $cxt)
     {
-        return $cxt->private_key;
+        //  這邊之後要透過　Policy 修改, 目前沒有多餘時間研究所以先暫時 hardcode 處理
+        if ($request->get('private_key') !== $cxt->private_key) {
+            abort(403);
+        }
+
+        try {
+            $cxt->update($request->all());
+            
+            return response()->json([
+                'status' => SfResponse::HTTP_OK,
+                'id' => $cxt->id,
+                'msg' => 'success',
+                'timestamp' => time()
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => SfResponse::HTTP_INTERNAL_SERVER_ERROR,
+                'id' => $cxt->id,
+                'msg' => $e->getMessage(),
+                'timestamp' => time()
+            ]);
+        }
     }
 
     /**

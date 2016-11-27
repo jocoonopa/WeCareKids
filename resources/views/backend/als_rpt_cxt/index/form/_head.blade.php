@@ -19,17 +19,14 @@
     <tbody>
         <tr>
             <td>
-                <input type="text" name="child_name" class="form-control" id="child_name">
+                <input type="text" name="child_name" class="form-control" id="child_name" value="{{ $cxt->child_name}}">
             </td>
             <td>
-                <div id="gender" class="btn-group" data-toggle="buttons">
-                    <label class="btn btn-default" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
-                        <input type="radio" name="gender" value="1">男
-                    </label>
-                    <label class="btn btn-default" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
-                        <input type="radio" name="gender" value="0">女
-                    </label>
-                </div>
+                <select id="child_sex" name="child_sex" class="form-control">
+                    @foreach (['女', '男'] as $key => $sex)
+                        <option value="{{ $key }}" @if($key == $cxt->child_sex) selected @endif>{{$sex}}</option>
+                    @endforeach
+                </select>                
             </td>
             <td>
                 <div class="label label-info">
@@ -37,7 +34,7 @@
                 </div>
             </td>
             <td>
-                <input type="text" name="child_birthday" class="form-control" id="child_birthday">
+                <input type="text" name="child_birthday" class="form-control" id="child_birthday" value="{{ $cxt->child_birthday }}">
             </td>
             <td id="child_age" class="text-center" style="font-size: 14px;">
             </td>
@@ -55,22 +52,22 @@
         </tr>
         <tr>
             <td>
-                <input type="text" name="school_name" class="form-control" id="schoolname">
+                <input type="text" name="school_name" class="form-control" id="school_name" value="{{ $cxt->school_name }}">
             </td>
             <td>
-                <input type="number" name="grade_num" class="form-control" id="grade_num">
+                <input type="number" name="grade_num" class="form-control" id="grade_num" value="{{ $cxt->grade_num }}">
             </td>
             <td>
-                <input type="text" name="filler_name" class="form-control" id="filler_name">
+                <input type="text" name="filler_name" class="form-control" id="filler_name" value="{{ $cxt->filler_name }}">
             </td>
             <td>
-                <input type="text" name="relation" class="form-control" id="relation">
+                <input type="text" name="relation" class="form-control" id="relation" value="{{ $cxt->relation }}">
             </td>
             <td>
-                <input type="text" name="phone" class="form-control" id="phone">
+                <input type="text" name="phone" class="form-control" id="phone" value="{{ $cxt->phone }}">
             </td>
             <td>
-                <input type="text" name="email" class="form-control" id="email">
+                <input type="email" name="email" class="form-control" id="email" value="{{ $cxt->email }}">
             </td>
         </tr>
     </tbody>

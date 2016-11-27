@@ -7,6 +7,7 @@
     var intervalSeconds = 15000;
     var cxtId = $('input[name="cxt_id"]').val();
     var privateKey = $('input[name="private_key"]').val();
+    var $content = $('input[type="radio"]').add('textarea');
 
     /**
      * {
@@ -42,15 +43,27 @@
     });
 
     function initContent() {
+        var content = {};
 
+        $content.each(function () {
+            if (typeof content[$(this).attr('name')] === 'undefined') {
+                content[$(this).attr('name')] = false;
+            }
+
+            if ($(this).prop('checked')) {
+                content[$(this).attr('name')] = $(this).val();
+            }
+        });
+
+        return content;
     }
 
-    function updateContent(group, eq, value) {
-
+    function updateContent(name, value) {
+        return content[name] = value;
     }
 
     function getContent() {
-        return 'AnJsonTypeString';
+        return JSON.stringify(content);
     }
 
     function doUpdateJob() {
@@ -64,7 +77,7 @@
             "private_key": privateKey,
             "_method": 'put',
             "child_name": $('input[name="child_name"]').val(),
-            "child_sex": $('input[name="child_sex"]').val(),
+            "child_sex": $('select[name="child_sex"]').val(),
             "child_birthday": $('input[name="child_birthday"]').val(),
             "school_name": $('input[name="school_name"]').val(),
             "grade_num": $('input[name="grade_num"]').val(),
@@ -119,4 +132,12 @@
 
         return execSync(false);
     });
+
+    $content.change(function () {
+        updateContent($(this).attr('name'), $(this).val());
+    }).blur(function () {
+        updateContent($(this).attr('name'), $(this).val());
+    });
+
+    initContent();
 })();
