@@ -27,6 +27,17 @@ class AlsRptIbCxt extends Model
         'email'
     ];
 
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = [
+        'child_birthday',
+        'created_at',
+        'updated_at'
+    ];
+
     public static function createPrototype(AlsRptIbChannel $channel)
     {
         $cxt = new AlsRptIbCxt;

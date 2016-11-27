@@ -25,7 +25,7 @@
 <body class="login">
     @yield('main_container')
 
-     <!-- jQuery -->
+    <!-- jQuery -->
     <script src="{{ asset("js/jquery.min.js") }}"></script>
     <!-- Bootstrap -->
     <script src="{{ asset("js/bootstrap.min.js") }}"></script>

@@ -46,7 +46,13 @@ class AlsRptIbCxtController extends Controller
             abort(404);
         }
 
+
+
         $cxt = $channel->cxts()->where('private_key', $privateKey)->first();
+
+        if (1 === $cxt->channel->is_open) {
+            abort(403);
+        }
       
         if (is_null($cxt)) {
             $cxt = AlsRptIbCxt::createPrototype($channel);
@@ -71,6 +77,10 @@ class AlsRptIbCxtController extends Controller
     {
         //  這邊之後要透過　Policy 修改, 目前沒有多餘時間研究所以先暫時 hardcode 處理
         if ($request->get('private_key') !== $cxt->private_key) {
+            abort(403);
+        }
+
+        if (true === $cxt->channel->is_open) {
             abort(403);
         }
 

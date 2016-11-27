@@ -57,13 +57,13 @@
                         <tr>
                             <td>{{ $channel->id }}</td>
                             <td>{{ $channel->public_key }}</td>
-                            <td>{{ $channel->getStatusDesc() }}</td>
-                            <td>{{ $channel->open_at }}</td>
-                            <td>{{ $channel->close_at }}</td>
-                            <td>{{ $channel->create_at }}</td>
+                            <td>{!! $channel->getStatusDesc(true) !!}</td>
+                            <td>{{ $channel->open_at->format('Y-m-d') }}</td>
+                            <td>{{ $channel->close_at->format('Y-m-d') }}</td>
+                            <td>{{ $channel->created_at->format('Y-m-d') }}</td>
                             <td>
                                 <a href="{{"/backend/analysis/r/i/channel/{$channel->id}/qrcode"}}" target="_blank">
-                                    檢視QRCode
+                                    <i class="fa fa-eye"></i>
                                 </a>
                             </td>
                         </tr>

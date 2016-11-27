@@ -13,6 +13,28 @@ class AlsRptIbChannel extends Model
 {
     protected $table = 'als_rpt_ib_channels';
 
+    /**
+     * The attributes that should be casted to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'is_open' => 'boolean',
+       
+    ];
+
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = [
+        'open_at',
+        'close_at',
+        'created_at',
+        'updated_at'
+    ];
+
     public static function createPrototype(User $user)
     {
         $channel = new AlsRptIbChannel;
@@ -26,9 +48,12 @@ class AlsRptIbChannel extends Model
         return $channel;
     }
 
-    public function getStatusDesc()
+    public function getStatusDesc($isWrap = NULL)
     {
-        return $this->is_open ? '開放' : '關閉';
+        $statusDesc = $this->is_open ? '開放' : '關閉';
+
+        return true === $isWrap ? '<span class="label label-success">' . $statusDesc . '</span>'
+            : '<span class="label label-default">' . $statusDesc . '</span>';
     }
 
     public function cxts()
