@@ -33,7 +33,7 @@ class AlsRptIbChannel extends Model
 
     public function cxts()
     {
-        return $this->hasMany('App\Model\AlsRptIbCxt', 'id', 'channel_id');
+        return $this->hasMany('App\Model\AlsRptIbCxt', 'channel_id', 'id');
     }
 
     public function scopeFindByKey($query, $privateKey)

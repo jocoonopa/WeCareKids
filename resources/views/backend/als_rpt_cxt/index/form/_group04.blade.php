@@ -257,7 +257,7 @@
     </tbody>
 </table>
 <p class="lead">其他意见或观察：</p>
-<textarea class="form-control" rows="3"></textarea>  
+<textarea name="group04" class="form-control" rows="3"></textarea>  
 <br>
 <br>
 <br>

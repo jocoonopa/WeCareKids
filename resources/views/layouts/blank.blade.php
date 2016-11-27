@@ -16,7 +16,7 @@
         <link href="{{ asset("css/font-awesome.min.css") }}" rel="stylesheet">
         <!-- Custom Theme Style -->
         <link href="{{ asset("css/gentelella.min.css") }}" rel="stylesheet">
-
+        <link href="{{ asset("css/bootstrap-datetimepicker.min.css") }}" rel="stylesheet">
         <link href="{{ asset("css/custom.css") }}" rel="stylesheet">
 
         @stack('stylesheets')
@@ -40,6 +40,7 @@
         <script src="{{ asset("js/bootstrap.min.js") }}"></script>
         <!-- Custom Theme Scripts -->
         <script src="{{ asset("js/gentelella.min.js") }}"></script>
+        <script src="{{ asset("js/bootstrap-datetimepicker.min.js")}}"></script>
 
         @stack('scripts')
 

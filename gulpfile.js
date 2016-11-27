@@ -28,6 +28,9 @@ elixir(function(mix) {
     // Gentelella
     mix.copy('vendor/bower_components/gentelella/build/css/custom.min.css', 'public/css/gentelella.min.css');
 
+    // Datetimepicker for Bootstrap 3
+    mix.copy('vendor/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css', 'public/css/bootstrap-datetimepicker.min.css');
+
     /****************/
     /* Copy Scripts */
     /****************/
@@ -40,6 +43,13 @@ elixir(function(mix) {
 
     // Gentelella
     mix.copy('vendor/bower_components/gentelella/build/js/custom.min.js', 'public/js/gentelella.min.js');
+
+    // Datetimepicker for Bootstrap 3
+    mix.copy('vendor/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js', 'public/js/bootstrap-datetimepicker.min.js');
+
+    // Moment
+    mix.copy('vendor/bower_components/moment/locale/zh-cn.js', 'public/js/moment/zh-cn.js');
+    mix.copy('vendor/bower_components/moment/min/moment.min.js', 'public/js/moment.min.js');
 
     /**************/
     /* Copy Fonts */

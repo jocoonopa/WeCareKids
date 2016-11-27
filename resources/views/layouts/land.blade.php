@@ -17,9 +17,23 @@
     <link href="{{ asset("css/nprogress.css") }}" rel="stylesheet">
     <!-- Custom Theme Style -->
     <link href="{{ asset("css/gentelella.min.css") }}" rel="stylesheet">
+    <link href="{{ asset("css/bootstrap-datetimepicker.min.css") }}" rel="stylesheet">
 </head>
 
 <body class="login">
     @yield('main_container')
+
+     <!-- jQuery -->
+    <script src="{{ asset("js/jquery.min.js") }}"></script>
+    <!-- Bootstrap -->
+    <script src="{{ asset("js/bootstrap.min.js") }}"></script>
+    <!-- Custom Theme Scripts -->
+    <script src="{{ asset("js/gentelella.min.js") }}"></script>
+    <script src="{{ asset("js/utility.js")}}"></script>
+    <script src="{{ asset("js/moment.min.js")}}"></script>
+    <script src="{{ asset("js/moment/zh-cn.js")}}"></script>
+    <script src="{{ asset("js/bootstrap-datetimepicker.min.js")}}"></script>
+
+    @stack('scripts')
 </body>
 </html>

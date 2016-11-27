@@ -1,6 +1,9 @@
- <h1><strong>優尼爾</strong></h1>
-    <p>感觉处理能力分析量表</p>
-    <h2><strong>基本数据</strong></h2> </div>
+ <h1>
+    <strong>優尼爾</strong>
+</h1>
+
+<p>感觉处理能力分析量表</p>
+<h2><strong>基本数据</strong></h2> </div>
 <!-- #######################################################################################-->
 <table class="table table-bordered table-hover">
     <thead style="background-color: #3498db; color:#eaeaea;">
@@ -10,17 +13,37 @@
             <th class="text-center"><strong>测评日期</strong></th>
             <th class="text-center"><strong>出生年月日</strong></th>
             <th class="text-center"><strong>实际年龄</strong></th>
+            <th class="text-centr"><strong>截止時間</strong></th>
         </tr>
     </thead>
     <tbody>
         <tr>
             <td>
-                <input type="text" class="form-control" id="name">
+                <input type="text" name="child_name" class="form-control" id="child_name">
             </td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td>
+                <div id="gender" class="btn-group" data-toggle="buttons">
+                    <label class="btn btn-default" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
+                        <input type="radio" name="gender" value="1">男
+                    </label>
+                    <label class="btn btn-default" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
+                        <input type="radio" name="gender" value="0">女
+                    </label>
+                </div>
+            </td>
+            <td>
+                <div class="label label-info">
+                    {{ Carbon\Carbon::now() }}  
+                </div>
+            </td>
+            <td>
+                <input type="text" name="child_birthday" class="form-control" id="child_birthday">
+            </td>
+            <td id="child_age" class="text-center" style="font-size: 14px;">
+            </td>
+            <td>
+                <div class="label label-danger">{{ $cxt->channel->close_at }}</div>
+            </td>
         </tr>
         <tr style="background-color: #3498db; color:#eaeaea;">
             <th class="text-center"><strong>就读学校</strong></th>
@@ -28,15 +51,27 @@
             <th class="text-center"><strong>填写人姓名</strong></th>
             <th class="text-center"><strong>与填写人关系</strong></th>
             <th class="text-center"><strong>连络电话</strong></th>
+            <th class="text-center"><strong>连络信箱</strong></th>
         </tr>
         <tr>
             <td>
-                <input type="text" class="form-control" id="schoolname">
+                <input type="text" name="school_name" class="form-control" id="schoolname">
             </td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td>
+                <input type="number" name="grade_num" class="form-control" id="grade_num">
+            </td>
+            <td>
+                <input type="text" name="filler_name" class="form-control" id="filler_name">
+            </td>
+            <td>
+                <input type="text" name="relation" class="form-control" id="relation">
+            </td>
+            <td>
+                <input type="text" name="phone" class="form-control" id="phone">
+            </td>
+            <td>
+                <input type="text" name="email" class="form-control" id="email">
+            </td>
         </tr>
     </tbody>
 </table>

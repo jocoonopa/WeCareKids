@@ -46,13 +46,13 @@ class AlsRptIbCxtController extends Controller
         }
 
         $cxt = $channel->cxts()->where('private_key', $privateKey)->first();
-        
+      
         if (is_null($cxt)) {
             $cxt = AlsRptIbCxt::createPrototype($channel);
             $cxt->save();
 
             $privateKey = $cxt->private_key;
-        } 
+        }
 
         $response = new Response(view('backend/als_rpt_cxt/index', compact('cxt')));
 
