@@ -54,19 +54,21 @@ class AlsRptIbCxtController extends Controller
             $privateKey = $cxt->private_key;
         }
 
-        $response = new Response(view('backend/als_rpt_cxt/index', compact('cxt')));
+        $response = new Response(view('backend/als_rpt_cxt/index', compact('cxt', 'privateKey')));
 
         return $response->withCookie(cookie('private_key', $privateKey));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Update the specified resource in storage.
      *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Model\AlsRptIbCxt $cxt
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function update(Request $request, AlsRptIbCxt $cxt)
     {
-        //
+        return $cxt->private_key;
     }
 
     /**
@@ -98,18 +100,6 @@ class AlsRptIbCxtController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
     {
         //
     }

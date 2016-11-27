@@ -6,6 +6,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     
     <title>培奇智能运动</title>
     
@@ -18,6 +19,7 @@
     <!-- Custom Theme Style -->
     <link href="{{ asset("css/gentelella.min.css") }}" rel="stylesheet">
     <link href="{{ asset("css/bootstrap-datetimepicker.min.css") }}" rel="stylesheet">
+    <link href="{{ asset("css/holdon.min.css") }}" rel="stylesheet">
 </head>
 
 <body class="login">
@@ -33,6 +35,7 @@
     <script src="{{ asset("js/moment.min.js")}}"></script>
     <script src="{{ asset("js/moment/zh-cn.js")}}"></script>
     <script src="{{ asset("js/bootstrap-datetimepicker.min.js")}}"></script>
+    <script src="{{ asset("js/holdon.min.js")}}"></script>
 
     @stack('scripts')
 </body>
