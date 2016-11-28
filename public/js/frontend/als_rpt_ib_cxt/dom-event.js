@@ -1,7 +1,8 @@
 $('#child_birthday').datetimepicker({
-    format: 'YYYY-MM-DD HH:mm',
+    format: 'YYYY-MM-DD',
     locale: 'zh-cn',
-    viewMode: 'years'
+    viewMode: 'years',
+    maxDate: moment()
 });
 
 $('#child_birthday').blur(function () {

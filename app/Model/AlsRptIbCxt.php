@@ -59,4 +59,9 @@ class AlsRptIbCxt extends Model
     {
         return $this->belongsTo('App\Model\AlsRptIbChannel');
     }
+
+    public function isPrivateKeyValid($privateKey)
+    {
+        return $this->private_key === $privateKey;
+    }
 }

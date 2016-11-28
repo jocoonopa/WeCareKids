@@ -19,50 +19,66 @@ class AlsRptIbCxtController extends Controller
      * --------------------------------------------------------------------------
      * 1. 首先判斷 public_key 可否找到對應 channel?
      *   1-a. 若無:
-     *     @return 顯示 404
-     * --------------------------------------------------------------------------
-     * 2. private_key(stored in cookie) 和 public_key 可否到一個 AlsRptIbCxt 實體? 
-     *   2-a. 若有:
-     *     2-a-1: 則檢查該 AlsRptIbCxt 狀態為何:
-     *       2-a-1-a: 狀態為尚未提交:
-     *         @2-b-2
-     *          
-     * ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||             
-     *   2-b. 若無:
-     *     1. 家長填寫個人資訊和小孩資訊[系統產生 private key, set COOKIE]
-     *     2. 填寫問券
-     *     3. 提交[AlsRptIbCxt實體狀態改為已經提交]
-     *     4. 顯示提交成功回饋訊息
+     *     @throw 404
      *     
+     * ==========================================================================
+     * 2. 檢查 channel 是否允許訪問?
+     *   2-a. 若否:
+     *     @throw 403
+     *
+     * ==========================================================================
+     * 3. private_key(stored in cookie) 和 public_key 可否到一個 AlsRptIbCxt 實體? 
+     *   2-a. 若有:
+     *     @2-b-2
+     *          
+     *   2-b. 若無:
+     *     1. 系統產生一個新的 AlsRptIbCxt 實體
+     *     2. 產生私鑰, 儲存至 cookie
+     *     3. 輸出頁面開始填寫問券
+     * ==========================================================================
      * 
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
-        $publicKey = $request->get('public_key');
-        $privateKey = $request->cookie('private_key');
+        /**
+         * The channel found by public_key,
+         * 
+         * @var \App\Model\AlsRptIbChannel
+         */
+        $channel = $this->_findChannelOrThrownotFoundException($request->get('public_key'));
+        
+        $this->authorize('allow', $channel);
+
+        $cxt = $channel->cxts()->where('private_key', $request->cookie($channel->public_key))->first();
+
+        if (is_null($cxt)) {
+            $cxt = AlsRptIbCxt::createPrototype($channel);
+            $cxt->save();
+        }
+
+        $privateKey = $cxt->private_key;
+
+        $response = new Response(view('frontend/als_rpt_ib_cxt/index', compact('cxt', 'privateKey')));
+
+        return $response->withCookie(cookie($channel->public_key, $privateKey));
+    }
+
+    /**
+     * 透過公鑰取得 AlsRptIbChannel 實體, 若沒有找到則丟出 404 錯誤
+     * 
+     * @param  string $publicKey
+     * @return mixed
+     */
+    private function _findChannelOrThrownotFoundException($publicKey)
+    {
         $channel = AlsRptIbChannel::where('public_key', $publicKey)->first();
 
         if (is_null($channel)) {
             abort(404);
         }
 
-        $cxt = $channel->cxts()->where('private_key', $privateKey)->first();
-
-        if (false === $cxt->channel->is_open) {
-            abort(403);
-        }
-      
-        if (is_null($cxt)) {
-            $cxt = AlsRptIbCxt::createPrototype($channel);
-            $cxt->save();
-
-            $privateKey = $cxt->private_key;
-        }
-
-        $response = new Response(view('frontend/als_rpt_ib_cxt/index', compact('cxt', 'privateKey')));
-
-        return $response->withCookie(cookie('private_key', $privateKey));
+        return $channel;
     }
 
     /**
@@ -74,14 +90,8 @@ class AlsRptIbCxtController extends Controller
      */
     public function update(Request $request, AlsRptIbCxt $cxt)
     {
-        //  這邊之後要透過　Policy 修改, 目前沒有多餘時間研究所以先暫時 hardcode 處理
-        if ($request->get('private_key') !== $cxt->private_key) {
-            abort(403);
-        }
-
-        if (false === $cxt->channel->is_open) {
-            abort(403);
-        }
+        $this->_isPrivateKeyValid($cxt, $request->get('private_key'));
+        $this->authorize('allow', $cxt->channel);
 
         try {
             $data = $request->all();
@@ -106,15 +116,28 @@ class AlsRptIbCxtController extends Controller
     }
 
     /**
+     * 檢查私鑰是否合法, 若否則拋出 403 錯誤
+     *
+     * @param  \App\Model\AlsRptIbCxt $cxt
+     * @param  string  $privateKey
+     * @return mixed             
+     */
+    private function _isPrivateKeyValid(AlsRptIbCxt $cxt, $privateKey)
+    {
+        if (!$cxt->isPrivateKeyValid($privateKey)) {
+            abort(403);
+        }
+
+        return $this;
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        //
-    }
+    public function store(Request $request){}
 
     /**
      * Display the specified resource.
@@ -122,10 +145,7 @@ class AlsRptIbCxtController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        //
-    }
+    public function show($id){}
 
     /**
      * Show the form for editing the specified resource.
@@ -133,10 +153,7 @@ class AlsRptIbCxtController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
-    }
+    public function edit($id){}
 
     /**
      * Remove the specified resource from storage.
@@ -144,8 +161,5 @@ class AlsRptIbCxtController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        //
-    }
+    public function destroy($id){}
 }
