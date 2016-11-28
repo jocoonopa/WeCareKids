@@ -58,6 +58,9 @@ elixir(function(mix) {
     //DataTable
     mix.copy('vendor/bower_components/datatables.net/js/jquery.dataTables.min.js', 'public/js/jquery.dataTables.min.js');
 
+    //Chart.js
+    mix.copy('vendor/bower_components/chart.js/dist/Chart.min.js', 'public/js/chart.min.js');
+
     /**************/
     /* Copy Fonts */
     /**************/

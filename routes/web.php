@@ -15,7 +15,7 @@ Route::post('/auth/login', 'Auth\LoginController@login');
 Route::get('/auth/logout', 'Auth\LoginController@logout');
 Auth::routes();
 Route::get('/login', function (){abort(404);});
-Route::get('/backend/home', 'Backend\DefaultController@index');
+Route::get('/backend/home', 'Backend\AlsRptIbChannelController@index');
 
 Route::resource('/backend/analysis/r/i/channel', 'Backend\AlsRptIbChannelController');
 Route::get('/backend/analysis/r/i/channel/{als_rpt_ib_channel}/qrcode', 'Backend\AlsRptIbChannelController@qrcode')

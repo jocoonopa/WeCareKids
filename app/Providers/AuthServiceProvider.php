@@ -17,8 +17,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        AlsRptIbCxt::class => AlsRptIbCxtPolicy::class,
-        AlsRptIbChannel::class => AlsRptIbChannelPolicy::class,
+        AlsRptIbChannel::class => AlsRptIbChannelPolicy::class
     ];
 
     /**

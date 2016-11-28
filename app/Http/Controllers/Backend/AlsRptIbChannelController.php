@@ -13,13 +13,13 @@ class AlsRptIbChannelController extends Controller
     const QRCODE_DEFAULT_SIZE = 350;
 
     /**
-     * Display a listing of the resource.
+     * 取得使用者建立的所有 channels
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $channels = AlsRptIbChannel::all();
+        $channels = AlsRptIbChannel::findByCreater(Auth::user())->get();
 
         return view('backend/als_rpt_ib_channel/index', compact('channels'));
     }
@@ -83,6 +83,8 @@ class AlsRptIbChannelController extends Controller
      */
     public function show(AlsRptIbChannel $channel)
     {
+        $this->authorize('view', $channel);
+
         return view('backend/als_rpt_ib_channel/show', compact('channel'));
     }
 
@@ -92,10 +94,7 @@ class AlsRptIbChannelController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
-    }
+    public function edit($id){}
 
     /**
      * Update the specified resource in storage.
@@ -104,10 +103,7 @@ class AlsRptIbChannelController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
-    }
+    public function update(Request $request, $id){}
 
     /**
      * Remove the specified resource from storage.
@@ -115,8 +111,5 @@ class AlsRptIbChannelController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        //
-    }
+    public function destroy($id){}
 }

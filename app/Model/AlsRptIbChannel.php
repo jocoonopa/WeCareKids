@@ -64,4 +64,9 @@ class AlsRptIbChannel extends Model
     {   
         $query->where('private_key', '=', $privateKey);
     }
+
+    public function scopeFindByCreater($query, User $user)
+    {
+        $query->where('creater_id', '=', $user->id);
+    }
 }

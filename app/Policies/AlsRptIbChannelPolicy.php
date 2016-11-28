@@ -30,7 +30,7 @@ class AlsRptIbChannelPolicy
      */
     public function allow(User $user, AlsRptIbChannel $alsRptIbChannel)
     {
-        return true === $alsRptIbChannel->is_open;
+        return true === $alsRptIbChannel->is_open && \Carbon\Carbon::now() <= $alsRptIbChannel->close_at;
     }
 
     /**

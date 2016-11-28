@@ -18,11 +18,11 @@ class AlsRptIbCxtController extends Controller
      */
     public function show(AlsRptIbCxt $cxt)
     {
-        $channel = $cxt->channel;
+        $this->authorize('view', $cxt->channel);
 
-        $this->authorize('view', $channel);
+        $sums = $cxt->getQuadrantSums();
 
-        return view('backend/als_rpt_ib_cxt/show', compact('cxt'));
+        return view('backend/als_rpt_ib_cxt/show', compact('cxt', 'sums'));
     }
 
     /**
@@ -46,8 +46,6 @@ class AlsRptIbCxtController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request){}
-
-    
 
     /**
      * Show the form for editing the specified resource.
