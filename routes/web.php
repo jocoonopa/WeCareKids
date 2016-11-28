@@ -20,4 +20,7 @@ Route::get('/backend/home', 'Backend\DefaultController@index');
 Route::resource('/backend/analysis/r/i/channel', 'Backend\AlsRptIbChannelController');
 Route::get('/backend/analysis/r/i/channel/{als_rpt_ib_channel}/qrcode', 'Backend\AlsRptIbChannelController@qrcode')
     ->where('als_rpt_ib_channel', '[0-9]+');
+
+Route::resource('/backend/analysis/r/i/cxt', 'Backend\AlsRptIbCxtController');
 Route::resource('/analysis/r/i/cxt', 'Frontend\AlsRptIbCxtController');
+

@@ -31,6 +31,10 @@ elixir(function(mix) {
     // Datetimepicker for Bootstrap 3
     mix.copy('vendor/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css', 'public/css/bootstrap-datetimepicker.min.css');
 
+    //DataTable
+    mix.copy('vendor/bower_components/datatables.net-dt/css/jquery.dataTables.min.css', 'public/css/jquery.dataTables.min.css');
+    mix.copy('vendor/bower_components/datatables.net-dt/images/', 'public/images');
+
     /****************/
     /* Copy Scripts */
     /****************/
@@ -50,6 +54,9 @@ elixir(function(mix) {
     // Moment
     mix.copy('vendor/bower_components/moment/locale/zh-cn.js', 'public/js/moment/zh-cn.js');
     mix.copy('vendor/bower_components/moment/min/moment.min.js', 'public/js/moment.min.js');
+
+    //DataTable
+    mix.copy('vendor/bower_components/datatables.net/js/jquery.dataTables.min.js', 'public/js/jquery.dataTables.min.js');
 
     /**************/
     /* Copy Fonts */

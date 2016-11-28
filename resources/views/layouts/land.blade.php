@@ -20,6 +20,8 @@
     <link href="{{ asset("css/gentelella.min.css") }}" rel="stylesheet">
     <link href="{{ asset("css/bootstrap-datetimepicker.min.css") }}" rel="stylesheet">
     <link href="{{ asset("css/holdon.min.css") }}" rel="stylesheet">
+
+    @stack('stylesheets')
 </head>
 
 <body class="login">

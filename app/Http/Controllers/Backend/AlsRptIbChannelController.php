@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Backend;
 
 use AlsRpt;
-use Auth;
 use App\Http\Requests;
 use App\Model\AlsRptIbChannel;
+use Auth;
 use Illuminate\Http\Request;
 
 class AlsRptIbChannelController extends Controller
@@ -21,7 +21,7 @@ class AlsRptIbChannelController extends Controller
     {
         $channels = AlsRptIbChannel::all();
 
-        return view('backend/als_rpt_channel/index', compact('channels'));
+        return view('backend/als_rpt_ib_channel/index', compact('channels'));
     }
 
     /**
@@ -72,7 +72,7 @@ class AlsRptIbChannelController extends Controller
     {
         $size = $request->get('size', static::QRCODE_DEFAULT_SIZE);
 
-        return view('backend/als_rpt_channel/showQrCode', compact('channel', 'size'));
+        return view('backend/als_rpt_ib_channel/showQrCode', compact('channel', 'size'));
     }
 
     /**
@@ -83,7 +83,7 @@ class AlsRptIbChannelController extends Controller
      */
     public function show(AlsRptIbChannel $channel)
     {
-        return "{$channel->public_key}:{$channel->id}";
+        return view('backend/als_rpt_ib_channel/show', compact('channel'));
     }
 
     /**
