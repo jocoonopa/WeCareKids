@@ -20,6 +20,7 @@
     <link href="{{ asset("css/gentelella.min.css") }}" rel="stylesheet">
     <link href="{{ asset("css/bootstrap-datetimepicker.min.css") }}" rel="stylesheet">
     <link href="{{ asset("css/holdon.min.css") }}" rel="stylesheet">
+    <link href="{{ asset("css/switchery.min.css") }}" rel="stylesheet">
 
     @stack('stylesheets')
 </head>
@@ -38,6 +39,7 @@
     <script src="{{ asset("js/moment/zh-cn.js")}}"></script>
     <script src="{{ asset("js/bootstrap-datetimepicker.min.js")}}"></script>
     <script src="{{ asset("js/holdon.min.js")}}"></script>
+    <script src="{{ asset("js/switchery.min.js")}}"></script>
 
     @stack('scripts')
 </body>

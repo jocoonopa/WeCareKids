@@ -21,7 +21,7 @@
             <th>開始時間</th>
             <th>截止時間</th>
             <th>建立時間</th>
-            <th>檢視QRCode</th>
+            <th>動作</th>
         </tr>
     </thead> 
     <tbody>
@@ -39,6 +39,9 @@
                 <a href="{{"/backend/analysis/r/i/channel/{$channel->id}/qrcode"}}" target="_blank">
                     <i class="fa fa-eye"></i>
                 </a>
+                <a href="{{"/backend/analysis/r/i/channel/{$channel->id}/edit"}}">
+                    <i class="fa fa-edit"></i>
+                </a>  
             </td>
         </tr>
         @endforeach

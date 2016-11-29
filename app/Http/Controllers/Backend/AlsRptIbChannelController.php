@@ -6,6 +6,7 @@ use AlsRpt;
 use App\Http\Requests;
 use App\Model\AlsRptIbChannel;
 use Auth;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class AlsRptIbChannelController extends Controller
@@ -91,19 +92,36 @@ class AlsRptIbChannelController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Model\AlsRptIbChannel  $channel
      * @return \Illuminate\Http\Response
      */
-    public function edit($id){}
+    public function edit(AlsRptIbChannel $channel)
+    {
+        return view('backend/als_rpt_ib_channel/edit', compact('channel'));
+    }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Model\AlsRptIbChannel  $channel
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id){}
+    public function update(Request $request, AlsRptIbChannel $channel)
+    {
+        $this->authorize('update', $channel);
+
+        try {
+            $channel->is_open = (bool) $request->get('is_open', false);
+            $channel->open_at = Carbon::instance(new \DateTime($request->get('open_at', false)));
+            $channel->close_at = Carbon::instance(new \DateTime($request->get('close_at', false)));
+            $channel->save();
+
+            return redirect('/backend/analysis/r/i/channel')->with('success', "編輯成功: {$channel->id}");
+        } catch (\Exception $e) {
+            return redirect("/backend/analysis/r/i/channel/{$channel->id}/edit")->with('error', "編輯失敗: {$e->getMessage()}");
+        }
+    }
 
     /**
      * Remove the specified resource from storage.

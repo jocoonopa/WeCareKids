@@ -49,10 +49,17 @@ class AlsRptIbChannel extends Model
 
     public function getStatusDesc($isWrap = NULL)
     {
-        $statusDesc = $this->is_open ? '開放' : '關閉';
+        list($statusDesc, $class) = $this->_initStatusDescVariable();
 
-        return true === $isWrap ? '<span class="label label-success">' . $statusDesc . '</span>'
-            : '<span class="label label-default">' . $statusDesc . '</span>';
+        return true === $isWrap ? "<span class=\"label {$class}\">{$statusDesc}</span>" : $statusDesc;
+    }
+
+    private function _initStatusDescVariable()
+    {
+        return array(
+            (true === $this->is_open ? '開放' : '關閉'), 
+            (true === $this->is_open ? 'label-success' : 'label-danger')
+        );
     }
 
     public function cxts()

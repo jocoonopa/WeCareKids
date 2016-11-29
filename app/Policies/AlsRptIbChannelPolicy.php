@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Model\User;
 use App\Model\AlsRptIbChannel;
+use Carbon\Carbon;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class AlsRptIbChannelPolicy
@@ -30,7 +31,10 @@ class AlsRptIbChannelPolicy
      */
     public function allow(User $user, AlsRptIbChannel $alsRptIbChannel)
     {
-        return true === $alsRptIbChannel->is_open && \Carbon\Carbon::now() <= $alsRptIbChannel->close_at;
+        return true === $alsRptIbChannel->is_open 
+            && Carbon::now() <= $alsRptIbChannel->close_at
+            && Carbon::now() >= $alsRptIbChannel->open_at
+        ;
     }
 
     /**
@@ -53,7 +57,7 @@ class AlsRptIbChannelPolicy
      */
     public function update(User $user, AlsRptIbChannel $alsRptIbChannel)
     {
-        //
+        return $user->id === $alsRptIbChannel->creater_id;
     }
 
     /**
