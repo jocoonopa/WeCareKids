@@ -62,6 +62,14 @@ class AlsRptIbChannel extends Model
         );
     }
 
+    public function isValid()
+    {
+        return true === $this->is_open 
+            && Carbon::now() <= $this->close_at
+            && Carbon::now() >= $this->open_at
+        ;
+    }
+
     public function cxts()
     {
         return $this->hasMany('App\Model\AlsRptIbCxt', 'channel_id', 'id');

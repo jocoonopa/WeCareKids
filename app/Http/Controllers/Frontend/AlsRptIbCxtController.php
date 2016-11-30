@@ -48,7 +48,7 @@ class AlsRptIbCxtController extends Controller
          */
         $channel = $this->_findChannelOrThrownotFoundException($request->get('public_key'));
         
-        $this->authorize('allow', $channel);
+        $this->_isValid($channel);
 
         $cxt = $channel->cxts()->where('private_key', $request->cookie($channel->public_key))->first();
 
@@ -90,8 +90,10 @@ class AlsRptIbCxtController extends Controller
      */
     public function update(Request $request, AlsRptIbCxt $cxt)
     {
-        $this->_isPrivateKeyValid($cxt, $request->get('private_key'));
-        $this->authorize('allow', $cxt->channel);
+        $this
+            ->_isPrivateKeyValid($cxt, $request->get('private_key'))
+            ->_isValid($cxt->channel)
+        ;
 
         try {
             $data = $request->all();
@@ -113,6 +115,15 @@ class AlsRptIbCxtController extends Controller
                 'timestamp' => time()
             ]);
         }
+    }
+
+    protected function _isValid(AlsRptIbChannel $channel)
+    {
+        if (!$channel->isValid()) {
+            abort('403');
+        }
+
+        return $this;
     }
 
     /**

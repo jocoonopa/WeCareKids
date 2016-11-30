@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Model\User;
 use App\Model\AlsRptIbChannel;
-use Carbon\Carbon;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class AlsRptIbChannelPolicy
@@ -21,20 +20,6 @@ class AlsRptIbChannelPolicy
     public function view(User $user, AlsRptIbChannel $alsRptIbChannel)
     {
         return $user->id === $alsRptIbChannel->creater_id;
-    }
-
-    /**
-     * Determine whether the user can allow access the alsRptIbChannel.
-     *
-     * @param  \App\AlsRptIbChannel  $alsRptIbChannel
-     * @return mixed
-     */
-    public function allow(User $user, AlsRptIbChannel $alsRptIbChannel)
-    {
-        return true === $alsRptIbChannel->is_open 
-            && Carbon::now() <= $alsRptIbChannel->close_at
-            && Carbon::now() >= $alsRptIbChannel->open_at
-        ;
     }
 
     /**
