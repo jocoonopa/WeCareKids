@@ -23,4 +23,3 @@ Route::get('/backend/analysis/r/i/channel/{als_rpt_ib_channel}/qrcode', 'Backend
 
 Route::resource('/backend/analysis/r/i/cxt', 'Backend\AlsRptIbCxtController');
 Route::resource('/analysis/r/i/cxt', 'Frontend\AlsRptIbCxtController');
-

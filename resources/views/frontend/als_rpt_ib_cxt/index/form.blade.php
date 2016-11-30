@@ -13,6 +13,6 @@
             @include('frontend/als_rpt_ib_cxt/index/form/_group05')
             @include('frontend/als_rpt_ib_cxt/index/form/_group06')
         </form>
-        @include('frontend/als_rpt_ib_cxt/index/form/_result')
+        {{-- @include('frontend/als_rpt_ib_cxt/index/form/_result') --}}
     </div>
 </div>
