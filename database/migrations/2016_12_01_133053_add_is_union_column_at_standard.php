@@ -25,7 +25,7 @@ class AddIsUnionColumnAtStandard extends Migration
      */
     public function down()
     {
-        Schema::table('amt_diag_standards', function ($table) {
+        Schema::table('amt_diag_standards', function (Blueprint $table) {
             $table->dropColumn('is_union');
         });
     }

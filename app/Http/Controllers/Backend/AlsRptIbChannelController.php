@@ -112,10 +112,11 @@ class AlsRptIbChannelController extends Controller
         $this->authorize('update', $channel);
 
         try {
-            $channel->is_open = (bool) $request->get('is_open', false);
-            $channel->open_at = Carbon::instance(new \DateTime($request->get('open_at', false)));
-            $channel->close_at = Carbon::instance(new \DateTime($request->get('close_at', false)));
-            $channel->save();
+            $channel->update([
+                'is_open' => (bool) $request->get('is_open', false),
+                'open_at' => Carbon::instance(new \DateTime($request->get('open_at', false))),
+                'close_at' => Carbon::instance(new \DateTime($request->get('close_at', false)))
+            ]);
 
             return redirect('/backend/analysis/r/i/channel')->with('success', "編輯成功: {$channel->id}");
         } catch (\Exception $e) {

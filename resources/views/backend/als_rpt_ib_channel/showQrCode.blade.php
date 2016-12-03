@@ -7,7 +7,7 @@
         <div class="text-center">    
             @include('component/qrcode', [
                 'size' => $size, 
-                'string' => URL::to('/analysis/r/i/cxt') . "?public_key={$channel->public_key}"
+                'string' => URL::to("/analysis/r/i/channel/{$channel->id}/cxt") . "?public_key={$channel->public_key}"
             ])
         </div>
 

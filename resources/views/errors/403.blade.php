@@ -26,7 +26,7 @@
                 <div class="text-center text-center">
                     <h1 class="error-number">403</h1>
                     <h2>Access denied</h2>
-                    <p>Full authentication is required to access this resource. <a href="#">Report this?</a>
+                    <p>{{ $exception->getMessage() }} <a href="#">Report this?</a>
                     </p>
                     <div class="mid_center">
                         <h3>Search</h3>

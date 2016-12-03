@@ -23,6 +23,13 @@ class AlsRptIbChannel extends Model
     ];
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['is_open', 'open_at', 'close_at'];
+
+    /**
      * The attributes that should be mutated to dates.
      *
      * @var array
@@ -68,6 +75,11 @@ class AlsRptIbChannel extends Model
             && Carbon::now() <= $this->close_at
             && Carbon::now() >= $this->open_at
         ;
+    }
+
+    public function isPublicKeyValid($publicKey)
+    {
+        return $this->public_key === $publicKey;
     }
 
     public function cxts()

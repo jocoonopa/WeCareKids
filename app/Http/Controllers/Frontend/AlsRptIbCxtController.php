@@ -21,8 +21,11 @@ class AlsRptIbCxtController extends Controller
     | 目前沒時間所以暫時先寫在controller內, 之後要轉移出來
     |
     */
-    public function __construct(){}
-    
+    public function __construct()
+    {
+        $this->middleware('access.rpt.channel')->only('index');
+        $this->middleware('edit.rpt.cxt')->only('update');
+    }
 
     /**
      * --------------------------------------------------------------------------
@@ -50,17 +53,8 @@ class AlsRptIbCxtController extends Controller
      * 
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(AlsRptIbChannel $channel, Request $request)
     {
-        /**
-         * The channel found by public_key,
-         * 
-         * @var \App\Model\AlsRptIbChannel
-         */
-        $channel = $this->_findChannelOrThrownotFoundException($request->get('public_key'));
-        
-        $this->_isValid($channel);
-
         $cxt = $channel->cxts()->where('private_key', $request->cookie($channel->public_key))->first();
 
         if (is_null($cxt)) {
@@ -76,23 +70,6 @@ class AlsRptIbCxtController extends Controller
     }
 
     /**
-     * 透過公鑰取得 AlsRptIbChannel 實體, 若沒有找到則丟出 404 錯誤
-     * 
-     * @param  string $publicKey
-     * @return mixed
-     */
-    private function _findChannelOrThrownotFoundException($publicKey)
-    {
-        $channel = AlsRptIbChannel::where('public_key', $publicKey)->first();
-
-        if (is_null($channel)) {
-            abort(404);
-        }
-
-        return $channel;
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
@@ -101,11 +78,6 @@ class AlsRptIbCxtController extends Controller
      */
     public function update(Request $request, AlsRptIbCxt $cxt)
     {
-        $this
-            ->_isPrivateKeyValid($cxt, $request->get('private_key'))
-            ->_isValid($cxt->channel)
-        ;
-
         try {
             $data = $request->all();
             $data['child_birthday'] = Carbon::instance(new \DateTime(array_get($data, 'child_birthday')));
@@ -127,61 +99,4 @@ class AlsRptIbCxtController extends Controller
             ]);
         }
     }
-
-    protected function _isValid(AlsRptIbChannel $channel)
-    {
-        if (!$channel->isValid()) {
-            abort('403');
-        }
-
-        return $this;
-    }
-
-    /**
-     * 檢查私鑰是否合法, 若否則拋出 403 錯誤
-     *
-     * @param  \App\Model\AlsRptIbCxt $cxt
-     * @param  string  $privateKey
-     * @return mixed             
-     */
-    private function _isPrivateKeyValid(AlsRptIbCxt $cxt, $privateKey)
-    {
-        if (!$cxt->isPrivateKeyValid($privateKey)) {
-            abort(403);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request){}
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id){}
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id){}
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id){}
 }

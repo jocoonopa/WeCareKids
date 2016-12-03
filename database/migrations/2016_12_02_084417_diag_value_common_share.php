@@ -36,7 +36,8 @@ class DiagValueCommonShare extends Migration
      */
     public function down()
     {
-        Schema::table('amt_diags', function ($table) {
+        Schema::table('amt_diags', function (Blueprint $table) {
+            $table->dropForeign('amt_diags_pool_id_foreign');
             $table->dropColumn('pool_id');
         });
 
