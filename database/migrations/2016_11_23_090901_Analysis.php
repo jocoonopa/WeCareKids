@@ -69,7 +69,7 @@ class Analysis extends Migration
      */
     public function down()
     {
-        Schema::drop('AlsRptIbContext');
-        Schema::drop('AlsRptIbChannel');
+        Schema::drop('als_rpt_ib_cxts');
+        Schema::drop('als_rpt_ib_channels');
     }
 }

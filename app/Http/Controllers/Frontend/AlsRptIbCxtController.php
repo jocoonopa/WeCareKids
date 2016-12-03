@@ -13,6 +13,17 @@ use Symfony\Component\HttpFoundation\Response as SfResponse;
 
 class AlsRptIbCxtController extends Controller
 {
+    /*
+    |-------------------------------------------------------------------------
+    | 這邊的權限檢查要移到 Middleware
+    |--------------------------------------------------------------------------
+    |
+    | 目前沒時間所以暫時先寫在controller內, 之後要轉移出來
+    |
+    */
+    public function __construct(){}
+    
+
     /**
      * --------------------------------------------------------------------------
      * 家長掃描 QRCode 進入填寫問卷頁面 

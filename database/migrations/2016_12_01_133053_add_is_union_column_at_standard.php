@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class DimensionAddIsFinalColumn extends Migration
+class AddIsUnionColumnAtStandard extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class DimensionAddIsFinalColumn extends Migration
      */
     public function up()
     {
-         Schema::table('amt_dimensions', function (Blueprint $table) {
-            $table->boolean('is_final')->default(false);
+        Schema::table('amt_diag_standards', function (Blueprint $table) {
+            $table->boolean('is_union')->default(false)->comment('是否為or條件');
         });
     }
 
@@ -25,8 +25,8 @@ class DimensionAddIsFinalColumn extends Migration
      */
     public function down()
     {
-        Schema::table('amt_dimensions', function ($table) {
-            $table->dropColumn('is_final');
+        Schema::table('amt_diag_standards', function ($table) {
+            $table->dropColumn('is_union');
         });
     }
 }
