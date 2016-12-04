@@ -92,7 +92,7 @@ class Diag extends Migration
             $table->integer('child_id')->unsigned()->index()->comment('指向[childs]');
             $table->integer('creater_id')->unsigned()->index()->comment('指向[user]');
             $table->integer('status')->unsigned()->comment('0: 尚未開始, 1: 作答中, 2: 已完成');
-            $table->integer('current_group_id')->unsigned()->index()->commemt('指向[amt_replica_diag_groups]');
+            $table->integer('current_group_id')->unsigned()->index()->nullable()->commemt('指向[amt_replica_diag_groups]');
             $table->timestamps();
             $table->softDeletes();
 
@@ -122,7 +122,7 @@ class Diag extends Migration
             $table->increments('id');
             $table->integer('group_id')->unsigned()->index()->comment('指向[amt_diag_groups]');
             $table->integer('replica_id')->unsigned()->index()->comment('指向[amt_replicas]');
-            $table->integer('current_diag_id')->unsigned()->index()->comment('指向[amt_replica_diags]');
+            $table->integer('current_diag_id')->unsigned()->index()->nullable()->comment('指向[amt_replica_diags]');
             $table->integer('level')->unsigned()->comment('根據年齡,答題決定');
             $table->integer('status')->unsigned()->comment('0: 尚未開始, 1: 作答中, 2: 已完成');
 

@@ -1,4 +1,4 @@
-<div class="col-md-3 left_col">
+    <div class="col-md-3 left_col">
     <div class="left_col scroll-view">
         <div class="navbar nav_title" style="border: 0;">
             <a href="/backend/home" class="site_title">
@@ -29,7 +29,10 @@
                 <h3>&nbsp;</h3>
                 <ul class="nav side-menu">
                     <li>
-                        <a href="/backend/analysis/r/i/channel"><i class="fa fa-file-text-o"></i> 剖析量表</a>
+                        <a href="/backend/analysis/r/i/channel"><i class="fa fa-file-text-o"></i> 剖析</a>
+                    </li>
+                    <li>
+                        <a href="/backend/amt"><i class="fa fa-file-text-o"></i> 評測</a>
                     </li>
                 </ul>
             </div>

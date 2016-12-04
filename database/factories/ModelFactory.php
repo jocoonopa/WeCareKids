@@ -11,11 +11,19 @@
 |
 */
 
-$factory->define(App\User::class, function (Faker\Generator $faker) {
+$factory->define(App\Model\User::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->name,
         'email' => $faker->safeEmail,
         'password' => bcrypt(str_random(10)),
         'remember_token' => str_random(10),
+    ];
+});
+
+$factory->define(App\Model\Customer::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->name,
+        'sex' => rand(0, 1),
+        'birthday' => $faker->dateTime()->modify('- ' . rand(10, 3600) . ' days')
     ];
 });
