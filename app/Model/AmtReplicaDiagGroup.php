@@ -45,6 +45,69 @@ class AmtReplicaDiagGroup extends Model
         */
     }
 
+    public function updateLevel()
+    {
+        $validReplicaDiags = [];
+        $invalidReplicaDiags = [];
+        $maxLevel = AmtDiagStandard::MIN_LEVEL;
+        $upperLimit = NULL;
+        $flagStandard = NULL;
+
+        /**
+         * Collection of \App\Model\AmtReplicaDiag
+         * 
+         * @var Collection
+         */
+        $replicaDiags = $this->diags()->whereNotNull('value')->get();
+
+        /**
+         * 
+         * @var \App\Model\AmtReplicaDiag
+         */
+        $flagDiag = NULL;
+        
+        // 收集通過和未通過的 diags
+        foreach ($replicaDiags as $replicaDiag) {
+            // 暫存通過和未通過的 diags
+            if ($replicaDiag->isInvalidDiag()) {
+                $invalidReplicaDiags[] = $replicaDiag;
+            } else {
+                $validReplicaDiags[] = $replicaDiag;
+            }
+        }
+
+        // iterate 未通過的 diags, 找出上限
+        foreach ($invalidReplicaDiags as $inValidDiag) {
+           if ($upperLimit > $inValidDiag->min_level - 1) {
+                $step = $inValidDiag->standard->step;
+
+                $upperLimit = (0 === $step) ? $inValidDiag->min_level - 1 : $inValidDiag->min_level - $step;
+
+                $flagStandard = $inValidDiag->standard;
+                $flagDiag = $inValidDiag;
+            }
+        }
+
+        // iterate 通過的 diags, 和上限取交集作為測定之level值
+        foreach ($validReplicaDiags as $validDiag) {
+            if (!is_null($upperLimit) && 
+                ($upperLimit < $validDiag->getMaxLevel() || $maxLevel > $validDiag->getMaxLevel())
+            ) {
+                continue;
+            }
+            
+            $flagStandard = $validDiag->standard;
+            $flagDiag = $validDiag;
+        }
+
+        // 更新目前作答 group 之 level
+        $this->update([
+            'level' => is_null($flagStandard) ? $this->replica->child->getLevel($this->replica->created_at) : $flagStandard->getValueByChild($flagDiag, $this->replica->child),
+        ]);
+
+        return $this;
+    }
+
     public function diags()
     {
         return $this->hasMany('App\Model\AmtReplicaDiag', 'group_id', 'id');

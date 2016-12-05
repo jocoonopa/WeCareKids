@@ -12,6 +12,7 @@ use App\Model\AmtReplicaLog;
 use Auth;
 use DB;
 use Illuminate\Http\Request;
+use Log;
 
 class AmtReplicaController extends Controller
 {
@@ -38,211 +39,6 @@ class AmtReplicaController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  App\Model\AmtReplica $replica
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(AmtReplica $replica, Request $request)
-    {
-        /**
-         * 取得目前應該給使用者作答之 group
-         * 
-         * @var \App\Model\AmtReplicaDiagGroup
-         */
-        $replicaCurrentDiagGroup = $replica->currentGroup;
-
-        $replicaCurrentDiagGroup = (is_null($replicaCurrentDiagGroup)) 
-            ? $replica->findPendingDiagGroups()->first()
-            : $replicaCurrentDiagGroup
-        ;
-
-        // 若沒有符合之 group, 表示該問卷已經作答完畢, 導向填寫完成頁@finish
-        if (is_null($replicaCurrentDiagGroup)) {
-            return redirect("/backend/amt_replica/{$replica->id}/finish")->with('success', '評測完成!');
-        }
-
-        $isDefaultLevel = (0 === $replicaCurrentDiagGroup->level);
-
-        /**
-         * 小朋友的預設進入等級
-         * 
-         * @var integer
-         */
-        $level = (0 === $replicaCurrentDiagGroup->level) 
-            ? $replica->child->getLevel($replica->created_at)
-            : $replicaCurrentDiagGroup->level
-        ;
-
-        /**
-         * 從目前作答之 group, 迭代所有隸屬的 diags,
-         * 透過過濾器過濾掉沒有找到對應符合的 standard
-         * 
-         * @var \App\Model\AmtReplicaDiags
-         */
-        $replicaDiags = $replicaCurrentDiagGroup->diags()->whereNull('value')->get()
-            ->filter(function ($replicaDiag) use ($level, $isDefaultLevel) {
-                $count = $replicaDiag->diag->findMatchStandards($level, $isDefaultLevel)->count();
-
-                return 0 < $count;
-            });
-
-        if (0 === $replicaDiags->count()) {
-            //  若也沒有存在值得 diag, 表示此 Group 應該被該 child 略過
-            if (0 === $replicaCurrentDiagGroup->diags()->whereNotNull('value')->count()) {
-                $replicaCurrentDiagGroup->update(['status' => AmtReplica::STATUS_SKIP_ID]);
-            }
-
-            $replica->swtichGroup();
-
-            return redirect("/backend/amt_replica/{$replica->id}/edit")->with('success', "大題: {$replica->currentGroup->id }作答完畢");
-        }
-
-        return view('backend/amt_replica/edit', compact('replica', 'replicaDiags', 'level'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  App\Model\AmtReplica  $replica
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function update(AmtReplica $replica, Request $request)
-    {
-        /* 
-        |--------------------------------------------------------------------------
-        | 更新作答結果並導向 @edit
-        |--------------------------------------------------------------------------
-        |
-        | 1. 接收傳過來的 replica_diag_ids(name key) 以及其值
-        | 2. 比對 AmtReplicaDiag 對應的 AmtDiagStandard, AmtReplicaDiagGroup::calculateLevel() 取得此 diag 的 level,
-        |    - 若全部通過,通過之 diags 中提供最高 max-level 之 standard 為該 AmtReplicaDiagGroup 之測定standard 
-        |    
-        |    - 有未通過的,則未通過之 diags 中提供最低 level 之 diag 之 (minLevel - 1) 為該 
-        |      AmtReplicaDiagGroup之最高可能測定level
-        |
-        |    - 若其為範圍型 standard, 且 child->getLevel() 落在其區間, 則child->getLevel() 為該 AmtReplicaDiagGroup 之 level.
-        |    
-        |    - 若在範圍之外, 小於 min 以 min 計, 大於 max 以 max 計
-        |    
-        |    - 若 diags 沒有提供任何符合的 standard, 直接回傳 child->getLevel() 為該 AmtReplicaDiagGroup 之 level
-        |
-        | 3. 更新 AmtReplicaDiag.standard 和 AmtReplicaDiag.level 之值
-        */
-        $diagPairs = $request->all();
-        
-        /**
-         * 取得目前應該給使用者作答之 group
-         * 
-         * @var \App\Model\AmtReplicaDiagGroup
-         */
-        $replicaCurrentDiagGroup = $replica->findPendingDiagGroups()->first();
-
-        /**
-         * 小朋友的預設進入等級
-         * 
-         * @var integer
-         */
-        $level = (0 === $replicaCurrentDiagGroup->level) 
-            ? $replica->child->getLevel($replica->created_at)
-            : $replicaCurrentDiagGroup->level
-        ;
-
-        /**
-         * 新增的log
-         * 
-         * @var array
-         */
-        $appendLog = [
-            'd' => [], 
-            'l' => $level, 
-            's' => $replicaCurrentDiagGroup->status
-        ];
-
-        DB::beginTransaction();
-
-        try {
-            foreach ($diagPairs as $diagId => $value) {
-                if (!is_numeric($diagId)) {
-                    continue;
-                }
-
-                // 添加作答log
-                $appendLog['d'][] = $diagId;
-
-                // 更新 replicaDiag 符合的 standard
-                $replicaDiag = AmtReplicaDiag::find($diagId);
-
-                $replicaDiag->update(['value' => json_encode($value)]);
-
-                $standard = $replicaDiag->getResultStandard();
-
-                if (is_null($standard)) {
-                    continue;
-                }
-
-                // 這段看看不能不能Event 的 pattern 取代流水帳
-                // diag之level 的更新置放在 AmtReplica.calculateCurrentGroupLevel()
-                $replicaDiag->update(['standard_id' => $standard->id]);
-            }  
-
-            $replica->calculateCurrentGroupLevel();
-
-            //Log
-            // 上一步的動作就是把 AmtReplicaDiag.value 和 AmtReplicaDiag.standard_id 改為 NULL, 
-            // AmtReplicaGroup.level 重設為 log['l'], AmtReplicaGroup.status 重設為 log['s']
-            $logs = json_decode($replica->log->logs, true);
-            $logs[] = $appendLog;
-            $replica->log->logs = json_encode($logs);
-            $replica->log->save();
-
-            DB::commit();
-
-            return redirect("/backend/amt_replica/{$replica->id}/edit")->with('success', '作答狀態更新');
-        } catch (\Exception $e) {
-            DB::rollback();
-
-            return redirect("/backend/amt_replica/{$replica->id}/edit")->with('error', "{$e->getMessage()}");
-        }
-    }
-
-    /**
-     * @param  App\Model\AmtReplica  $replica
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function finish(AmtReplica $replica, Request $request)
-    {
-        DB::beginTransaction();
-
-        try {
-            $replica->update(['status' => AmtReplica::STATUS_DONE_ID,]);
-
-            DB::commit();
-
-            $request->session()->flash('success', "{$replica->id}評測完畢!");
-
-            return view("/backend/amt_replica/finish");
-        } catch (\Exception $e) {
-            DB::rollback();
-
-            return redirect("/backend/amt_replica")->with('error', "{$e->getMessage()}");
-        }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  App\Model\AmtReplica  $replica
-     * @return \Illuminate\Http\Response
-     */
-    public function show(AmtReplica $replica)
-    {
-        return view('backend/amt_replica/show', compact('replica'));
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -255,11 +51,20 @@ class AmtReplicaController extends Controller
         | 初始化評測所需實體
         |--------------------------------------------------------------------------
         |
-        | 1. 新增 AmtReplica 實體, 並且指定目前指向的 \App\Model\AmtReplicaDiagGroup
-        | 2. 新增 隸屬 AmtReplicaLog 實體　
-        | 3. 迭代AmtDiagGroup, 建立 AmtReplicaDiagGroup 及 AmtReplicaDiag 實體, 初始化整份問卷
+        | 1. 新增 AmtReplica(此Model可當作Amt的複印品, Amt 為評測的模板, AmtReplica 可想像為印製出來的考卷, 
+        |    受測者填寫的是印製出來的考卷)
         |
-        | PS: 這邊的動作之後應該透過 Observer 或是 Service 抽離出來
+        | 2. 產生對應的 AmtReplicaLog, 此實體用來記錄答題過程 
+        |    @example [{"d": [1,2,3], "l": 7, "s": 0},{...}] 
+        |    
+        |    d: AmtReplicaDiag 的 id, l 為 level, s為 AmtReplica 指向之 AmtReplicaDiagGroup 的狀態
+        | 
+        | 3. 將已經完成的 AmtDiagGroup 選取出來(目前做到 19), 將 groups 和隸屬之 AmtDiag 建立
+        |    對應之 AmtReplicaDiagGroup 和  AmtReplicaDiag
+        |
+        | 4. 將新增之 AmtReplica 指向 findPendingDiagGroups() 取得的第一個 AmtReplicaDiagGroup,
+        |    最為 AmtReplica(考卷)的第一個 AmtReplicaDiagGroup(大題)
+        | 
         */
         DB::beginTransaction();
 
@@ -272,7 +77,7 @@ class AmtReplicaController extends Controller
             $replica = AmtReplica::create([
                 'amt_id' => $request->get('amt_id', 1),
                 'creater_id' => Auth::user()->id,
-                'child_id' => $request->get('child_id', 1),
+                'child_id' => $request->get('child_id'),
                 'status' => AmtReplica::STATUS_ORIGIN_ID
             ]);
 
@@ -281,9 +86,7 @@ class AmtReplicaController extends Controller
              * 
              * @var \App\Model\AmtReplicaLog
              */
-            $log = AmtReplicaLog::create([
-                'replica_id' => $replica->id
-            ]);
+            $log = AmtReplicaLog::create(['replica_id' => $replica->id]);
 
             AmtDiagGroup::findValid()->each(function ($group) use ($replica) {
                 /**
@@ -314,27 +117,320 @@ class AmtReplicaController extends Controller
              * 
              * @var \App\Model\AmtReplicaDiagGroup
              */
-            $replicaCurrentDiagGroup = $replica->groups()->where('status', 0)->first();
+            $replicaCurrentDiagGroup = $replica->findPendingDiagGroups()->first();
 
-            /* 
-            |--------------------------------------------------------------------------
-            | 更新 replica group 指標
-            |--------------------------------------------------------------------------
-            */
-            $replica->update([
-                'current_group_id' => $replicaCurrentDiagGroup->id
-            ]);
+            // 更新 replica group 指標
+            $replica->update(['current_group_id' => $replicaCurrentDiagGroup->id]);
 
             DB::commit();
 
-            return redirect('/backend/amt_replica')->with('success', "{$replica->id}新增完成!");
+            return redirect('/backend/child')->with('success', "{$replica->child->name}{$replica->child->getSex()}的評測新增囉!");
         } catch (\Exception $e) {
             DB::rollback();
 
-            return redirect('/backend/amt_replica')->with('error', "{$e->getMessage()}");
+            return redirect('backend/child')->with('error', "{$e->getMessage()}");
         }
     }
 
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  App\Model\AmtReplica $replica
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(AmtReplica $replica, Request $request)
+    {
+        /*
+        |--------------------------------------------------------------------------
+        | 選題邏輯
+        |--------------------------------------------------------------------------
+        |
+        | 1. 取得目前 AmtReplica 指向的 AmtReplicaDiag
+        | 
+        | 2. 如果目前指向的 AmtReplicaDiag level 值為0, 表示第一次進入該 AmtReplicaDiag, 應該使用 child@getLevel() 為
+        |    level 值, 變數 $isFirstEntry 設為 true
+        | 
+        | 3. 從目前 AmtReplicaDiagGroup(大題) 找出所有尚未作答(value為NULL)的 AmtReplicaDiag (小題)
+        | 
+        | 4. 迭代找到的 AmtReplicaDiag collection, 配合 AmtDiag@findMatchStandards() 方法確認每個 AmtReplicaDiag 是否有
+        |    符合目前 level 的 AmtDiagStandard, 如果沒有則過濾該 AmtReplicaDiag
+        | 
+        | 5. 過濾後的 AmtReplicaDiag collection 即為目前 child 需要作答之 AmtReplicaDiag, 返回作答頁面
+        |
+        | @5. 若過濾後 AmtReplicaDiag collection 為空, 接著檢查是否存在已經作答過之題目, 若不存在, 表示此 Group 根本沒有需要作答的 diag, 
+        |     將其狀態設為 AmtReplica::STATUS_SKIP_ID(略過)
+        |
+        | @6. 接著呼叫 AmtReplica 的 swtichGroup() 方法切換目前 Replica 指向的 AmtReplicaDiagGroup,
+        |     若swtichGroup()回傳 NULL, **表示該 Replica 已經沒有需要作答之 AmtReplicaDiagGroup **, 導向評測結束頁面 @finish
+        */
+       
+        /**
+         * 取得目前應該給使用者作答之 group
+         * 
+         * @var \App\Model\AmtReplicaDiagGroup
+         */
+        $replicaCurrentDiagGroup = $replica->currentGroup;
+
+        if (is_null($replicaCurrentDiagGroup)) {
+            return redirect('/backend/amt_replica')->with('warning', '評測已經作答完畢');
+        }
+
+        /**
+         * 是否為第一次作答該 Group(大題)
+         *
+         * 特別存成變數是因為後面尋找符合的 AmtDiagStandard 時也會用上該值
+         * 
+         * @var boolean
+         */
+        $isFirstEntry = (0 === $replicaCurrentDiagGroup->level);
+
+        /**
+         * 小朋友的預設進入等級
+         * 
+         * @var integer
+         */
+        $level = (true === $isFirstEntry) 
+            ? $replica->child->getLevel($replica->created_at)
+            : $replicaCurrentDiagGroup->level
+        ;
+
+        /**
+         * 從目前作答之 group, 迭代所有隸屬的 diags,
+         * 透過過濾器過濾掉沒有找到對應符合的 standard
+         * 
+         * @var \App\Model\AmtReplicaDiags
+         */
+        $replicaDiags = $replicaCurrentDiagGroup->diags()->whereNull('value')->get()
+            ->filter(function ($replicaDiag) use ($level, $isFirstEntry) {
+                $count = $replicaDiag->diag->findMatchStandards($level, $isFirstEntry)->count();
+
+                return 0 < $count;
+            });
+
+        // 若存在需要作答之 diag, 則輸出作答頁面
+        if (0 < $replicaDiags->count()) {
+            return view('backend/amt_replica/edit', compact('replica', 'replicaDiags', 'level'));
+        }
+
+        //  若也沒有存在已經作答之 diag, 表示此 Group 根本沒有需要作答的 diag, 將其狀態設為 AmtReplica::STATUS_SKIP_ID(略過)
+        if (0 === $replicaCurrentDiagGroup->diags()->whereNotNull('value')->count()) {
+            $replicaCurrentDiagGroup->update(['status' => AmtReplica::STATUS_SKIP_ID]);
+        }
+
+        return is_null($replica->swtichGroup()) 
+            ? redirect("/backend/amt_replica/{$replica->id}/finish")->with('success', '評測完成!')
+            : redirect("/backend/amt_replica/{$replica->id}/edit")->with('success', "大題: {$replica->currentGroup->id }作答完畢")
+        ;
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  App\Model\AmtReplica  $replica
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function update(AmtReplica $replica, Request $request)
+    {
+        /* 
+        |--------------------------------------------------------------------------
+        | 更新作答結果並導向 @edit
+        |--------------------------------------------------------------------------
+        |
+        | 1. 根據 post 過來的 replica_diag_id 和 值, 更新 AmtReplicaDiag.value
+        |    
+        | 2. 透過 AmtReplica@statisticscCurrentGroup() 統計結算並更新目前指向的 AmtReplicaDiagGroup 
+        |    及其隸屬之 AmtReplicaDiag 的 level, 並設置 AmtReplicaDiag 指向所符合的 AmtDiagStandard
+        |    
+        |    PS:注意 statisticscCurrentGroup() 並不考慮child 的 default level, 因為這邊的重點是確保系統能遵循正確邏輯
+        |    帶出題目． 最後呈現的 level 是另外透過 AmtReplicaDiagGroup@updateLevel() 在 @finish 時呼叫更新
+        |
+        | 3. 記錄答題 AmtReplicaLog
+        */
+        
+        /**
+         * 取得目前應該給使用者作答之 group
+         * 
+         * @var \App\Model\AmtReplicaDiagGroup
+         */
+        $currentReplicaGroup = $replica->currentGroup;
+
+        /**
+         * 新增的log
+         * 
+         * @var array
+         */
+        $appendLog = [
+            'd' => [], 
+            'l' => $request->get('level'), 
+            's' => $currentReplicaGroup->status
+        ];
+
+        DB::beginTransaction();
+
+        try {
+            foreach ($request->all() as $diagId => $value) {
+                if (!is_numeric($diagId)) {
+                    continue;
+                }
+
+                // 記錄作答之 AmtReplicaDiagId
+                $appendLog['d'][] = $diagId;
+
+                $replicaDiag = AmtReplicaDiag::find($diagId);
+                $replicaDiag->update(['value' => json_encode($value)]);
+                $replicaDiag->updateMatchStandard();
+            }  
+
+            // 統計結算並更新目前指向的 AmtReplicaDiagGroup 及其隸屬之 AmtReplicaDiag 的 level,
+            // 並設置 AmtReplicaDiag 指向所符合的 AmtDiagStandard
+            // 
+            // 這個動作必須每次提交答案都執行, 因為目前的評測系統是動態出題的, 每次挑選的題目都會和上次的作答有直接關係
+            $replica->statisticsCurrentGroup();
+
+            // 將動作添加至 AmtReplicaLog
+            $replica->log->add($appendLog)->save();
+
+            DB::commit();
+
+            return redirect("/backend/amt_replica/{$replica->id}/edit")->with('success', '作答狀態更新');
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return redirect("/backend/amt_replica/{$replica->id}/edit")->with('error', "{$e->getMessage()}");
+        }
+    }
+
+    /**
+     * AmtReplica 答題結束的處理
+     * 
+     * @param  App\Model\AmtReplica  $replica
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function finish(AmtReplica $replica, Request $request)
+    {
+        if (!is_null($replica->findPendingDiagGroups()->first())) {
+            return redirect("/backend/amt_replica/{$replica->id}/edit")->with('error', "評測{$replica}尚未作答完畢!");
+        } 
+
+        DB::beginTransaction();
+
+        try {
+            $replica->update(['status' => AmtReplica::STATUS_DONE_ID]);
+
+            $replica->groups()->get()->each(function ($group) {
+                // 將 AmtDiagStandard 和 Child 的 default level 
+                // ㄧ同考慮後的level更新至 AmtDiagGroup
+                $group->updateLevel();
+            });
+
+            DB::commit();
+
+            $request->session()->flash('success', "{$replica->child->name}{$replica->child->getSex()}評測完畢囉!");
+
+            return view("/backend/amt_replica/finish", compact('replica'));
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return redirect("/backend/amt_replica")->with('error', "{$e->getMessage()}");
+        }
+    }
+
+    /**
+     * 回到上一題
+     * 
+     * @param  App\Model\AmtReplica $replica
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function prev(AmtReplica $replica)
+    {
+        /*
+        |--------------------------------------------------------------------------
+        | 上一步的動作
+        |--------------------------------------------------------------------------
+        |
+        | 1. AmtReplica: AmtReplica.currentGroup 設為 AmtReplicaDiag.group
+        | 2. AmtReplicaGroup: AmtReplicaGroup.level 重設為 log['l'], AmtReplicaGroup.status 重設為 log['s']
+        | 3. AmtReplicaDiag: 把log['d']指到的 AmtReplicaDiag之[value,standard_id] 設為 NULL, level 改為 0
+        | 4. AmtReplicaLog: 最後的紀錄物件將其刪除
+        */
+       
+        DB::beginTransaction();
+
+        try {
+            /**
+             * 最後的動作紀錄
+             * 
+             * @var array
+             */
+            $record = $replica->log->getLast();
+
+            /**
+             * 前一次答題時的出題
+             * 
+             * @var \App\Model\AmtReplicaDiag
+             */
+            $replicaDiags = AmtReplicaDiag::whereIn('id', $record->d)->get();
+            
+            /**
+             * 前一次答題時 AmtReplica 的 currentGroup
+             * 
+             * @var \App\Model\AmtReplicaDiagGroup
+             */
+            $replicaGroup = $replicaDiags->first()->group;
+
+            // ~1
+            $replica->update(['current_group_id' => $replicaGroup->id]);
+            
+            // ~2
+            $replicaGroup->update([
+                'level' => $record->l,
+                'status' => $record->s
+            ]);
+
+            // ~3
+            $replicaDiags->each(function ($replicaDiag) use ($record) {
+                $replicaDiag->update([
+                    'value' => NULL, 
+                    'standard_id' => NULL,
+                    'level' => 0
+                ]);
+            });
+
+            // ~4
+            $replica->log->pop()->save();
+
+            DB::commit();
+
+            return redirect("/backend/amt_replica/{$replica->id}/edit")->with('success', "返回上一題");
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            Log::info($e);
+
+            return redirect("/backend/amt_replica/{$replica->id}/edit")->with('warning', "{$e->getMessage()}");
+        }
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  App\Model\AmtReplica  $replica
+     * @return \Illuminate\Http\Response
+     */
+    public function show(AmtReplica $replica)
+    {
+        return view('backend/amt_replica/show', compact('replica'));
+    }
+
+    /**
+     * Destroy the specified resource.
+     *
+     * @param  App\Model\AmtReplica  $replica
+     * @return \Illuminate\Http\Response
+     */
     public function destroy(AmtReplica $replica)
     {
         $replica->delete();

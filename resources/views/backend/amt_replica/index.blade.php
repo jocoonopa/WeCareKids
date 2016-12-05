@@ -4,18 +4,7 @@
 <div class="right_col" role="main">
     <div class="page-title">
         <div class="title_left">
-            <h3> 評測replica playground</h3>
-
-            <small>
-                <form action="/backend/amt_replica" method="post">
-                    {{ csrf_field() }}
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-default">
-                            Create New One
-                        </button>
-                    </div>
-               </form>
-            </small>
+            <h3>評測列表</h3>
         </div>
         <div class="clearfix"></div>
     </div>
@@ -25,6 +14,14 @@
             @include('component/flash')
 
             <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>狀態</th>
+                        <th>受測者姓名</th>
+                        <th>受測時間</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
                 <tbody>
                     @foreach ($replicas as $replica)
                     <tr>
@@ -36,6 +33,12 @@
                             @else
                                 <span class="label label-default">未開始</span>
                             @endif
+                        </td>
+                        <td>
+                            {{ $replica->child->name }}
+                        </td>
+                        <td>
+                            {{ $replica->created_at->format('Y-m-d H:i:s') }}
                         </td>
                         <td>
                             <form action="/backend/amt_replica/{{$replica->id}}" method="post" onsubmit="return confirm('確定刪除嗎?');">

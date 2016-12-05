@@ -32,7 +32,10 @@
                         <a href="/backend/analysis/r/i/channel"><i class="fa fa-file-text-o"></i> 剖析</a>
                     </li>
                     <li>
-                        <a href="/backend/amt"><i class="fa fa-file-text-o"></i> 評測</a>
+                        <a href="/backend/amt_replica"><i class="fa fa-file-text-o"></i> 評測</a>
+                    </li>
+                    <li>
+                        <a href="/backend/child"><i class="fa fa-file-text-o"></i> 受測者</a>
                     </li>
                 </ul>
             </div>

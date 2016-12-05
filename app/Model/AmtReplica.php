@@ -42,7 +42,7 @@ class AmtReplica extends Model
         return $this->groups()->where('status', static::STATUS_ORIGIN_ID);
     }
 
-    public function calculateCurrentGroupLevel()
+    public function statisticsCurrentGroup()
     {
         $validReplicaDiags = [];
         $invalidReplicaDiags = [];
@@ -84,7 +84,7 @@ class AmtReplica extends Model
 
         // 更新目前作答 group 之 level
         $this->currentGroup->update([
-            'level' => $maxLevel < $upperLimit ? $upperLimit : $maxLevel,
+            'level' => $upperLimit,
             'status' => AmtReplicaDiagGroup::STATUS_DONE_ID
         ]);
 
@@ -98,18 +98,21 @@ class AmtReplica extends Model
         }
 
         if (!is_null($group)) {
-            $this->update(['current_group_id' => $group->id]);
-
             $group->update(['level' => $this->child->getLevel($this->created_at)]);
-        } else {
-            $this->update(['current_group_id' => NULL]);
         }
 
-        return $this;
+        $this->update(['current_group_id' => (!is_null($group) ? $group->id : NULL)]);
+        
+        return $group;
     }
 
     public function isDone()
     {
         return $this->status === AmtReplica::STATUS_DONE_ID;
+    }
+
+    public function getLevel()
+    {
+        return $this->child->getLevel($this->created_at);
     }
 }

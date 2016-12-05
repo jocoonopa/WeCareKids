@@ -28,6 +28,7 @@ class RouteServiceProvider extends ServiceProvider
         Route::model('als_rpt_ib_channel', 'App\Model\AlsRptIbChannel');
         Route::model('als_rpt_ib_cxt', 'App\Model\AlsRptIbCxt');
         Route::model('amt_replica', 'App\Model\AmtReplica');
+        Route::model('child', 'App\Model\Child');
         Route::model('user', 'App\Model\User');
     }
 

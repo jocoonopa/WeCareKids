@@ -35,12 +35,41 @@ class AmtReplicaDiag extends Model
         return NULL;
     }
 
+    public function updateMatchStandard()
+    {
+        $standard = $this->getResultStandard();
+ 
+        if (is_null($standard)) {
+            return;
+        }
+
+        // 更新 AmtReplicaDiag 符合的 standard
+        $this->update(['standard_id' => $standard->id]);
+    }
+
     public function getMaxLevel()
     {   
         return (0 === $this->standard->step) 
             ? $this->standard->max_level 
             : $this->standard->max_level + $this->standard->step
         ;
+    }
+
+    public function getUTF8value()
+    {
+        $data = json_decode($this->value, true);
+
+        if (!is_array($data)) {
+            return $this->value;
+        }
+
+        array_walk_recursive($data, function(&$value, $key) {
+            if(is_string($value)) {
+                $value = urlencode($value);
+            }
+        });
+        
+        return urldecode(json_encode($data));
     }
 
     public function isInvalidDiag()

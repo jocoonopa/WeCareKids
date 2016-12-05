@@ -16,6 +16,7 @@
             <form action="/backend/amt_replica/{{ $replica->id }}" method="post">
                 {{ csrf_field() }}
                 <input type="hidden" name="_method" value="put" />
+                <input type="hidden" name="level" value="{{$level}}" />
 
                 @foreach ($replicaDiags as $key => $replicaDiag)
                 <div class="panel panel-primary">
@@ -71,7 +72,7 @@
                 </div>
                 @endforeach
 
-                <button class="btn btn-default pull-left">上一題</button>
+                <a href="/backend/amt_replica/{{$replica->id}}/prev" class="btn btn-default pull-left">上一題</a>
                 <button type="submit" class="btn btn-default pull-right">下一題</button>
             </form>
         </div>

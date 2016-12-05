@@ -2,12 +2,49 @@
 
 namespace App\Model;
 
+use App\Model\Child;
 use Illuminate\Database\Eloquent\Model;
 
 class AmtDiagStandard extends Model
 {
     const MIN_LEVEL = 1;
     const MAX_LEVEL = 20;
+
+    public function isRange()
+    {
+        return $this->min_level < $this->max_level;
+    }
+
+    public function hasStep()
+    {
+        return 0 < $this->step;
+    }
+
+    public function getValueByChild(AmtReplicaDiag $replicaDiag, Child $child)
+    {
+        $level = NULL;
+        $diag = $replicaDiag->diag;
+        $factor = $replicaDiag->isInvalidDiag() ? -1 : 1;
+        
+        if ($this->isRange()) {
+            $level = $child->getLevel($replicaDiag->group->replica->created_at);
+
+            if ($this->hasStep() && AmtDiag::TYPE_SWITCH_ID === $diag->type) {
+                $level = $level + ($this->step * $factor);
+            }
+        } else {
+            $level = $this->min_level;
+            
+            // standard為 invalid 
+            if ($this->hasStep() && AmtDiag::TYPE_SWITCH_ID === $diag->type) {
+                $level = $level + ($this->step * $factor);
+            } else {
+                $level = (-1 === $factor) ? ($level - 1) : $level;
+            }
+        }
+
+        return $level;
+    }
 
     public function isInRange(AmtReplicaDiag $replicaDiag)
     {

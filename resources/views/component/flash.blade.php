@@ -9,3 +9,9 @@
     {{ Session::get('error') }}
 </div>
 @endif
+
+@if (!is_null(Session::get('warning')))
+<div class="alert alert-warning" role="alert">
+    {{ Session::get('warning') }}
+</div>
+@endif

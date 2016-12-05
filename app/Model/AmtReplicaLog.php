@@ -12,4 +12,32 @@ class AmtReplicaLog extends Model
      * @var array
      */
     protected $guarded = [];
+
+    public function add(array $appendLog)
+    {
+        $logs = json_decode($this->logs, true);
+        $logs[] = $appendLog;
+        
+        $this->logs = json_encode($logs);
+
+        return $this;
+    }
+
+    public function pop()
+    {
+        $logs = json_decode($this->logs);
+
+        array_pop($logs);
+
+        $this->logs = json_encode($logs);
+
+        return $this;
+    }
+
+    public function getLast()
+    {
+        $logs = json_decode($this->logs);
+
+        return last($logs);
+    }
 }

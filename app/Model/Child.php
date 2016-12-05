@@ -48,7 +48,12 @@ class Child extends Model
 
     public function replicas()
     {
-        return $this->hasMany('App\Model\AmtReplica', 'replica_id', 'id');
+        return $this->hasMany('App\Model\AmtReplica', 'child_id', 'id');
+    }
+
+    public function getSex()
+    {
+        return 0 === $this->sex ? '妹妹' : '弟弟';
     }
 
     public function getLevel(Carbon $dateTime)
