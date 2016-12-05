@@ -13,9 +13,6 @@ class AddIsUnionColumnAtStandard extends Migration
      */
     public function up()
     {
-        Schema::table('amt_diag_standards', function (Blueprint $table) {
-            $table->boolean('is_union')->default(false)->comment('是否為or條件');
-        });
     }
 
     /**
@@ -25,8 +22,5 @@ class AddIsUnionColumnAtStandard extends Migration
      */
     public function down()
     {
-        Schema::table('amt_diag_standards', function (Blueprint $table) {
-            $table->dropColumn('is_union');
-        });
     }
 }

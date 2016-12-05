@@ -61,17 +61,20 @@ elixir(function(mix) {
     mix.copy('vendor/bower_components/moment/locale/zh-cn.js', 'public/js/moment/zh-cn.js');
     mix.copy('vendor/bower_components/moment/min/moment.min.js', 'public/js/moment.min.js');
 
-    //DataTable
+    // DataTable
     mix.copy('vendor/bower_components/datatables.net/js/jquery.dataTables.min.js', 'public/js/jquery.dataTables.min.js');
 
-    //Chart.js
+    // Chart.js
     mix.copy('vendor/bower_components/chart.js/dist/Chart.min.js', 'public/js/chart.min.js');
 
-    //Switchery
+    // Switchery
     mix.copy('vendor/bower_components/switchery/dist/switchery.min.js', 'public/js/switchery.min.js');
 
-    //DateRangeOicker
+    // DateRangeOicker
     mix.copy('vendor/bower_components/bootstrap-daterangepicker/daterangepicker.js', 'public/js/daterangepicker.js');
+
+    // Ion.RangeSlider
+    mix.copy('vendor/bower_components/ion.rangeSlider/', 'public/bower_components/ion_rangeSlider');
 
     /**************/
     /* Copy Fonts */

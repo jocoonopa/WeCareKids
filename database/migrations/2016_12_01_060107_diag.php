@@ -75,7 +75,6 @@ class Diag extends Migration
             $table->integer('min_level')->unsigned()->comment('根據年齡,答題決定');
             $table->integer('max_level')->unsigned()->comment('根據年齡,答題決定');
             $table->string('condition_value')->nullable()->comment('0, [option1, option2, option3], {m: number,M: number,i: number}');
-            $table->boolean('is_empty')->comment('無挑件, 判斷時跳過');
             $table->integer('step')->unsigned()->comment('升降階的值');
 
             $table
@@ -122,7 +121,6 @@ class Diag extends Migration
             $table->increments('id');
             $table->integer('group_id')->unsigned()->index()->comment('指向[amt_diag_groups]');
             $table->integer('replica_id')->unsigned()->index()->comment('指向[amt_replicas]');
-            $table->integer('current_diag_id')->unsigned()->index()->nullable()->comment('指向[amt_replica_diags]');
             $table->integer('level')->unsigned()->comment('根據年齡,答題決定');
             $table->integer('status')->unsigned()->comment('0: 尚未開始, 1: 作答中, 2: 已完成');
 

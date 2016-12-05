@@ -28,3 +28,4 @@ Route::put('/analysis/r/i/cxt/{als_rpt_ib_cxt}', 'Frontend\AlsRptIbCxtController
 
 Route::resource('/backend/amt', 'Backend\AmtController');
 Route::resource('/backend/amt_replica', 'Backend\AmtReplicaController');
+Route::get('/backend/amt_replica/{amt_replica}/finish', 'Backend\AmtReplicaController@finish');

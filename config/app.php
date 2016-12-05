@@ -212,6 +212,7 @@ return [
         'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
         'AlsRpt' => App\Utility\Facades\AlsRpt::class,
         'Wck' => App\Utility\Facades\Wck::class,
+        'Debugbar' => Barryvdh\Debugbar\Facade::class,
     ],
 
 ];
