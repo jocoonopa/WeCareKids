@@ -72,6 +72,16 @@ class AmtReplicaDiag extends Model
         return urldecode(json_encode($data));
     }
 
+    /**
+     * @building
+     * 
+     * @return boolean
+     */
+    public function isPass()
+    {
+        return true;
+    }
+
     public function isInvalidDiag()
     {
         return AmtDiag::TYPE_SWITCH_ID === $this->diag->type && false === $this->value;

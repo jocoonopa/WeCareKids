@@ -214,8 +214,9 @@ return [
         'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
         'AlsRpt' => App\Utility\Facades\AlsRpt::class,
         'Wck' => App\Utility\Facades\Wck::class,
-        'Debugbar' => Barryvdh\Debugbar\Facade::class,
+        'AmtCell' => App\Utility\Facades\AmtCell::class,
 
+        'Debugbar' => Barryvdh\Debugbar\Facade::class,
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
     ],

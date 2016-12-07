@@ -11,7 +11,17 @@
 
     <div class="row">
         <div class="col-md-12 col-sm-12 col-xs-12"">
-           
+            <span>網址範例: /backend/amt?command=(656and655)or(657or650and(652and651))</span>
+            
+            <ul>
+                @foreach ($diags as $diag)
+                    <li>{{ "{$diag->id}: {$diag->diag->description}" }}</li>
+                @endforeach
+            </ul>
+
+            <code>
+               {{$output}}
+            </code>
         </div>
     </div>
 </div>

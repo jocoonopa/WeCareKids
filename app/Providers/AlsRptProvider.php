@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Utility\Services\AlsRptService;
+use App\Utility\Services\AmtCellService;
 use App\Utility\Services\WckService;
 use Illuminate\Support\ServiceProvider;
 
@@ -29,10 +30,14 @@ class AlsRptProvider extends ServiceProvider
         $this->app->singleton('wck', function () {
             return new WckService;
         });
+
+        $this->app->singleton('amt_cell', function () {
+            return new AmtCellService;
+        });
     }
 
     public function provides()
     {
-        return ['als_rpt', 'wck'];
+        return ['als_rpt', 'wck', 'amt_cell'];
     }
 }
