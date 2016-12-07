@@ -18,7 +18,7 @@ class AmtController extends Controller
     {
         $output = AmtCell::setStr($request->get('command'))->convertToStatment();
 
-        $diags = AmtCell::getReplicaDiags();
+        $diags = AmtCell::getDiags();
 
         return view('/backend/amt/index', compact('output', 'diags'));
     }

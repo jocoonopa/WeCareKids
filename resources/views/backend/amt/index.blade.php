@@ -15,7 +15,7 @@
             
             <ul>
                 @foreach ($diags as $diag)
-                    <li>{{ "{$diag->id}: {$diag->diag->description}" }}</li>
+                    <li>{{ "{$diag->id}: {$diag->description}" }}</li>
                 @endforeach
             </ul>
 

@@ -2,7 +2,7 @@
 
 namespace App\Utility\Services;
 
-use App\Model\AmtReplicaDiag;
+use App\Model\AmtDiag;
 
 class AmtCellService
 {
@@ -29,9 +29,9 @@ class AmtCellService
         return array_first($matches[0]);
     }
 
-    public function getReplicaDiags()
+    public function getDiags()
     {
-        return AmtReplicaDiag::find($this->getIds());
+        return AmtDiag::find($this->getIds());
     }
 
     protected function isValidAlphabet($char)
