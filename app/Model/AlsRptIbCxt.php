@@ -2,6 +2,7 @@
 
 namespace App\Model;
 
+use App\Model\Child;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -55,7 +56,8 @@ class AlsRptIbCxt extends Model
         'school_name', 
         'grade_num', 
         'phone', 
-        'email'
+        'email',
+        'report_id'
     ];
 
     /**
@@ -72,6 +74,21 @@ class AlsRptIbCxt extends Model
     public function channel()
     {
         return $this->belongsTo('App\Model\AlsRptIbChannel');
+    }
+
+    public function report()
+    {
+        return $this->belongsTo('App\Model\AmtAlsRpt', 'report_id', 'id');
+    }
+
+    public function scopeFindOrphanByChild($query, Child $child)
+    {
+        return $query
+            ->whereNull('report_id')
+            ->where('status', static::STATUS_HAS_SUBMIT)
+            ->where('child_name', $child->name)
+            ->whereDate('child_birthday', "{$child->birthday->format('Y-m-d')}")
+        ;
     }
 
     public static function createPrototype(AlsRptIbChannel $channel)

@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers\Backend;
 
-use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreChild;
 use App\Model\Child;
+use Auth;
+use DB;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
+use Log;
 
 class ChildController extends Controller
 {
@@ -15,9 +19,14 @@ class ChildController extends Controller
      */
     public function index()
     {
-        $childs = Child::all()->take(20);
+        $childs = Auth::user()->childs()->orderBy('id', 'desc')->get();
 
         return view('backend/child/index', compact('childs'));
+    }
+
+    public function report(Child $child, AmtAlsReport $replica)
+    {
+        return view('backend/child/report', compact('child', 'replica'));
     }
 
     /**
@@ -27,18 +36,37 @@ class ChildController extends Controller
      */
     public function create()
     {
-        //
+        return view('backend/child/create', ['child' => new Child]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\StoreChild  $StoreChild
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreChild $storeChild)
     {
-        //
+        DB::beginTransaction();
+        try  {
+            $child = Child::create([
+                'name' => $storeChild->get('name'),
+                'sex' => $storeChild->get('sex'),
+                'birthday' => $storeChild->get('birthday')
+            ]);
+
+            Auth::user()->childs()->attach($child);
+
+            DB::commit();
+
+            return redirect("/backend/child")->with('success', "{$child->name}{$child->getSex()} 建立完成!");
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            Log::error($e);
+
+            return redirect("/backend/child")->with('error', "{$e->getMessage()}");
+        }
     }
 
     /**
@@ -55,24 +83,30 @@ class ChildController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Model\Child $child
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Child $child)
     {
-        //
+        return view('backend/child/edit', compact('child'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Http\Requests\StoreChild  $StoreChild
+     * @param  \App\Model\Child $child 
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(StoreChild $storeChild, Child $child)
     {
-        //
+        $child->update([
+            'name' => $storeChild->get('name'),
+            'sex' => $storeChild->get('sex'),
+            'birthday' => $storeChild->get('birthday')
+        ]);
+        
+        return redirect("/backend/child")->with('success', "{$child->name}{$child->getSex()} 更新完成!");
     }
 
     /**

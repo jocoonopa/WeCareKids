@@ -160,7 +160,9 @@ return [
         App\Providers\AlsRptProvider::class,
 	
 		Thomaswelton\LaravelGravatar\LaravelGravatarServiceProvider::class,
-        SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class
+        SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
+        Collective\Bus\BusServiceProvider::class,
+        Collective\Html\HtmlServiceProvider::class
     ],
 
     /*
@@ -213,6 +215,9 @@ return [
         'AlsRpt' => App\Utility\Facades\AlsRpt::class,
         'Wck' => App\Utility\Facades\Wck::class,
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
+
+        'Form' => Collective\Html\FormFacade::class,
+        'Html' => Collective\Html\HtmlFacade::class,
     ],
 
 ];

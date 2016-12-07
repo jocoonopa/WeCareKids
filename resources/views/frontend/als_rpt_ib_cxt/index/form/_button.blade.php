@@ -6,3 +6,11 @@
         </button>
     </div>
 </div>
+
+<div style="position: fixed; top: 0px; right: 0">
+    <div>
+        <a href="/analysis/r/i/channel/{{$cxt->channel->id}}/cxt/logout" class="btn btn-sm btn-default">
+             登出
+        </a>
+    </div>
+</div>

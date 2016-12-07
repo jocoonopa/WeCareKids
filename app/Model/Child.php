@@ -4,12 +4,15 @@ namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use Collective\Html\Eloquent\FormAccessible;
 
 class Child extends Model
 {
+    use FormAccessible;
+
     protected $table = 'childs';
 
-    protected $fillable = ['sex', 'name', 'birthday', 'school_name'];
+    protected $fillable = ['sex', 'name', 'birthday', 'school_name', 'identifier'];
 
     public static $levelMap = [
         [0, 213], //0
@@ -46,14 +49,38 @@ class Child extends Model
         'updated_at'
     ];
 
+    /**
+     * The users that belong to the child.
+     */
+    public function users()
+    {
+        return $this->belongsToMany('App\Model\User');
+    }
+
     public function replicas()
     {
         return $this->hasMany('App\Model\AmtReplica', 'child_id', 'id');
     }
 
+    /**
+     * Get the user's date of birth for forms.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function formBirthdayAttribute($value)
+    {
+        return Carbon::parse($value)->format('Y-m-d');
+    }
+
     public function getSex()
     {
-        return 0 === $this->sex ? '妹妹' : '弟弟';
+        return 0 === (int) $this->sex ? '妹妹' : '弟弟';
+    }
+
+    public function getAge()
+    {
+        return $this->birthday->diffInYears(Carbon::now());
     }
 
     public function getLevel(Carbon $dateTime)

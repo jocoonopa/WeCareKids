@@ -26,4 +26,20 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    /**
+     * The childs that belong to the user.
+     */
+    public function childs()
+    {
+        return $this->belongsToMany('App\Model\Child');
+    }
+
+    /**
+     * The childs that belong to the user.
+     */
+    public function reports()
+    {
+        return $this->hasMany('App\Model\AmtAlsRpt', 'owner_id', 'id');
+    }
 }

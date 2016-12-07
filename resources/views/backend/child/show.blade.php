@@ -23,6 +23,19 @@
         <div class="col-md-12 col-sm-12 col-xs-12"">
             @include('component/flash')
 
+            <ul>
+                <li>姓名: {{ $child->name }}</li>
+                <li>生日: {{ $child->birthday->format('Y-m-d') }}</li>
+                <li>學校: {{ $child->school_name }}</li>
+                <li>身份證: {{ $child->identifier }}</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12"">
+            <h3>評測歷史</h3><hr>
+
             <table class="table table-striped">
                 <tbody>
                     @foreach ($child->replicas()->get() as $replica)
@@ -37,8 +50,8 @@
                     </tr>
                     @endforeach
                 </tbody>
-            </table>
-        </div>
+            </table> 
+        </div>        
     </div>
 </div>
 @endsection

@@ -70,10 +70,22 @@ class AmtDiagStandard extends Model
             case AmtDiag::TYPE_SLIDER_ID:
                 $conditions = json_decode($this->condition_value, true);
                 $value = json_decode($replicaDiag->value);
+                $min = array_get($conditions, 'm');
+                $max = array_get($conditions, 'M');
 
-                return $value >= (int) array_get($conditions, 'm') 
-                    && $value <= (int) array_get($conditions, 'M')
-                ;
+                if (!is_null($min)) {
+                    if ($value < $min) {
+                        return false;
+                    }
+                }
+
+                if (!is_null($max)) {
+                    if ($value > $max) {
+                        return false;
+                    }
+                }
+
+                return true;
             break;
 
             case AmtDiag::TYPE_RADIO_ID:

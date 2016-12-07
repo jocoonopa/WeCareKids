@@ -25,7 +25,7 @@ class AmtDiag extends Model
     {
         return $this->standards()
             ->where('min_level', '<=', $level + (true === $isDefaultLevel ? 0 : 1))
-            ->where('max_level', '>=', $level)
+            ->where('max_level', '>=', $level - (true === $isDefaultLevel ? 0 : 1))
         ;
     }
 }

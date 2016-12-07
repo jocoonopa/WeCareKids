@@ -23,7 +23,9 @@
         "laravel/framework": "5.3.*",
         "thomaswelton/laravel-gravatar": "~1.0",
         "doctrine/dbal": "^2.5",
-        "simplesoftwareio/simple-qrcode": "~1"
+        "simplesoftwareio/simple-qrcode": "~1",
+        "laravelcollective/bus":"^5.3.0",
+        "laravelcollective/html": "^5.3.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

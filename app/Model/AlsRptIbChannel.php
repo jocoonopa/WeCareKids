@@ -89,11 +89,20 @@ class AlsRptIbChannel extends Model
 
     public function scopeFindByKey($query, $privateKey)
     {   
-        $query->where('private_key', '=', $privateKey);
+        return $query->where('private_key', '=', $privateKey);
     }
 
     public function scopeFindByCreater($query, User $user)
     {
-        $query->where('creater_id', '=', $user->id);
+        return $query->where('creater_id', '=', $user->id);
+    }
+
+    public function scopeFindInValid($query)
+    {
+        return $query
+            ->where('is_open', false)
+            ->orWhere('close_at', '<', Carbon::now())
+            ->orWhere('open_at', '>', Carbon::now())
+        ;
     }
 }

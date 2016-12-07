@@ -191,15 +191,6 @@ class Diag extends Migration
                 ->onDelete('cascade')
             ;
         });
-
-        Schema::table('amt_replica_diag_groups', function (Blueprint $table) {
-            $table
-                ->foreign('current_diag_id')
-                ->references('id')
-                ->on('amt_replica_diags')
-                ->onDelete('cascade')
-            ;
-        });
     }
 
     /**

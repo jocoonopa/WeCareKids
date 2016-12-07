@@ -3,16 +3,20 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Requests;
+use App\Model\Amt;
+use App\Model\AmtAlsRpt;
 use App\Model\AmtDiag;
 use App\Model\AmtDiagGroup;
 use App\Model\AmtReplica;
 use App\Model\AmtReplicaDiag;
 use App\Model\AmtReplicaDiagGroup;
 use App\Model\AmtReplicaLog;
+use App\Model\Child;
 use Auth;
 use DB;
 use Illuminate\Http\Request;
 use Log;
+use Symfony\Component\HttpFoundation\Response;
 
 class AmtReplicaController extends Controller
 {
@@ -64,9 +68,29 @@ class AmtReplicaController extends Controller
         |
         | 4. 將新增之 AmtReplica 指向 findPendingDiagGroups() 取得的第一個 AmtReplicaDiagGroup,
         |    最為 AmtReplica(考卷)的第一個 AmtReplicaDiagGroup(大題)
+        |
+        | 5. 新增 AmtAlsReport, 綁定 AmtReplica
         | 
         */
         DB::beginTransaction();
+
+        /**
+         * 欲綁定之 Child 
+         * 
+         * @var \App\Model\Child
+         */
+        $child = Child::find($request->get('child_id'));
+
+        /**
+         * 欲用來複製的評測模板
+         * 
+         * @var \App\Model\Amt
+         */
+        $amt = Amt::find($request->get('amt_id', 1));
+
+        if (is_null($child) || is_null($amt)) {
+            abort(Response::HTTP_NOT_FOUND, '受測者或評測模板為空!');
+        }
 
         try {
             /**
@@ -75,9 +99,9 @@ class AmtReplicaController extends Controller
              * @var \App\Model\AmtReplica
              */
             $replica = AmtReplica::create([
-                'amt_id' => $request->get('amt_id', 1),
+                'amt_id' => $amt->id,
                 'creater_id' => Auth::user()->id,
-                'child_id' => $request->get('child_id'),
+                'child_id' => $child->id,
                 'status' => AmtReplica::STATUS_ORIGIN_ID
             ]);
 
@@ -122,11 +146,20 @@ class AmtReplicaController extends Controller
             // 更新 replica group 指標
             $replica->update(['current_group_id' => $replicaCurrentDiagGroup->id]);
 
+            $report = AmtAlsRpt::create([
+                'owner_id' => Auth::user()->id,
+                'replica_id' => $replica->id
+            ]);
+
+            $replica->update(['report_id' => $report->id]);
+
             DB::commit();
 
             return redirect('/backend/child')->with('success', "{$replica->child->name}{$replica->child->getSex()}的評測新增囉!");
         } catch (\Exception $e) {
             DB::rollback();
+
+            Log::error($e);
 
             return redirect('backend/child')->with('error', "{$e->getMessage()}");
         }
@@ -147,21 +180,24 @@ class AmtReplicaController extends Controller
         |
         | 1. 取得目前 AmtReplica 指向的 AmtReplicaDiag
         | 
-        | 2. 如果目前指向的 AmtReplicaDiag level 值為0, 表示第一次進入該 AmtReplicaDiag, 應該使用 child@getLevel() 為
-        |    level 值, 變數 $isFirstEntry 設為 true
+        | 2. 如果目前指向的 AmtReplicaDiag level 值為0, 表示第一次進入該 AmtReplicaDiag, 
+        |    應該使用 child@getLevel() 為level 值, 變數 $isFirstEntry 設為 true
         | 
         | 3. 從目前 AmtReplicaDiagGroup(大題) 找出所有尚未作答(value為NULL)的 AmtReplicaDiag (小題)
         | 
-        | 4. 迭代找到的 AmtReplicaDiag collection, 配合 AmtDiag@findMatchStandards() 方法確認每個 AmtReplicaDiag 是否有
-        |    符合目前 level 的 AmtDiagStandard, 如果沒有則過濾該 AmtReplicaDiag
+        | 4. 迭代找到的 AmtReplicaDiag collection, 配合 AmtDiag@findMatchStandards() 
+        |    方法確認每個 AmtReplicaDiag 是否有符合目前 level 的 AmtDiagStandard, 
+        |    如果沒有則過濾該 AmtReplicaDiag
         | 
-        | 5. 過濾後的 AmtReplicaDiag collection 即為目前 child 需要作答之 AmtReplicaDiag, 返回作答頁面
+        | 5. 過濾後的 AmtReplicaDiag collection, 即為目前 child 需要作答之 AmtReplicaDiag, 
+        |    綁定畫面變數後回應作答頁面
         |
-        | @5. 若過濾後 AmtReplicaDiag collection 為空, 接著檢查是否存在已經作答過之題目, 若不存在, 表示此 Group 根本沒有需要作答的 diag, 
-        |     將其狀態設為 AmtReplica::STATUS_SKIP_ID(略過)
+        | @5. 若過濾後 AmtReplicaDiag collection 為空, 接著檢查是否存在已經作答過之題目, 若不存在, 
+        |     表示此 Group 根本沒有需要作答的 diag, 將其狀態設為 AmtReplica::STATUS_SKIP_ID(略過)
         |
         | @6. 接著呼叫 AmtReplica 的 swtichGroup() 方法切換目前 Replica 指向的 AmtReplicaDiagGroup,
-        |     若swtichGroup()回傳 NULL, **表示該 Replica 已經沒有需要作答之 AmtReplicaDiagGroup **, 導向評測結束頁面 @finish
+        |     若swtichGroup()回傳 NULL, **表示該 Replica 已經沒有需要作答之 AmtReplicaDiagGroup **, 
+        |     導向評測結束頁面 @finish
         */
        
         /**
@@ -297,6 +333,8 @@ class AmtReplicaController extends Controller
         } catch (\Exception $e) {
             DB::rollback();
 
+            Log::error($e);
+
             return redirect("/backend/amt_replica/{$replica->id}/edit")->with('error', "{$e->getMessage()}");
         }
     }
@@ -332,6 +370,8 @@ class AmtReplicaController extends Controller
             return view("/backend/amt_replica/finish", compact('replica'));
         } catch (\Exception $e) {
             DB::rollback();
+
+            Log::error($e);
 
             return redirect("/backend/amt_replica")->with('error', "{$e->getMessage()}");
         }
@@ -408,7 +448,7 @@ class AmtReplicaController extends Controller
         } catch (\Exception $e) {
             DB::rollback();
 
-            Log::info($e);
+            Log::error($e);
 
             return redirect("/backend/amt_replica/{$replica->id}/edit")->with('warning', "{$e->getMessage()}");
         }

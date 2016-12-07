@@ -1,3 +1,4 @@
+<script>
 $(document).ready(function() {
     var Doughnutctx = document.getElementById("myDoughnutChart");
     var myDoughnutChart = new Chart(Doughnutctx, {
@@ -6,7 +7,17 @@ $(document).ready(function() {
             labels: ["视觉", "听觉", "触觉", "前庭觉", "本体觉", "动作计划", "姿势控制", "移位能力", "协调能力"],
             datasets: [{
                 label: '等级',
-                data: [7, 9, 8, 5, 9, 13, 8, 8, 8],
+                data: [
+                    7, 
+                    9, 
+                    8, 
+                    5, 
+                    9, 
+                    13, 
+                    8, 
+                    8, 
+                    8
+                ],
                 backgroundColor: [
                     'rgba(255, 129, 129, 0.2)',
                     'rgba(255, 217, 97, 0.2)',
@@ -67,10 +78,30 @@ $(document).ready(function() {
     var myBarChart = new Chart(ctx2, {
         type: 'bar',
         data: {
-            labels: ["视觉", "听觉", "触觉", "前庭觉", "本体觉", "动作计划", "姿势控制", "移位能力", "协调能力"],
+            labels: [
+                "视觉", 
+                "听觉", 
+                "触觉", 
+                "前庭觉", 
+                "本体觉", 
+                "动作计划", 
+                "姿势控制", 
+                "移位能力", 
+                "协调能力"
+            ],
             datasets: [{
                 label: '等级',
-                data: [7, 9, 8, 5, 9, 13, 8, 8, 8],
+                data: [
+                    7, 
+                    9, 
+                    8, 
+                    5, 
+                    9, 
+                    13, 
+                    8, 
+                    8, 
+                    8
+                ],
                 backgroundColor: [
                     'rgba(255, 129, 129, 0.2)',
                     'rgba(255, 217, 97, 0.2)',
@@ -107,3 +138,5 @@ $(document).ready(function() {
         }
     });
 });
+
+</script>

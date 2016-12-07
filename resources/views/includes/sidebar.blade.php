@@ -29,13 +29,16 @@
                 <h3>&nbsp;</h3>
                 <ul class="nav side-menu">
                     <li>
-                        <a href="/backend/analysis/r/i/channel"><i class="fa fa-file-text-o"></i> 剖析</a>
+                        <a href="/backend/analysis/r/i/channel"><i class="fa fa-file-text-o"></i>剖析</a>
                     </li>
                     <li>
-                        <a href="/backend/amt_replica"><i class="fa fa-file-text-o"></i> 評測</a>
+                        <a href="/backend/amt_replica"><i class="fa fa-file-text-o"></i>評測</a>
                     </li>
                     <li>
-                        <a href="/backend/child"><i class="fa fa-file-text-o"></i> 受測者</a>
+                        <a href="/backend/amt_als_rpt"><i class="fa fa-file-text-o"></i>報告</a>
+                    </li>
+                    <li>
+                        <a href="/backend/child"><i class="fa fa-file-text-o"></i>受測者</a>
                     </li>
                 </ul>
             </div>

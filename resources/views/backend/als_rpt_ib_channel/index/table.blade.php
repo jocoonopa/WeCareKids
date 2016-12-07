@@ -36,6 +36,9 @@
             <td>{{ $channel->close_at->format('Y-m-d') }}</td>
             <td>{{ $channel->created_at->format('Y-m-d') }}</td>
             <td>
+                <a href="{{"/analysis/r/i/channel/{$channel->id}/cxt?public_key={$channel->public_key}"}}" target="_blank">
+                    GO
+                </a>
                 <a href="{{"/backend/analysis/r/i/channel/{$channel->id}/qrcode"}}" target="_blank">
                     <i class="fa fa-eye"></i>
                 </a>

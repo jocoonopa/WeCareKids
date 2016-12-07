@@ -64,7 +64,7 @@
                 <input type="text" name="relation" class="form-control" id="relation" value="{{ $cxt->relation }}">
             </td>
             <td>
-                <input type="text" name="phone" class="form-control" id="phone" value="{{ $cxt->phone }}">
+                <input type="text" name="phone" class="form-control" id="phone" value="{{ $cxt->phone }}" readonly>
             </td>
             <td>
                 <input type="email" name="email" class="form-control" id="email" value="{{ $cxt->email }}">

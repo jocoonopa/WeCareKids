@@ -3,6 +3,7 @@
 namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
+use Log;
 
 class AmtReplica extends Model
 {
@@ -37,6 +38,11 @@ class AmtReplica extends Model
         return $this->hasOne('App\Model\AmtReplicaLog', 'replica_id', 'id');
     }
 
+    public function report()
+    {
+        return $this->belongsTo('App\Model\AmtAlsRpt', 'report_id', 'id');
+    }
+
     public function scopeFindPendingDiagGroups($query)
     {
         return $this->groups()->where('status', static::STATUS_ORIGIN_ID);
@@ -44,6 +50,10 @@ class AmtReplica extends Model
 
     public function statisticsCurrentGroup()
     {
+        if (is_null($this->currentGroup)) {
+            return $this;
+        }
+
         $validReplicaDiags = [];
         $invalidReplicaDiags = [];
         $maxLevel = AmtDiagStandard::MIN_LEVEL;
@@ -72,6 +82,7 @@ class AmtReplica extends Model
 
         // iterate 通過的 diags, 和上限取交集作為測定之level值
         foreach ($validReplicaDiags as $validDiag) {
+            Log::info($validDiag->id . '#' . $validDiag->diag->id . "\n");
             if (!is_null($upperLimit) && 
                 ($upperLimit < $validDiag->getMaxLevel() || $maxLevel > $validDiag->getMaxLevel())
             ) {
@@ -95,10 +106,6 @@ class AmtReplica extends Model
     {
         if (is_null($group)) {
             $group = $this->findPendingDiagGroups()->first();
-        }
-
-        if (!is_null($group)) {
-            $group->update(['level' => $this->child->getLevel($this->created_at)]);
         }
 
         $this->update(['current_group_id' => (!is_null($group) ? $group->id : NULL)]);
