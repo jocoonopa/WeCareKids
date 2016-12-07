@@ -13,6 +13,9 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
+        Commands\PrintCategory::class,
+        Commands\CopyGroup::class,
+        Commands\CellSeed::class
         // Commands\Inspire::class,
     ];
 

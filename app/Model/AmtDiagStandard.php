@@ -10,6 +10,14 @@ class AmtDiagStandard extends Model
     const MIN_LEVEL = 1;
     const MAX_LEVEL = 20;
 
+    /**
+     * The cells that belong to the standard
+     */
+    public function cells()
+    {
+        return $this->belongsToMany('App\Model\AmtCell', 'cells_standards', 'id', 'cell_id');
+    }
+
     public function isRange()
     {
         return $this->min_level < $this->max_level;

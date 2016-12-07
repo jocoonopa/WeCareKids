@@ -20,6 +20,21 @@ class AmtReplicaDiag extends Model
      */
     public $timestamps = false;
 
+    public function standard()
+    {
+        return $this->belongsTo('App\Model\AmtDiagStandard', 'standard_id', 'id');
+    }
+
+    public function group()
+    {
+        return $this->belongsTo('App\Model\AmtReplicaDiagGroup', 'group_id', 'id');
+    }
+
+    public function diag()
+    {
+        return $this->belongsTo('App\Model\AmtDiag', 'diag_id', 'id');
+    }
+
     public function getResultStandard()
     {
         $standards = $this->diag->standards()->get();
@@ -85,20 +100,5 @@ class AmtReplicaDiag extends Model
     public function isInvalidDiag()
     {
         return AmtDiag::TYPE_SWITCH_ID === $this->diag->type && false === $this->value;
-    }
-
-    public function standard()
-    {
-        return $this->belongsTo('App\Model\AmtDiagStandard', 'standard_id', 'id');
-    }
-
-    public function group()
-    {
-        return $this->belongsTo('App\Model\AmtReplicaDiagGroup', 'group_id', 'id');
-    }
-
-    public function diag()
-    {
-        return $this->belongsTo('App\Model\AmtDiag', 'diag_id', 'id');
     }
 }

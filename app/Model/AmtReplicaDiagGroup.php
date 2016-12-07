@@ -22,6 +22,31 @@ class AmtReplicaDiagGroup extends Model
      */
     public $timestamps = false;
 
+    public function diags()
+    {
+        return $this->hasMany('App\Model\AmtReplicaDiag', 'group_id', 'id');
+    }
+
+    public function replica()
+    {
+        return $this->belongsTo('App\Model\AmtReplica', 'replica_id', 'id');
+    }
+
+    public function group()
+    {
+        return $this->belongsTo('App\Model\AmtDiagGroup', 'group_id', 'id');
+    }
+
+    public function currentCell()
+    {
+        return $this->belongsTo('App\Model\AmtCell', 'current_cell_id', 'id');
+    }
+
+    public function resultCell()
+    {
+        return $this->belongsTo('App\Model\AmtCell', 'result_cell_id', 'id');
+    }
+
     /**
      * 取得該 AmtReplicaDiagGroup 之 測定Level
      * 
@@ -106,21 +131,6 @@ class AmtReplicaDiagGroup extends Model
         ]);
 
         return $this;
-    }
-
-    public function diags()
-    {
-        return $this->hasMany('App\Model\AmtReplicaDiag', 'group_id', 'id');
-    }
-
-    public function replica()
-    {
-        return $this->belongsTo('App\Model\AmtReplica', 'replica_id', 'id');
-    }
-
-    public function group()
-    {
-        return $this->belongsTo('App\Model\AmtDiagGroup', 'group_id', 'id');
     }
 
     public function isDone()

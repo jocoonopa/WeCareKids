@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Backend;
 
-use App\Http\Requests;
-use App\Model\AmtReplicaDiag;
-use Illuminate\Http\Request;
 use AmtCell;
+use App\Http\Requests;
+use App\Model\Amt;
+use Illuminate\Http\Request;
 
 class AmtController extends Controller
 {
@@ -21,5 +21,10 @@ class AmtController extends Controller
         $diags = AmtCell::getDiags();
 
         return view('/backend/amt/index', compact('output', 'diags'));
+    }
+
+    public function edit(Amt $amt)
+    {
+        return view('/backend/amt/index', compact('amt'));
     }
 }
