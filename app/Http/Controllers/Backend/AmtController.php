@@ -20,7 +20,14 @@ class AmtController extends Controller
 
         $diags = AmtCell::getDiags();
 
-        return view('/backend/amt/index', compact('output', 'diags'));
+        $amts = Amt::all();
+
+        return view('/backend/amt/index', compact('amts', 'output', 'diags'));
+    }
+
+    public function show(Amt $amt)
+    {
+        return view('/backend/amt/show', compact('amt'));
     }
 
     public function edit(Amt $amt)

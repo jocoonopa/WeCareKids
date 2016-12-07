@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Model\AmtDiagGroup;
+use App\Model\AmtDiagStandard;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 
 class AmtDiagStandardController extends Controller
 {
@@ -12,41 +13,9 @@ class AmtDiagStandardController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(AmtDiagGroup $group)
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+        return view('/backend/amt_diag_standard/index', compact('group'));
     }
 
     /**
@@ -55,9 +24,9 @@ class AmtDiagStandardController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(AmtDiagGroup $group, AmtDiagStandard $standard)
     {
-        //
+        return view('/backend/amt_diag_standard/edit', compact('group', 'standard'));
     }
 
     /**
@@ -67,7 +36,55 @@ class AmtDiagStandardController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, AmtDiagGroup $group, AmtDiagStandard $standard)
+    {
+        $standard->update([
+            'diag_id' => $request->get('diag_id'),
+            'condition_value' => $request->get('condition_value'),
+            'min_level' => $request->get('min_level'),
+            'max_level' => $request->get('max_level')
+        ]);
+
+        return redirect("/backend/amt_diag_group/{$group->id}/amt_diag_standard")->with('success', "{$standard->id}更新完成");
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create(Request $request, AmtDiagGroup $group)
+    {
+        $standard = new AmtDiagStandard;
+
+        return view('/backend/amt_diag_standard/create', compact('group', 'standard'));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request, AmtDiagGroup $group)
+    {
+        $standard = AmtDiagStandard::create([
+            'diag_id' => $request->get('diag_id'),
+            'condition_value' => $request->get('condition_value'),
+            'min_level' => $request->get('min_level'),
+            'max_level' => $request->get('max_level')
+        ]);
+
+        return redirect("/backend/amt_diag_group/{$group->id}/amt_diag_standard")->with('success', "{$standard->id}新增完成");
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
     {
         //
     }

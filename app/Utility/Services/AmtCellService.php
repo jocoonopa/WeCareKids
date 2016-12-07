@@ -2,7 +2,7 @@
 
 namespace App\Utility\Services;
 
-use App\Model\AmtDiag;
+use App\Model\AmtDiagStandard;
 
 class AmtCellService
 {
@@ -29,9 +29,9 @@ class AmtCellService
         return array_first($matches[0]);
     }
 
-    public function getDiags()
+    public function getStandards()
     {
-        return AmtDiag::find($this->getIds());
+        return AmtDiagStandard::find($this->getIds());
     }
 
     protected function isValidAlphabet($char)

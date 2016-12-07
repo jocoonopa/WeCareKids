@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Model\AmtDiag;
+use App\Model\AmtDiagGroup;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 
 class AmtDiagController extends Controller
 {
@@ -12,9 +13,9 @@ class AmtDiagController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(AmtDiagGroup $group)
     {
-        //
+        return view('backend/amt_diag/index', compact('group'));
     }
 
     /**
@@ -22,9 +23,11 @@ class AmtDiagController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(AmtDiagGroup $group)
     {
-        //
+        $diag = new AmtDiag;
+
+        return view('backend/amt_diag/create', compact('group', 'diag'));
     }
 
     /**
@@ -33,9 +36,16 @@ class AmtDiagController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(AmtDiagGroup $group, Request $request)
     {
-        //
+        $diag = AmtDiag::create([
+            'group_id' => $group->id,
+            'description' => $request->get('description'),
+            'type' => $request->get('type'),
+            'available_value' => $request->get('available_value')
+        ]);
+
+        return redirect("/backend/amt_diag_group/{$group->id}/amt_diag/create")->with('success', "{$diag->id}新增成功!");
     }
 
     /**
@@ -52,24 +62,32 @@ class AmtDiagController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  AmtDiagGroup $group
+     * @param  AmtDiag $diag
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(AmtDiagGroup $group, AmtDiag $diag)
     {
-        //
+        return view('backend/amt_diag/edit', compact('group', 'diag'));
     }
 
     /**
      * Update the specified resource in storage.
      *
+     * @param  AmtDiagGroup $group
+     * @param  AmtDiag $diag
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(AmtDiagGroup $group, AmtDiag $diag, Request $request)
     {
-        //
+        $diag->update([
+            'description' => $request->get('description'),
+            'type' => $request->get('type'),
+            'available_value' => $request->get('available_value')
+        ]);
+
+        return redirect("/backend/amt_diag_group/{$group->id}/amt_diag")->with('success', "{$diag->id}修改成功!");
     }
 
     /**

@@ -18,7 +18,7 @@ class AmtCell extends Model
      */
     public function standards()
     {
-        return $this->belongsToMany('App\Model\AmtDiagStandard', 'cells_standards', 'id', 'standard_id');
+        return $this->belongsToMany('App\Model\AmtDiagStandard', 'cells_standards', 'cell_id', 'standard_id');
     }
 
     /**

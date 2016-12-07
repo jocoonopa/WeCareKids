@@ -36,6 +36,11 @@
                     </li>
                     <li>
                         <a href="/backend/amt_als_rpt"><i class="fa fa-file-text-o"></i>報告</a>
+                    </li>                    
+                    <li>
+                        <a href="/backend/amt">
+                            <i class="fa fa-file-text-o"></i>趕工爆肝區
+                        </a>
                     </li>
                     <li>
                         <a href="/backend/child"><i class="fa fa-file-text-o"></i>受測者</a>

@@ -38,21 +38,23 @@ Route::get('/backend/amt_replica/{amt_replica}/prev', 'Backend\AmtReplicaControl
 Route::resource('/backend/child', 'Backend\ChildController');
 Route::resource('/backend/amt_als_rpt', 'Backend\AmtAlsRptController');
 
-
-Route::get('/backend/amt_diag_group/{amt_diag_group}/amt_diag', 'Backend\AmtDiagController@create');
+Route::get('/backend/amt_diag_group/{amt_diag_group}/amt_diag', 'Backend\AmtDiagController@index');
+Route::get('/backend/amt_diag_group/{amt_diag_group}/amt_diag/create', 'Backend\AmtDiagController@create');
 Route::get('/backend/amt_diag_group/{amt_diag_group}/amt_diag/{amt_diag}/edit', 'Backend\AmtDiagController@edit');
 Route::post('/backend/amt_diag_group/{amt_diag_group}/amt_diag', 'Backend\AmtDiagController@store');
 Route::put('/backend/amt_diag_group/{amt_diag_group}/amt_diag/{amt_diag}', 'Backend\AmtDiagController@update');
 
-Route::get('/backend/amt_diag_group/{amt_diag_group}/amt_cell', 'Backend\AmtCellController@create');
+Route::get('/backend/amt_diag_group/{amt_diag_group}/amt_cell', 'Backend\AmtCellController@index');
+Route::get('/backend/amt_diag_group/{amt_diag_group}/amt_cell/create', 'Backend\AmtCellController@create');
 Route::get('/backend/amt_diag_group/{amt_diag_group}/amt_cell/{amt_cell}/edit', 'Backend\AmtCellController@edit');
 Route::post('/backend/amt_diag_group/{amt_diag_group}/amt_cell', 'Backend\AmtCellController@store');
 Route::put('/backend/amt_diag_group/{amt_diag_group}/amt_cell/{amt_cell}', 'Backend\AmtCellController@update');
 
-Route::get('/backend/amt_diag/{amt_diag}/amt_diag_standard', 'Backend\AmtDiagStandardController@create');
-Route::get('/backend/amt_diag/{amt_diag}/amt_diag_standard/{amt_diag_standard}/edit', 'Backend\AmtDiagStandardController@edit');
-Route::post('/backend/amt_diag/{amt_diag}/amt_diag_standard', 'Backend\AmtDiagStandardController@store');
-Route::put('/backend/amt_diag/{amt_diag}/amt_diag_standard/{amt_diag_standard}', 'Backend\AmtDiagStandardController@update');
+Route::get('/backend/amt_diag_group/{amt_diag_group}/amt_diag_standard', 'Backend\AmtDiagStandardController@index');
+Route::get('/backend/amt_diag_group/{amt_diag_group}/amt_diag_standard/create', 'Backend\AmtDiagStandardController@create');
+Route::get('/backend/amt_diag_group/{amt_diag_group}/amt_diag_standard/{amt_diag_standard}/edit', 'Backend\AmtDiagStandardController@edit');
+Route::post('/backend/amt_diag_group/{amt_diag_group}/amt_diag_standard', 'Backend\AmtDiagStandardController@store');
+Route::put('/backend/amt_diag_group/{amt_diag_group}/amt_diag_standard/{amt_diag_standard}', 'Backend\AmtDiagStandardController@update');
 
 
 

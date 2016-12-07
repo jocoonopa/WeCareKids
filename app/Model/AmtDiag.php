@@ -6,6 +6,20 @@ use Illuminate\Database\Eloquent\Model;
 
 class AmtDiag extends Model
 {
+    /**
+     * The attributes that aren't mass assignable.
+     *
+     * @var array
+     */
+    protected $guarded = [];
+
+    /**
+     * Indicates if the model should be timestamped.
+     *
+     * @var bool
+     */
+    public $timestamps = false;
+
     const TYPE_SWITCH_ID = 0;
     const TYPE_CHECKBOX_ID = 1;
     const TYPE_SLIDER_ID = 2;

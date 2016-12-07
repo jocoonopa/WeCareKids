@@ -35,6 +35,14 @@ class AmtDiagGroup extends Model
         return $this->hasMany('App\Model\AmtCell', 'group_id', 'id');
     }
 
+    /**
+     * Get all of the posts for the country.
+     */
+    public function standards()
+    {
+        return $this->hasManyThrough('App\Model\AmtDiagStandard', 'App\Model\AmtDiag', 'group_id', 'diag_id', 'id');
+    }
+
     public function scopeFindValid($query)
     {
         return $query->where('id', '<', 20);

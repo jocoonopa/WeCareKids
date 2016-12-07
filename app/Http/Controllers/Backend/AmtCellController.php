@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Backend;
 
+use AmtCell as AC;
+use App\Model\AmtCell;
+use App\Model\AmtDiagGroup;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 
 class AmtCellController extends Controller
 {
@@ -12,52 +14,9 @@ class AmtCellController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(AmtDiagGroup $group)
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        return view('backend/amt_cell/index', compact('group'));
     }
 
     /**
@@ -67,19 +26,23 @@ class AmtCellController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, AmtDiagGroup $group, AmtCell $cell)
     {
-        //
-    }
+        $cell->update([
+            'statement' => $request->get('statement'),
+            'league_id' => 0 === (int) $request->get('league_id') ? NULL : $request->get('league_id'),
+            'step' => (int) $request->get('step'),
+        ]);
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        $str = AC::setStr($cell->statement)->convertToStatment();
+        $standards = AC::getStandards();
+
+        $cell->standards()->sync(array_pluck($standards->toArray(), 'id'));
+
+        if($request->ajax()){
+            return view('/backend/amt_cell/component/_response', compact('cell', 'group'));
+        }
+
+        return redirect("/backend/amt_diag_group/{$group->id}/amt_cell#__{$cell->id}__")->with('success', "{$cell->level}更新完成!");
     }
 }
