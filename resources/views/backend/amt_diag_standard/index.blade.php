@@ -27,11 +27,11 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>id</th>
-                    <th>對應題目</th>
-                    <th>level range</th>
+                    <th>標準流水號</th>
+                    <th>對應題目描述</th>
+                    <th>level range(之後僅用來參考, level 相關處理之後都是cell處理)</th>
                     <th>條件值</th>
-                    <th></th>
+                    <th>動作</th>
                 </tr>
             </thead>
             <tbody>

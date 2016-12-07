@@ -25,6 +25,15 @@
         </a>    
 
         <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>問題流水號</th>
+                    <th>問題描述</th>
+                    <th>可用值</th>
+                    <th>動作</th>
+                    <th>關聯標準</th>
+                </tr>
+            </thead>
             <tbody>
                 @foreach ($group->diags()->get() as $diag)
                 <tr>

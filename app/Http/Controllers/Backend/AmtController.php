@@ -16,13 +16,9 @@ class AmtController extends Controller
      */
     public function index(Request $request)
     {
-        $output = AmtCell::setStr($request->get('command'))->convertToStatment();
-
-        $diags = AmtCell::getDiags();
-
         $amts = Amt::all();
 
-        return view('/backend/amt/index', compact('amts', 'output', 'diags'));
+        return view('/backend/amt/index', compact('amts'));
     }
 
     public function show(Amt $amt)
