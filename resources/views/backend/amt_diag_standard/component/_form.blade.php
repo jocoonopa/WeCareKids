@@ -15,19 +15,33 @@
 </div>
 
 <div class="form-group">
-    {!! Form::label('min_level', 'level') !!}
-    {!! Form::selectRange('min_level', 1, 20, ['class' => 'form-control']) !!}
-    {!! Form::selectRange('max_level', 1, 20, ['class' => 'form-control']) !!}
+    {!! Form::label('min_level', 'Min Level') !!}
+
+    <select name="min_level" id="min_level" class="form-control">
+        @for ($i = 1; $i <= 20; $i ++)
+            <option value="{{$i}}" @if($i === $standard->min_level) selected @endif>{{$i}}</option>
+        @endfor
+    </select>
+</div>
+
+<div class="form-group">
+    {!! Form::label('max_level', 'Max Level') !!}
+
+    <select name="max_level" id="max_level" class="form-control">
+        @for ($i = 1; $i <= 20; $i ++)
+            <option value="{{$i}}" @if($i === $standard->max_level) selected @endif>{{$i}}</option>
+        @endfor
+    </select>
 </div>
 
 <div class="form-group">
     {!! Form::label('condition_value', '條件值') !!}
     {!! Form::text(
         'condition_value', 
-        $diag->condition_value, 
+        $standard->condition_value, 
         [
             'class' => 'form-control', 
-            'placeholder' => '是非題: 0, 範圍題: {"m": 0, "M": 99}, 單選: ["好吃","普通", "難吃"]']) 
+            'placeholder' => '是非題: 0, 範圍題: {"m": 0, "M": 99}, 單選: ["好吃"]']) 
     !!}
 </div>
 

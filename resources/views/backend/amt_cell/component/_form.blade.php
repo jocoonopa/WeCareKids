@@ -14,7 +14,7 @@
         <option value="0" @if (is_null($cell->league_id)) selected @endif>NULL</option>
 
         @foreach ($cells as $_cell)
-        <option value="{{$_cell->id}}" @if(!is_null($cell->league_id) && ($_cell->league_id === $cell->league_id)) selected @endif>{{$_cell->id}}</option>
+        <option value="{{$_cell->id}}" @if(!is_null($cell->league_id) && ($_cell->league_id === $cell->league_id)) selected @endif>{{$_cell->level}}</option>
         @endforeach
     </select>
 </div>
