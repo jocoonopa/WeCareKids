@@ -9,7 +9,16 @@
 
 <div class="form-group">
     {!! Form::label('type', '類型') !!}
-    {!! Form::select('type', [0 => '是非', 2 => '範圍', 3 => '單選'], 0, ['class' => 'form-control']) !!}
+
+    <select name="type" id="type" class="form-control">
+        @foreach ([
+            \App\Model\AmtDiag::TYPE_SWITCH_ID => '是非', 
+            \App\Model\AmtDiag::TYPE_SLIDER_ID => '範圍', 
+            \App\Model\AmtDiag::TYPE_RADIO_ID => '單選'
+        ] as $value => $name)
+            <option value="{{$value}}" @if($value === $diag->type) selected @endif>{{$name}}</option>
+        @endforeach
+    </select>
 </div>
 
 <div class="form-group">
