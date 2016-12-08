@@ -275,11 +275,14 @@ class AmtReplicaController extends Controller
         |
         | 1. 根據 post 過來的 replica_diag_id 和 值, 更新 AmtReplicaDiag.value
         |    
-        | 2. 透過 AmtReplica@statisticscCurrentGroup() 統計結算並更新目前指向的 AmtReplicaDiagGroup 
-        |    及其隸屬之 AmtReplicaDiag 的 level, 並設置 AmtReplicaDiag 指向所符合的 AmtDiagStandard
+        | 2. 透過 AmtReplica@statisticscCurrentGroup() 統計結算並更新目前指向的 
+        |    AmtReplicaDiagGroup 及其隸屬之 AmtReplicaDiag 的 level, 並設置 
+        |    AmtReplicaDiag 指向所符合的 AmtDiagStandard
         |    
-        |    PS:注意 statisticscCurrentGroup() 並不考慮child 的 default level, 因為這邊的重點是確保系統能遵循正確邏輯
-        |    帶出題目． 最後呈現的 level 是另外透過 AmtReplicaDiagGroup@updateLevel() 在 @finish 時呼叫更新
+        |    PS:注意 statisticscCurrentGroup() 並不考慮child 的 default level, 因為
+        |    這邊的重點是確保系統能遵循正確邏輯
+        |    帶出題目． 最後呈現的 level 是另外透過 AmtReplicaDiagGroup@updateLevel() 
+        |    在 @finish 時呼叫更新
         |
         | 3. 記錄答題 AmtReplicaLog
         */

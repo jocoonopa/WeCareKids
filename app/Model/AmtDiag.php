@@ -26,6 +26,7 @@ class AmtDiag extends Model
     const TYPE_CHECKBOX_ID = 1;
     const TYPE_SLIDER_ID = 2;
     const TYPE_RADIO_ID = 3;
+    const TYPE_THREAD_ID = 4;
 
     public function group()
     {

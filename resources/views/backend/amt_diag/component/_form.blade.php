@@ -14,7 +14,8 @@
         @foreach ([
             \App\Model\AmtDiag::TYPE_SWITCH_ID => '是非', 
             \App\Model\AmtDiag::TYPE_SLIDER_ID => '範圍', 
-            \App\Model\AmtDiag::TYPE_RADIO_ID => '單選'
+            \App\Model\AmtDiag::TYPE_RADIO_ID => '單選',
+            \App\Model\AmtDiag::TYPE_THREAD_ID => '閥值'
         ] as $value => $name)
             <option value="{{$value}}" @if($value === $diag->type) selected @endif>{{$name}}</option>
         @endforeach
@@ -28,7 +29,7 @@
         $diag->available_value, 
         [
             'class' => 'form-control', 
-            'placeholder' => '是非題: 0, 範圍題: {"m": 0, "M": 99}, 單選: ["好吃","普通", "難吃"]']) 
+            'placeholder' => '是非題: 0, 範圍題: {"m": 0, "M": 99}, 單選: ["好吃","普通", "難吃"], 閥值: {"l": "低", "e": "正常", "h": "高"}']) 
     !!}
 </div>
 
