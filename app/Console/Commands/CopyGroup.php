@@ -41,7 +41,11 @@ class CopyGroup extends Command
         $srcId = $this->argument('src');
         $desId = $this->argument('des');
 
+<<<<<<< HEAD
         AmtDiagGroup::where('amt_id', $srcId)->get()->each(function ($group) use($desId) {
+=======
+        AmtDiagGroup::where('amt_id', $srcId)->get()->each(function ($group) use ($desId) {
+>>>>>>> 39cb48c351feecb63535c8557732faaa98c956bb
             $group = AmtDiagGroup::create([
                 'category_id' => $group->category_id,
                 'content' => $group->content,
