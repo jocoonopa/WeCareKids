@@ -302,7 +302,9 @@ class AmtReplicaController extends Controller
         $appendLog = [
             'd' => [], 
             'l' => $request->get('level'), 
-            's' => $currentReplicaGroup->status
+            's' => $currentReplicaGroup->status,
+            'cc' => $currentReplicaGroup->currentCell->id,
+            'rc' => (is_null($currentReplicaGroup->resultCell)) ? NULL : $currentReplicaGroup->resultCell->id,
         ];
 
         DB::beginTransaction();
@@ -430,7 +432,9 @@ class AmtReplicaController extends Controller
             // ~2
             $replicaGroup->update([
                 'level' => $record->l,
-                'status' => $record->s
+                'status' => $record->s,
+                'current_cell_id' => $record->cc,
+                'result_cell_id' => $record->rc
             ]);
 
             // ~3
