@@ -7,9 +7,13 @@ use App\Model\AmtDiag;
 use App\Model\Child;
 use DB;
 use Illuminate\Database\Eloquent\Model;
+use Wck;
 
 class AmtCell extends Model
 {
+    const MIN_LEVEL = 0;
+    const MAX_LEVEL = 20;
+
     public static $threadMap = ['l' => -1, 'e' => 0, 'h' => 1];
 
     /**
@@ -102,6 +106,27 @@ class AmtCell extends Model
         }); 
     }
 
+    public function getLevel(AmtReplica $replica)
+    {
+        $defaultLevel = $replica->getLevel();
+
+        $levels = array_pluck($this->league()->orderBy('level', 'asc')->get()->toArray(), 'level');
+
+        if (Wck::isEmpty($levels)) {
+            return $this->level;
+        }
+
+        if ($defaultLevel < head($levels)) {
+            return head($levels);
+        }
+
+        if ($defaultLevel > last($levels)) {
+            return last($levels);
+        }
+
+        return $defaultLevel;
+    }
+
     /**
      * 取得 league 中的實質 cell
      * 
@@ -182,6 +207,25 @@ class AmtCell extends Model
         $child = $replicaGroup->replica->child;
 
         return $replicaGroup->replica->getLevel() + (array_get(static::$threadMap, $replicaDiag->value) * $this->step);
+    }
+
+    /**
+     * 取得規則限制內的 level
+     * 
+     * @param  integer $level
+     * @return integer       
+     */
+    public static function getRestrictLevel($level)
+    {
+        if ($level < AmtCell::MIN_LEVEL) {
+            return AmtCell::MIN_LEVEL;
+        }
+
+        if ($level > AmtCell::MAX_LEVEL) {
+            return AmtCell::MAX_LEVEL;
+        }
+
+        return $level;
     }
 
     /**

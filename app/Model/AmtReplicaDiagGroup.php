@@ -70,7 +70,9 @@ class AmtReplicaDiagGroup extends Model
 
         $chief = $this->resultCell->findMatchedByReplica($this->replica);
 
-        return 0 === $chief->step ? $chief->level : $chief->getThreadResultLevel($this);
+        $level = 0 === $chief->step ? $chief->getLevel($this) : $chief->getThreadResultLevel($this);
+
+        return AmtCell::getRestrictLevel($level);
     }
 
     /**
