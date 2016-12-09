@@ -4,9 +4,9 @@
         <thead>
             <tr style="background-color:#FFB9B9">
                 <th class="text-center">六大感覺</th>
-                <th class="text-center">閥值低</th>
-                <th class="text-center">閥值正常</th>
-                <th class="text-center">閥值高</th>
+                <th class="text-center">閾值低</th>
+                <th class="text-center">閾值正常</th>
+                <th class="text-center">閾值高</th>
                 <th class="text-center">行為主動</th>
                 <th class="text-center">行為正常</th>
                 <th class="text-center">行為被動</th>

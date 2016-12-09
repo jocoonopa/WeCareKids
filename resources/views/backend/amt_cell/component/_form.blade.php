@@ -20,7 +20,7 @@
 </div>
 
 <div class="form-group">
-    {!! Form::label('step', '閥值') !!}
+    {!! Form::label('step', '閾值') !!}
     {!! Form::number('step', $cell->step, ['class' => 'form-control']) !!}
 </div>
 
