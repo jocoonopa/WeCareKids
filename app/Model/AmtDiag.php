@@ -13,6 +13,8 @@ class AmtDiag extends Model
      */
     protected $guarded = [];
 
+    public static $types = ['是非', '選項', '範圍', '單選', '閥值'];
+
     /**
      * Indicates if the model should be timestamped.
      *
@@ -24,6 +26,7 @@ class AmtDiag extends Model
     const TYPE_CHECKBOX_ID = 1;
     const TYPE_SLIDER_ID = 2;
     const TYPE_RADIO_ID = 3;
+    const TYPE_THREAD_ID = 4;
 
     public function group()
     {
@@ -33,6 +36,11 @@ class AmtDiag extends Model
     public function standards()
     {
         return $this->hasMany('App\Model\AmtDiagStandard', 'diag_id', 'id');
+    }
+
+    public function getTypeName()
+    {
+        return array_get(static::$types, $this->type);
     }
 
     public function scopeFindMatchStandards($query, $level, $isDefaultLevel = false)
