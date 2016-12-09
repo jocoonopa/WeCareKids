@@ -58,46 +58,73 @@
 
 @push('scripts')
 <script>
-$.ajaxSetup({
-    headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    }
-});
+$(function () {
+    var isEdited = false;
 
-$('button[type="submit"]').click(function () {
-    var $this = $(this);
-    var id = $this.data('id');
-    var $form = $this.closest('form');
-    var url = $form.attr('action');
-    var data = {
-        "_method": "put",
-        "league_id": $form.find('[name="league_id"]').val(),
-        "statement": $form.find('[name="statement"]').val(),
-        "step": $form.find('[name="step"]').val()
-    };
-
-    HoldOn.open({
-        message:"儲存中請稍候..."
-    });
-
-    $.ajax({
-        type: 'post',
-        url: url,
-        data: data,
-        success: function (res) {
-            $('#__' + id + '__').find('.panel-body').html(res);
-
-            HoldOn.close();
-        },
-        error: function (res) {
-            alert('error occured! Please check the console.');
-            console.log('Error:', res);
-
-            HoldOn.close();
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
 
-    return false;
+    var uploadProcess = function ($e) {
+        var $this = $e;
+        var id = $this.data('id');
+        var $form = $this.closest('form');
+        var url = $form.attr('action');
+        var data = {
+            "_method": "put",
+            "league_id": $form.find('[name="league_id"]').val(),
+            "statement": $form.find('[name="statement"]').val(),
+            "step": $form.find('[name="step"]').val()
+        };
+
+        HoldOn.open({
+            message:"儲存中請稍候..."
+        });
+
+        $.ajax({
+            type: 'post',
+            url: url,
+            data: data,
+            success: function (res) {
+                $('#__' + id + '__').find('.panel-body').html(res);
+
+                isEdited = false;
+
+                HoldOn.close();
+            },
+            error: function (res) {
+                alert('error occured! Please check the console.');
+                
+                isEdited = false;
+
+                console.log('Error:', res);
+
+                HoldOn.close();
+            }
+        });
+
+        return false;
+    };
+
+    $('button[type="submit"]').click(function () {
+        return uploadProcess($(this));
+    });
+    
+    $('input[name="statement"]').add('input[name="step"]').blur(function () {
+        if (true === isEdited) {
+            return uploadProcess($(this));
+        }
+    });
+    
+    $('select[name="league_id"]').change(function () {
+        return uploadProcess($(this));
+    });
+
+    $('input[name="statement"]').add('input[name="step"]').keyup(function () {
+        isEdited = true;
+    });
 });
 
 

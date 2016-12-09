@@ -28,6 +28,7 @@
             <thead>
                 <tr>
                     <th>問題流水號</th>
+                    <th>類型</th>
                     <th>問題描述</th>
                     <th>可用值</th>
                     <th>動作</th>
@@ -38,6 +39,7 @@
                 @foreach ($group->diags()->get() as $diag)
                 <tr>
                     <td>{{ $diag->id }}</td>
+                    <td>{{ $diag->getTypeName() }}</td>
                     <td>{{ $diag->description }}</td>
                     <td>{{ $diag->available_value}}</td>
                     <td>
