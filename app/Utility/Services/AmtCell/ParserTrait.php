@@ -2,6 +2,8 @@
 
 namespace App\Utility\Services\AmtCell;
 
+use App\Model\AmtDiagStandard;
+
 trait ParserTrait
 {
     public function convertToStatment()
