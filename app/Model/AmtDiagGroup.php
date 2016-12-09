@@ -42,9 +42,4 @@ class AmtDiagGroup extends Model
     {
         return $this->hasManyThrough('App\Model\AmtDiagStandard', 'App\Model\AmtDiag', 'group_id', 'diag_id', 'id');
     }
-
-    public function scopeFindValid($query)
-    {
-        return $query->where('id', '<', 20);
-    }
 }

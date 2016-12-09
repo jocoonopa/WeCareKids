@@ -4,8 +4,26 @@ namespace App\Utility\Services;
 
 class WckService
 {
-    public function foo()
+    /**
+     * 判斷輸入值是否意義上為空
+     * 
+     * @param  mixed $some
+     * @return boolean      
+     */
+    public function isEmpty($some)
     {
-        return 'bar';
+        if (is_null($some)) {
+            return true;
+        } 
+
+        if ($some instanceof \Illuminate\Support\Collection) {
+            return 0 === $some->count();
+        }
+        
+        if (is_array($some)) {
+            return 0 === count($some);
+        }
+
+        return false;
     }
 }

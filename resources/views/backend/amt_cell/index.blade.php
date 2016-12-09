@@ -69,9 +69,9 @@ $(function () {
 
     var uploadProcess = function ($e) {
         var $this = $e;
-        var id = $this.data('id');
         var $form = $this.closest('form');
         var url = $form.attr('action');
+        var id = $form.find('button[type="submit"]').data('id');
         var data = {
             "_method": "put",
             "league_id": $form.find('[name="league_id"]').val(),

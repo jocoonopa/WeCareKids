@@ -17,6 +17,7 @@
                 <thead>
                     <tr>
                         <th>狀態</th>
+                        <th>版本</th>   
                         <th>受測者姓名</th>
                         <th>受測時間</th>
                         <th>操作</th>
@@ -33,6 +34,9 @@
                             @else
                                 <span class="label label-default">未開始</span>
                             @endif
+                        </td>
+                        <td>
+                            <span class="label label-info">V{{$replica->amt_id}}</span> 
                         </td>
                         <td>
                             {{ $replica->child->name }}

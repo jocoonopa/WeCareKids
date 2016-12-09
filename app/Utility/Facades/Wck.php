@@ -13,9 +13,4 @@ class Wck extends \Illuminate\Support\Facades\Facade
     { 
         return 'wck';
     }
-
-    public static function foo()
-    {
-        return 'bar';
-    }
 }

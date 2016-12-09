@@ -2,6 +2,7 @@
 
 namespace App\Model;
 
+use App\Model\AmtDiag;
 use Illuminate\Database\Eloquent\Model;
 
 class AmtReplicaDiag extends Model
@@ -35,39 +36,70 @@ class AmtReplicaDiag extends Model
         return $this->belongsTo('App\Model\AmtDiag', 'diag_id', 'id');
     }
 
-    public function getResultStandard()
+    /**
+     * 檢查此 AmtReplicaDiag 是否可通過傳入之 AmtDiagStandard 之驗證
+     * 
+     * @return boolean
+     */
+    public function isPass()
     {
-        $standards = $this->diag->standards()->get();
+        $standard = $this->group->currentCell->getDiagMapStandard($this);
 
-        foreach ($standards as $standard) {
-            if (!$standard->isInRange($this)) {
-                continue;
+        switch ($this->type)
+        {
+            case AmtDiag::TYPE_SWITCH_ID:
+                return $this->procSwitch($standard);
+            break;
+
+            case AmtDiag::TYPE_SLIDER_ID:
+                return $this->procRange($standard);
+            break;
+
+            case AmtDiag::TYPE_RADIO_ID:
+                return $this->procRadio($standard);
+            break;
+
+            default:
+                return false;
+            break;
+        }
+
+        return false;
+    }
+
+    protected function procSwitch(AmtDiagStandard $standard)
+    {
+        return (bool) $this->value === (bool) $standard->condition_value;
+    }
+
+    protected function procRange(AmtDiagStandard $standard)
+    {
+        $conditions = json_decode($standard->condition_value, true);
+
+        $min = array_get($conditions, 'm');
+        $max = array_get($conditions, 'M');
+
+        if (!is_null($min)) {
+            if ((int) $this->value < (int) $this->min) {
+                return false;
             }
-
-            return $standard;
         }
 
-        return NULL;
+        if (!is_null($max)) {
+            if ((int) $this->value > (int) $this->max) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
-    public function updateMatchStandard()
+    protected function procRadio(AmtDiagStandard $standard)
     {
-        $standard = $this->getResultStandard();
- 
-        if (is_null($standard)) {
-            return;
-        }
+        $condition = array_first(json_decode($standard->condition_value, true));
+        $answer = array_first(json_decode($this->value, true));
 
-        // 更新 AmtReplicaDiag 符合的 standard
-        $this->update(['standard_id' => $standard->id]);
-    }
-
-    public function getMaxLevel()
-    {   
-        return (0 === $this->standard->step) 
-            ? $this->standard->max_level 
-            : $this->standard->max_level + $this->standard->step
-        ;
+        return $answer === $condition;
     }
 
     public function getUTF8value()
@@ -85,20 +117,5 @@ class AmtReplicaDiag extends Model
         });
         
         return urldecode(json_encode($data));
-    }
-
-    /**
-     * @building
-     * 
-     * @return boolean
-     */
-    public function isPass()
-    {
-        return true;
-    }
-
-    public function isInvalidDiag()
-    {
-        return AmtDiag::TYPE_SWITCH_ID === $this->diag->type && false === $this->value;
     }
 }

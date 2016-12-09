@@ -33,17 +33,19 @@
                                 
                                 @if ($replicaGroup->isDone())
                                 <span class="badge">
-                                    {{ $replicaGroup->level }}
+                                    {{ $replicaGroup->getLevel() }}
                                 </span>
+                                @endif
+
+                                <br>
+                                
+                                @if (!is_null($replicaGroup->resultCell))
+                                    <code>{{ "{$replicaGroup->resultCell->id}:{$replicaGroup->resultCell->statement}" }}</code>
                                 @endif
                             </li>
                             <ul>
                                 @foreach ($replicaGroup->diags()->get() as $replicaDiag)
-                                    <li @if (!is_null($replicaDiag->value)) 
-                                    class="text-success"
-                                    @else
-                                    class="text-muted"
-                                    @endif>
+                                    <li @if (!is_null($replicaDiag->value)) class="text-success" @endif>
                                         {{ "{$replicaDiag->id}:{$replicaDiag->diag->description}" }}
                                         
                                         @if (!is_null($replicaDiag->value)) 

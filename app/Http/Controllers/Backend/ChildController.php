@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Requests\StoreChild;
+use App\Model\Amt;
 use App\Model\Child;
 use Auth;
 use DB;
@@ -21,7 +22,9 @@ class ChildController extends Controller
     {
         $childs = Auth::user()->childs()->orderBy('id', 'desc')->get();
 
-        return view('backend/child/index', compact('childs'));
+        $amts = Amt::all();
+
+        return view('backend/child/index', compact('childs', 'amts'));
     }
 
     public function report(Child $child, AmtAlsReport $replica)

@@ -42,12 +42,4 @@ class AmtDiag extends Model
     {
         return array_get(static::$types, $this->type);
     }
-
-    public function scopeFindMatchStandards($query, $level, $isDefaultLevel = false)
-    {
-        return $this->standards()
-            ->where('min_level', '<=', $level + (true === $isDefaultLevel ? 0 : 1))
-            ->where('max_level', '>=', $level - (true === $isDefaultLevel ? 0 : 1))
-        ;
-    }
 }

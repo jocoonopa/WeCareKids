@@ -43,10 +43,18 @@
                                 編輯
                             </a>
                             @if (0 === $child->replicas()->where('status', \App\Model\AmtReplica::STATUS_ORIGIN_ID)->count())
-                            <form action="/backend/amt_replica" method="post">
+                            <form class="form-inline" action="/backend/amt_replica" method="post">
                                 {{ csrf_field() }}
                                 <input type="hidden" name="child_id" value="{{$child->id}}" />
-                                <button type="submit" class="pull-right btn btn-default">新增評測</button>
+                                
+                                <div class="form-group">
+                                    <select class="form-control" name="amt_id" id="amt_id">
+                                        @foreach ($amts as $amt)
+                                            <option value="{{$amt->id}}">v{{$amt->id}}</option>
+                                        @endforeach
+                                    </select>       
+                                    <button type="submit" class="btn btn-default">新增評測</button>                                                             
+                                </div>                                
                             </form>
                             @else
                             <a href="/backend/amt_replica/{{$child->replicas()->where('status', \App\Model\AmtReplica::STATUS_ORIGIN_ID)->first()->id}}/edit" class="pull-right btn btn-info" target="_blank">繼續評測</a>

@@ -9,7 +9,6 @@ class AmtReplica extends Model
 {
     const STATUS_ORIGIN_ID = 0;
     const STATUS_DONE_ID = 2;
-    const STATUS_SKIP_ID = 10;
 
     /**
      * The attributes that aren't mass assignable.
@@ -48,76 +47,66 @@ class AmtReplica extends Model
         return $this->groups()->where('status', static::STATUS_ORIGIN_ID);
     }
 
-    public function statisticsCurrentGroup()
+    /**
+     * 將目前的 AmtReplica 設定為終止狀態
+     * 
+     * @return \App\Model\AmtReplica
+     */
+    public function finish()
     {
-        if (is_null($this->currentGroup)) {
-            return $this;
-        }
-
-        $validReplicaDiags = [];
-        $invalidReplicaDiags = [];
-        $maxLevel = AmtDiagStandard::MIN_LEVEL;
-        $upperLimit = NULL;
-        
-        // 收集通過和未通過的 diags
-        foreach ($this->currentGroup->diags()->whereNotNull('value')->get() as $replicaDiag) {
-            // 暫存通過和未通過的 diags
-            if ($replicaDiag->isInvalidDiag()) {
-                $invalidReplicaDiags[] = $replicaDiag;
-            } else {
-                $validReplicaDiags[] = $replicaDiag;
-            }
-        }
-
-        // iterate 未通過的 diags, 找出上限
-        foreach ($invalidReplicaDiags as $invalidDiag) {
-            if ($upperLimit > $invalidDiag->min_level - 1) {
-                $step = $invalidDiag->standard->step;
-
-                $upperLimit = (0 === $step) ? $invalidDiag->min_level - 1 : $invalidDiag->min_level - $step;
-            }
-
-            $invalidDiag->update(['level' => $upperLimit]);
-        }
-
-        // iterate 通過的 diags, 和上限取交集作為測定之level值
-        foreach ($validReplicaDiags as $validDiag) {
-            Log::info($validDiag->id . '#' . $validDiag->diag->id . "\n");
-            if (!is_null($upperLimit) && 
-                ($upperLimit < $validDiag->getMaxLevel() || $maxLevel > $validDiag->getMaxLevel())
-            ) {
-                continue;
-            }
-            $maxLevel = $validDiag->getMaxLevel();
-
-            $validDiag->update(['level' => $maxLevel]);
-        }
-
-        // 更新目前作答 group 之 level
-        $this->currentGroup->update([
-            'level' => $upperLimit,
-            'status' => AmtReplicaDiagGroup::STATUS_DONE_ID
-        ]);
+        $this->update(['status' => static::STATUS_DONE_ID]);
 
         return $this;
     }
 
-    public function swtichGroup(AmtReplicaDiagGroup $group = NULL)
+    /**
+     * 切換目前指向的 AmtReplicaGroup,
+     * 同時處理 Entry AmtCell 的問題 
+     * 
+     * @return \App\Model\AmtReplicaDiagGroup
+     */
+    public function swtichGroup()
     {
-        if (is_null($group)) {
-            $group = $this->findPendingDiagGroups()->first();
+        $groups = $this->findPendingDiagGroups()->get();
+
+        if (0 === $groups->count()) {
+            return $this->finish();
         }
 
-        $this->update(['current_group_id' => (!is_null($group) ? $group->id : NULL)]);
-        
-        return $group;
+        $group = $groups->first();
+        $cell = $group->findEntryMapCell();
+
+        //  綁定指向的 Cell
+        $group->update(['current_cell_id' => $cell->id]);
+
+        if ($cell->isEmpty()) { 
+            $group->skip();
+
+            return $this->swtichGroup();
+        }
+
+        if (is_null($group)) {
+            return false;
+        }
+
+        return $this->update(['current_group_id' => $group->id]);        
     }
 
+    /**
+     * 此 AmtReplica 是否已經完成
+     * 
+     * @return boolean
+     */
     public function isDone()
     {
         return $this->status === AmtReplica::STATUS_DONE_ID;
     }
 
+    /**
+     * Alias of AmtChild::getLevel
+     * 
+     * @return integer
+     */
     public function getLevel()
     {
         return $this->child->getLevel($this->created_at);
