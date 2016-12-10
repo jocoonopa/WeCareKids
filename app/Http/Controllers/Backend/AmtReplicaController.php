@@ -267,7 +267,7 @@ class AmtReplicaController extends Controller
          */
         $pairs = array_filter($request->all(), function ($k) {
             return is_numeric($k);
-        });
+        }, ARRAY_FILTER_USE_KEY);
 
         try {   
             // 更新 AmtReplicaDiag 之值
@@ -290,7 +290,7 @@ class AmtReplicaController extends Controller
              * 
              * @var bool
              */
-            $hasSwitched = $this->_switch($this, $replica->currentGroup->currentCell->isPass($replica->currentGroup));
+            $hasSwitched = $this->_switch($replica, $replica->currentGroup->currentCell->isPass($replica->currentGroup));
 
             DB::commit();
 

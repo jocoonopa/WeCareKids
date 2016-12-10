@@ -47,6 +47,54 @@ class AmtReplica extends Model
         return $this->groups()->where('status', static::STATUS_ORIGIN_ID);
     }
 
+    public function scopeFindGroupsByCategory($query, AmtCategory $category)
+    {
+        return $this->groups()
+            ->leftJoin('amt_diag_groups', 'amt_replica_diag_groups.group_id', '=', 'amt_diag_groups.id')
+            ->where('amt_diag_groups.category_id', $category->id)
+        ;
+    }
+
+    /**
+     * 根據傳入的 AmtCategory, 取得此 AmtReplica 所有關聯隸屬的 AmtReplicaDiagGroup,
+     * 加總 group 的 level後返回平均 level
+     *
+     * @param \App\Model\AmtCategory $category
+     * @return integer
+     */
+    public function getLevelByCategory(AmtCategory $category)
+    {
+        $count = 0;
+
+        /**
+         * 計算的 level
+         * 
+         * @var integer
+         */
+        $level = 0;
+
+        /**
+         * 存放取得的最末 AmtCategory 
+         * 
+         * @var array [\App\Model\AmtCategory]
+         */
+        $finals = [];
+
+        // 找尋並儲存最末分類
+        $category->findFinals($finals);
+        
+        foreach ($finals as $final) {
+            $groups = static::findGroupsByCategory($final)->get();
+
+            $groups->each(function ($group) use (&$level, &$count) {
+                $count ++;
+                $level += $group->getLevel();
+            });
+        }
+        
+        return 0 === $count ? 0 : floor($level/$groups->count());
+    }
+
     /**
      * 將目前的 AmtReplica 設定為終止狀態
      * 

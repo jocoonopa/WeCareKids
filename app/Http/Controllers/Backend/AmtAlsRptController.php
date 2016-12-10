@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend;
 
 use App\Model\AlsRptIbCxt;
 use App\Model\AmtAlsRpt;
+use App\Model\AmtCatgory;
 use Auth;
 use DB;
 use Illuminate\Http\Request;
@@ -12,6 +13,12 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AmtAlsRptController extends Controller
 {
+    protected static $levelStats = [
+        14 => NULL, 15 => NULL, 16 => NULL, 
+        17 => NULL, 18 => NULL, 19 => NULL, 
+        21 => NULL, 22 => NULL, 23 => NULL
+    ];
+
     /**
      * Display a listing of the resource.
      *
@@ -22,27 +29,6 @@ class AmtAlsRptController extends Controller
         $reports = Auth::user()->reports()->orderBy('id', 'desc')->get();
 
         return view('/backend/amt_als_rpt/index', compact('reports'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
     }
 
     /**
@@ -68,25 +54,19 @@ class AmtAlsRptController extends Controller
             abort(Response::HTTP_FORBIDDEN, '此報告沒有包含任何資料!');
         }
 
+        $categorys = \App\Model\AmtCategory::find(array_keys(static::$levelStats));
+
+        foreach (static::$levelStats as $id => $levelStat) {
+            $levelStats[$id] = $report->replica->getLevelByCategory($this->findMapCategory($categorys, $id));
+        }
+
         DB::beginTransaction();
         try {
-            $child = $report->replica->child;
-
-            if (is_null($report->cxt)) {
-                $cxt = AlsRptIbCxt::findOrphanByChild($child)->first(); 
-
-                if (!is_null($cxt)) {
-                    $report->update(['cxt_id' => $cxt->id]);
-                    $cxt->update(['report_id' => $report->id]);
-                    $child->update(['identifier' => $cxt->child_identifier]);
-
-                    $request->session()->flash('success', "已成功綁定連結{$child->name}的剖析量表!");
-                }               
-            }
+            $this->bindCxtIfNeedTo($report, $request);
 
             DB::commit();
 
-            return view('backend/amt_als_rpt/show', compact('report', 'child'));
+            return view('backend/amt_als_rpt/show', compact('report', 'levelStats'));
         } catch (\Exception $e) {
             DB::rollback();
 
@@ -96,37 +76,35 @@ class AmtAlsRptController extends Controller
         }   
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    protected function findMapCategory($categorys, $id)
     {
-        //
+        return $categorys->first(function($category) use ($id) { 
+            return $id === $category->id;
+        });
     }
 
     /**
-     * Update the specified resource in storage.
+     * Display the specified resource.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  \App\Model\AmtAlsRpt $report
+     * @param  \Illuminate\Http\Request $request
      */
-    public function update(Request $request, $id)
+    protected function bindCxtIfNeedTo(AmtAlsRpt $report, Request $request)
     {
-        //
-    }
+        $child = $report->replica->child;
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        if (is_null($report->cxt)) {
+            $cxt = AlsRptIbCxt::findOrphanByChild($child)->first(); 
+
+            if (!is_null($cxt)) {
+                $report->update(['cxt_id' => $cxt->id]);
+                $cxt->update(['report_id' => $report->id]);
+                $child->update(['identifier' => $cxt->child_identifier]);
+
+                $request->session()->flash('success', "已成功綁定連結{$child->name}的剖析量表!");
+            }               
+        }
+
+        return $this;
     }
 }

@@ -56,7 +56,7 @@ class AmtReplicaDiagGroup extends Model
      */
     public function getLevel()
     {
-        if (static::STATUS_DONE_ID !== $this->status) {
+        if (!$this->isDone()) {
             return NULL;
         }
 
@@ -68,9 +68,14 @@ class AmtReplicaDiagGroup extends Model
             return 0;
         }
 
-        $chief = $this->resultCell->findMatchedByReplica($this->replica);
+        /**
+         * Chief cell
+         * 
+         * @var \App\Model\AmtCell
+         */
+        $chief = $this->resultCell->getChief();
 
-        $level = 0 === $chief->step ? $chief->getLevel($this) : $chief->getThreadResultLevel($this);
+        $level = 0 === $chief->step ? $chief->getLevel($this->replica) : $chief->getThreadResultLevel($this);
 
         return AmtCell::getRestrictLevel($level);
     }
@@ -177,9 +182,10 @@ class AmtReplicaDiagGroup extends Model
             return false;
         }
 
-        $this->update(['current_cell_id' => $next->id]);
+        $this->currentCell()->associate($next);
+        $this->save();
 
-        if (AmtCell::hasFreshDiag($this)) {
+        if (AmtCell::hasFreshDiags($this)) {
             return true;
         }
 
@@ -198,6 +204,7 @@ class AmtReplicaDiagGroup extends Model
     | 6. 若所有 AmtReplicaDiag 都已經有答案, 進行驗證
     | 7. 若驗證沒過關, 遞迴 $this->swtichToPrevCell()
     | 8. 若驗證過了, return false
+    |
     */
     public function swtichToPrevCell() 
     {
@@ -215,9 +222,10 @@ class AmtReplicaDiagGroup extends Model
             return false;
         }
 
-        $this->update(['current_cell_id' => $prev->id]);
+        $this->currentCell()->associate($prev);
+        $this->save();
 
-        if (AmtCell::hasFreshDiag($this)) {
+        if (AmtCell::hasFreshDiags($this)) {
             return true;
         }
 

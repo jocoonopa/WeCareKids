@@ -11,6 +11,15 @@ class AmtCategory extends Model
 
     protected $table = 'amt_categorys';
 
+    /**
+     * The attributes that should be casted to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'is_final' => 'boolean',
+    ];
+
     public function parent()
     {
         return $this->belonsTo('App\Model\AmtCategory', 'parent_id', 'id'); 
@@ -24,6 +33,37 @@ class AmtCategory extends Model
     public function groups()
     {
         return $this->hasMany('App\Model\AmtDiagGroup', 'category_id', 'id');
+    }
+
+    /**
+     * 找出所有屬於該 AmtCategory 且為最末的 AmtCategory(含自己)
+     * 
+     * @param  array  &$finals
+     * @return \App\Model\AmtCategory $this
+     */
+    public function findFinals(array &$finals)
+    {
+        if ($this->isFinal()) {
+            $finals[] = $this;
+
+            return $this;
+        }
+
+        $this->childs()->each(function ($category) use (&$finals) {            
+            return $category->findFinals($finals);
+        });
+
+        return $this;
+    }
+
+    /**
+     * 判斷該 AmtCategory 是否為最末
+     * 
+     * @return boolean
+     */
+    public function isFinal()
+    {
+        return true === $this->is_final;
     }
 
     /**

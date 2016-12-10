@@ -4,20 +4,20 @@ $(document).ready(function() {
     var myDoughnutChart = new Chart(Doughnutctx, {
         type: 'doughnut',
         data: {
-            labels: ["视觉", "听觉", "触觉", "前庭觉", "本体觉", "动作计划", "姿势控制", "移位能力", "协调能力"],
+            labels: [
+                "视觉", 
+                "听觉", 
+                "触觉", 
+                "前庭觉", 
+                "本体觉", 
+                "动作计划", 
+                "姿势控制", 
+                "移位能力", 
+                "协调能力"
+            ],
             datasets: [{
                 label: '等级',
-                data: [
-                    7, 
-                    9, 
-                    8, 
-                    5, 
-                    9, 
-                    13, 
-                    8, 
-                    8, 
-                    8
-                ],
+                data: $.parseJson("{{json_encode($levelStats)}}"),
                 backgroundColor: [
                     'rgba(255, 129, 129, 0.2)',
                     'rgba(255, 217, 97, 0.2)',
@@ -55,6 +55,7 @@ $(document).ready(function() {
             var ctx = myDoughnutChart.chart.ctx;
             ctx.restore();
             var fontSize = (height / 140).toFixed(2);
+
             ctx.font = fontSize + "em sans-serif";
             ctx.textBaseline = "middle";
             ctx.fillStyle = 'black';
@@ -62,14 +63,18 @@ $(document).ready(function() {
             var textX01 = Math.round((width - ctx.measureText(text01).width) / 2);
             var textY01 = height / 2.3;
             ctx.fillText(text01, textX01, textY01);
+            
             var text02 = "87",
                 textX02 = Math.round((width - ctx.measureText(text02).width) / 2),
                 textY02 = height / 1.8; // + parseInt(ctx.font)* */
+            
             ctx.fillText(text02, textX02, textY02);
             ctx.font = (fontSize / 2) + "em sans-serif";
+            
             var text03 = "發展年齡約為87個月",
                 textX03 = Math.round((width - ctx.measureText(text03).width) / 2),
                 textY03 = height / 1.4; // + parseInt(ctx.font)* */
+            
             ctx.fillText(text03, textX03, textY03);
             ctx.save();
         }

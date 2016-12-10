@@ -27,20 +27,20 @@
                     </h4>
                     <hr>
                     <ul>
-                        @foreach ($replica->groups()->get() as $replicaGroup)
+                        @foreach ($replica->groups as $replicaGroup)
                             <li @if ($replicaGroup->isDone()) class="text-success" @endif>
-                                {{$replicaGroup->group->content}}
+                                {{$replicaGroup->id}}:{{$replicaGroup->group->content}}
                                 
-                                @if ($replicaGroup->isDone())
-                                <span class="badge">
-                                    {{ $replicaGroup->getLevel() }}
-                                </span>
+                                @if ($replicaGroup->isDone())                                
+                                    <span class="badge">
+                                         {{ $replicaGroup->getLevel() }}
+                                    </span>
                                 @endif
 
                                 <br>
                                 
                                 @if (!is_null($replicaGroup->resultCell))
-                                    <code>{{ "{$replicaGroup->resultCell->id}:{$replicaGroup->resultCell->statement}" }}</code>
+                                    <code>{{ "{$replicaGroup->resultCell->id}:{$replicaGroup->resultCell->getChief()->statement}" }}</code>
                                 @endif
                             </li>
                             <ul>

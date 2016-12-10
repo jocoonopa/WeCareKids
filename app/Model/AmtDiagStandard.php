@@ -41,7 +41,7 @@ class AmtDiagStandard extends Model
         switch($this->diag->type)
         {
             case AmtDiag::TYPE_SWITCH_ID:
-                return '是否';
+                return true === (bool) $this->condition_value ? '是' : '否';
             break;
 
             case AmtDiag::TYPE_SLIDER_ID:
@@ -61,7 +61,7 @@ class AmtDiagStandard extends Model
                 return substr($output, 0, -1);
             break;
 
-            case AmtDiag::TYPE_SWITCH_ID:
+            case AmtDiag::TYPE_RADIO_ID:
                 $condition = json_decode($this->condition_value, true);
 
                 return head($condition);

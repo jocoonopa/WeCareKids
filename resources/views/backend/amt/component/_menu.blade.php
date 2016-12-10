@@ -3,7 +3,7 @@
     <?php $category = array_get($menu, \App\Model\AmtCategory::RECURSIVE_CURRENT_KEY); ?>
     <?php $child = array_get($menu, \App\Model\AmtCategory::RECURSIVE_CHILD_KEY); ?>
     <li>
-        {{$category->content}} 
+        {{$category->id}}:{{$category->content}} 
     </li>
         
     @if(!is_null($child))

@@ -22,7 +22,7 @@
         <div class="col-md-12 col-sm-12 col-xs-12"">
             @include('component/flash')
 
-            @include('backend/amt_als_rpt/show/report', ['report' => $report, 'child' => $child])
+            @include('backend/amt_als_rpt/show/report', ['report' => $report, 'child' => $report->replica->child])
         </div>
     </div>
 </div>

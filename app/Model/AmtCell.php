@@ -82,8 +82,8 @@ class AmtCell extends Model
      */
     public function getDiagMapStandard(AmtReplicaDiag $replicaDiag)
     {
-        return $this->standards()->get()->first(function ($standard) use ($replicaDiag) {
-            return $standard->diag_id === $replicaDiag->diag->id;
+        return $this->getChief()->standards()->get()->first(function ($standard) use ($replicaDiag) {
+            return $standard->diag_id === $replicaDiag->diag_id;
         });
     }
 
@@ -95,17 +95,6 @@ class AmtCell extends Model
      * @param  \App\Model\AmtReplica $replica
      * @return \App\Model\AmtCell
      */
-    public function findMatchedByReplica(AmtReplica $replica)
-    {
-        if (is_null($this->league)) {
-            return $this;
-        }
-
-        return $this->league()->first(function ($cell) use ($replica) {
-            return $cell->level === $replica->getLevel();
-        }); 
-    }
-
     public function getLevel(AmtReplica $replica)
     {
         $defaultLevel = $replica->getLevel();
@@ -116,6 +105,11 @@ class AmtCell extends Model
             return $this->level;
         }
 
+        return $this->getBubbleLeve($levels, $defaultLevel);
+    }
+
+    protected function getBubbleLeve(array $levels, $defaultLevel)
+    {
         if ($defaultLevel < head($levels)) {
             return head($levels);
         }
@@ -124,7 +118,7 @@ class AmtCell extends Model
             return last($levels);
         }
 
-        return $defaultLevel;
+        return $this->level;
     }
 
     /**
@@ -180,16 +174,16 @@ class AmtCell extends Model
      * 和 Cell 原本所包含的 AmtDiagStandards 配對驗證,
      * 搭配 Cell 定義的檢查邏輯, 最後回傳 boolean
      * 
-     * @param  AmtReplicaDiagGroup $replicaGroup [description]
-     * @return boolean                       [description]
+     * @param  AmtReplicaDiagGroup $replicaGroup
+     * @return boolean                      
      */
     public function isPass(AmtReplicaDiagGroup $replicaGroup)
     {
         $replicaDiags = static::findDoneDiags($replicaGroup);
-        
-        $statementWouldBeExecuted = AC::setStr($this->statement)->convertToStatment();
-
-        return eval($statementWouldBeExecuted);
+    
+        $statementWouldBeExecuted = AC::setStr($this->getChief()->statement)->convertToStatment();
+                
+        return eval($statementWouldBeExecuted . ';');
     }
 
     /**
@@ -241,7 +235,7 @@ class AmtCell extends Model
         if (is_null($query)) {
             return NULL;
         }
-        
+
         return $query->whereNull('amt_replica_diags.value')->get();
     }
 
@@ -249,7 +243,7 @@ class AmtCell extends Model
      * 尋找此 Cell 需要回答且已經回答的 diags
      * 
      * @param  AmtReplicaDiagGroup $replicaGroup
-     * @return Collection [\App\Model\AmtReplicaDiag]
+     * @return mixed Collection[\App\Model\AmtReplicaDiag] | NULL
      */
     public static function findDoneDiags(AmtReplicaDiagGroup $replicaGroup)
     {
@@ -265,42 +259,28 @@ class AmtCell extends Model
     /**
      * 確認有無為作答的 AmtReplicaDiagGroup
      * 
-     * @param  AmtReplicaDiagGroup $replicaGroup [description]
-     * @return boolean                       [description]
+     * @param  AmtReplicaDiagGroup $replicaGroup
+     * @return boolean                       
      */
-    public static function hasFreshDiag(AmtReplicaDiagGroup $replicaGroup)
+    public static function hasFreshDiags(AmtReplicaDiagGroup $replicaGroup)
     {
-        $query = static::findFreshDiags($replicaGroup);
+        $diags = static::findFreshDiags($replicaGroup);
         
-        if (is_null($query)) {
+        if (is_null($diags)) {
             return NULL;
         }
 
-        return 0 < static::findFreshDiags($replicaGroup)->count();
+        return 0 < $diags->count();
     }
 
+    /**
+     * Alias call AmtReplicaDiag::findFreshDiags()
+     * 
+     * @param  AmtReplicaDiagGroup $replicaGroup
+     * @return \Illuminate\Database\Query\Builder                           
+     */
     protected static function genFindDiagsQuery(AmtReplicaDiagGroup $replicaGroup)
     {
-        if (is_null($replicaGroup->currentCell)) {
-            return NULL;
-        }
-
-        $leagueCell = $replicaGroup->currentCell->getChief();
-
-        $standards = $leagueCell->standards;
-
-        if (is_null($standards)) {
-            return NULL;
-        }
-
-        return DB::table('amt_replica_diags')
-            ->leftJoin('amt_diags', 'amt_replica_diags.diag_id', '=', 'amt_diags.id')
-            ->leftJoin('amt_diag_standards', 'amt_diag_standards.diag_id', '=', 'amt_diags.id')
-            ->leftJoin('amt_replica_diag_groups', 'amt_replica_diag_groups.group_id', '=', 'amt_diag_standards.id')
-            ->leftJoin('cells_standards', 'cells_standards.cell_id', '=', 'amt_diag_standards.id')
-            ->leftJoin('amt_cells', 'amt_cells.id', '=', 'cells_standards.cell_id')
-            ->where('amt_replica_diags.group_id', $replicaGroup->id)
-            ->where('amt_cells.id', $leagueCell->id)
-        ;
+        return AmtReplicaDiag::findFreshDiags($replicaGroup);
     }
 }

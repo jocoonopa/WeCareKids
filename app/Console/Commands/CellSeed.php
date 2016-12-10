@@ -51,6 +51,7 @@ class CellSeed extends Command
         ]);
 
         $cell->update(['next_id' => $cell->id]);
+        $cell->prev->update(['next_id' => $cell->id]);
 
         $this->info("{$cell->id}誕生!");
 
