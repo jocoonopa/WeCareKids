@@ -2,7 +2,6 @@
 
 namespace App\Model;
 
-use App\Model\Child;
 use Illuminate\Database\Eloquent\Model;
 
 class AmtDiagStandard extends Model
@@ -35,5 +34,42 @@ class AmtDiagStandard extends Model
     public function diag()
     {
         return $this->belongsTo('App\Model\AmtDiag', 'diag_id', 'id');
+    }
+
+    public function getCondDesc()
+    {
+        switch($this->diag->type)
+        {
+            case AmtDiag::TYPE_SWITCH_ID:
+                return '是否';
+            break;
+
+            case AmtDiag::TYPE_SLIDER_ID:
+                $condition = json_decode($this->condition_value, true);
+                $min = array_get($condition, 'm');
+                $max = array_get($condition, 'M');
+                $outpu = '';
+                
+                if (is_null($min)) {
+                    $output .= ">={$min},";
+                }
+
+                if (is_null($max)) {
+                    $output .= "{$max}<=,";
+                }
+
+                return substr($output, 0, -1);
+            break;
+
+            case AmtDiag::TYPE_SWITCH_ID:
+                $condition = json_decode($this->condition_value, true);
+
+                return head($condition);
+            break;
+
+            default:
+                return $this->condition_value;
+            break;
+        }
     }
 }

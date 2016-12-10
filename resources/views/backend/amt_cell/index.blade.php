@@ -10,7 +10,9 @@
                 <a href="/backend/amt/{{$group->amt->id}}" class="pull-left btn btn-default">大題列表</a>
             </small>
 
-            {{$group->content}}
+            <small>
+                <a href="/backend/amt/{{$group->amt->id}}/map" class="pull-left btn btn-default" target="_blank">全圖</a>
+            </small>
         </h3>
 
         <a class="pull-right btn btn-warning btn-sm" href="/backend/amt_diag_group/{{$group->id}}/amt_diag_standard" target="_blank">
@@ -25,21 +27,19 @@
         </a>    
     </div>
 
-    @foreach ($group->cells as $cell)
-    <div id="__{{$cell->id}}__" class="col-md-offset-1 col-md-10 col-sm-6 col-xs-12">
-        <div class="panel panel-default">
+    {{-- @foreach($group->amt->groups as $group) --}}
+    
+    <div class="col-md-offset-1 col-md-10 col-sm-6 col-xs-12">
+        <h4>{{$group->content}}</h4>
+
+        @foreach ($group->cells as $cell)
+        <div id="__{{$cell->id}}__" class="panel panel-default">
             <div class="panel-heading">
-                <h3 class="panel-title">{{ "Level:{$cell->level}" }} <small>{{$cell->id}}</small></h3>
+                <h3 class="panel-title">{{ "Level:{$cell->level}" }}</h3>
             </div>
             <div class="panel-body">
                 <ul>
-                    @foreach($cell->standards as $standard)                            
-                    <li>
-                        <a href="{{"/backend/amt_diag_group/{$group->id}/amt_diag/{standard->id}/edit"}}">
-                            {{ $standard->id }}:{{ "level{$standard->min_level} ~ level{$standard->max_level}{$standard->condition_value}" }}
-                        </a> 
-                    </li>                                      
-                    @endforeach
+                    @include('backend/amt_cell/component/_response', ['cell' => $cell])
                 </ul>                                                   
             </div>
             <div class="panel-footer">
@@ -51,8 +51,9 @@
                 {!! Form::close() !!}
             </div>
         </div>
+        @endforeach
     </div>
-     @endforeach
+    {{-- @endforeach --}}
 </div>
 @endsection
 

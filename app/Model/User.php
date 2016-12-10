@@ -43,6 +43,11 @@ class User extends Authenticatable
         return $this->hasMany('App\Model\AmtAlsRpt', 'owner_id', 'id');
     }
 
+    public function amts()
+    {
+        return $this->hasMany('App\Model\Amt', 'creater_id', 'id');
+    }
+
     public function replicas()
     {
         return $this->hasManyThrough('App\Model\AmtReplica', 'App\Model\Amt', 'creater_id', 'amt_id', 'id');

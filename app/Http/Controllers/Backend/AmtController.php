@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend;
 use AmtCell;
 use App\Http\Requests;
 use App\Model\Amt;
+use Auth;
 use Illuminate\Http\Request;
 
 class AmtController extends Controller
@@ -16,7 +17,7 @@ class AmtController extends Controller
      */
     public function index(Request $request)
     {
-        $amts = Amt::all();
+        $amts = Auth::user()->amts;
 
         return view('/backend/amt/index', compact('amts'));
     }
@@ -24,6 +25,11 @@ class AmtController extends Controller
     public function show(Amt $amt)
     {
         return view('/backend/amt/show', compact('amt'));
+    }
+
+    public function map(Amt $amt)
+    {
+        return view('/backend/amt/map', compact('amt'));
     }
 
     public function edit(Amt $amt)

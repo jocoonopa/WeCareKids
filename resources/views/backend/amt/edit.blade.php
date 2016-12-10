@@ -10,9 +10,20 @@
     </div>
 
     <div class="row">
-        <div class="col-md-12 col-sm-12 col-xs-12"">
-            
+        @foreach ($amt->groups as $group)
+        <div class="col-md-4 col-sm-12 col-xs-12"">
+            <table>
+                <thead></thead>
+                <tbody>
+                    <tr>
+                        <td>{{$group->id}}</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>            
         </div>
+        @endforeach
     </div>
 </div>
 @endsection
