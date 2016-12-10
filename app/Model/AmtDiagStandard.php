@@ -48,7 +48,7 @@ class AmtDiagStandard extends Model
                 $condition = json_decode($this->condition_value, true);
                 $min = array_get($condition, 'm');
                 $max = array_get($condition, 'M');
-                $outpu = '';
+                $output = '';
                 
                 if (is_null($min)) {
                     $output .= ">={$min},";
