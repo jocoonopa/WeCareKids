@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class AmtCategory extends Model
 {
+    const RECURSIVE_CURRENT_KEY = 'content';
+    const RECURSIVE_CHILD_KEY = 'child';
+
     protected $table = 'amt_categorys';
 
     public function parent()
@@ -23,19 +26,41 @@ class AmtCategory extends Model
         return $this->hasMany('App\Model\AmtDiagGroup', 'category_id', 'id');
     }
 
-    public function listRec()
+    /**
+     * 取得分類樹
+     * 
+     * @return array
+     */
+    public static function getMenus()
+    {
+        $menus = [];
+        $categorys = static::findRoots()->get();
+
+        $categorys->each(function ($category) use (&$menus) {
+            static::pushMenus($menus, $category);
+        });
+
+        return $menus;
+    }
+
+    protected static function pushMenus(array &$menus, AmtCategory $category)
+    {
+        $menus[] = [
+            static::RECURSIVE_CURRENT_KEY => $category,
+            static::RECURSIVE_CHILD_KEY => true === $category->is_final ? NULL : $category->_listRec()
+        ];
+    }
+
+    protected function _listRec()
     {
         $menus = [];
 
-        foreach ($this->childs()->get() as $child) {
-            if ($child->id === $this->id) {
+        foreach ($this->childs()->get() as $category) {
+            if ($category->id === $this->id) {
                 continue;
             }
 
-            $menus[] = [
-                'name' => $child->content,
-                'child' => true === $child->is_final ? NULL : $child->listRec()
-            ];
+            static::pushMenus($menus, $category);
         }
 
         return $menus;
@@ -44,5 +69,10 @@ class AmtCategory extends Model
     public function scopeFindFinals($query)
     {
         return $query->where('is_final', true);
+    }
+
+    public function scopeFindRoots($query)
+    {
+        return $query->where('step', 0);
     }
 }

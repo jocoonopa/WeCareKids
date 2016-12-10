@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend;
 use AmtCell;
 use App\Http\Requests;
 use App\Model\Amt;
+use App\Model\AmtCategory;
 use Auth;
 use Illuminate\Http\Request;
 
@@ -24,7 +25,9 @@ class AmtController extends Controller
 
     public function show(Amt $amt)
     {
-        return view('/backend/amt/show', compact('amt'));
+        $menus = AmtCategory::getMenus();
+
+        return view('/backend/amt/show', compact('amt', 'menus'));
     }
 
     public function map(Amt $amt)
