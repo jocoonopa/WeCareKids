@@ -33,6 +33,10 @@ class CellSeed extends Command
         $amtId = $this->argument('amtId');
 
         Amt::find($amtId)->groups()->get()->each(function ($group) {
+            if (0 < $group->cells->count()) {
+                return;
+            }
+
             $this->info("{$group->id}開始增殖!\n------------------\n");
             $this->gen($group, NULL, 0);
         });

@@ -30,6 +30,11 @@ class AmtDiagGroup extends Model
         return $this->belongsTo('App\Model\Amt', 'amt_id', 'id');
     }
 
+    public function category()
+    {
+        return $this->belongsTo('App\Model\AmtCategory', 'category_id', 'id');
+    }
+
     public function cells()
     {
         return $this->hasMany('App\Model\AmtCell', 'group_id', 'id');
