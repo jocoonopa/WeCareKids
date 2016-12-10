@@ -50,11 +50,11 @@ class AmtDiagStandard extends Model
                 $max = array_get($condition, 'M');
                 $output = '';
                 
-                if (is_null($min)) {
+                if (!is_null($min)) {
                     $output .= ">={$min},";
                 }
 
-                if (is_null($max)) {
+                if (!is_null($max)) {
                     $output .= "{$max}<=,";
                 }
 
