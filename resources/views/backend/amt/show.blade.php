@@ -14,30 +14,29 @@
             <li>
                 <p class="text-success">{{ $group->content }}</p>
             </li>
-            <li>
-                <ul>                        
-                    <li>
-                        <a href="/backend/amt_diag_group/{{$group->id}}/amt_diag">
-                            <i class="fa fa-file-text-o"></i> 
-                            評測問題列表
-                        </a>
-                    </li>
+            
+            <ul>                        
+                <li>
+                    <a href="/backend/amt_diag_group/{{$group->id}}/amt_diag">
+                        <i class="fa fa-file-text-o"></i> 
+                        評測問題列表
+                    </a>
+                </li>
 
-                    <li>
-                        <a href="/backend/amt_diag_group/{{$group->id}}/amt_diag_standard">
-                            <i class="fa fa-file-text-o"></i>
-                            評測標準列表
-                        </a>
-                    </li>
+                <li>
+                    <a href="/backend/amt_diag_group/{{$group->id}}/amt_diag_standard">
+                        <i class="fa fa-file-text-o"></i>
+                        評測標準列表
+                    </a>
+                </li>
 
-                    <li>
-                        <a href="/backend/amt_diag_group/{{$group->id}}/amt_cell">
-                            <i class="fa fa-file-text-o"></i>
-                            網格列表
-                        </a>
-                    </li>                           
-                </ul>
-            </li>
+                <li>
+                    <a href="/backend/amt_diag_group/{{$group->id}}/amt_cell">
+                        <i class="fa fa-file-text-o"></i>
+                        網格列表
+                    </a>
+                </li>                           
+            </ul>
             @endforeach
         </ul>        
         </div>

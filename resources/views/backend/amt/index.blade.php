@@ -15,7 +15,6 @@
                 @foreach ($amts as $amt)       
                 <li>
                     <a class="btn btn-info" href="/backend/amt/{{$amt->id}}">{{ "v{$amt->id}" }}</a>
-
                 </li>  
                 @endforeach
             </ul>            
