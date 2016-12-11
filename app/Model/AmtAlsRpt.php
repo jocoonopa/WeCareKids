@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class AmtAlsRpt extends Model
 {
+    const ABILITY_COMPARE_THREAD_ID = 2;
+
     protected $table = 'amt_als_rpts';
 
     protected $fillable = [
@@ -16,7 +18,12 @@ class AmtAlsRpt extends Model
 
     public function owner()
     {
-        return $this->belongsTo('App\Model\User', 'report_id', 'id');
+        return $this->belongsTo('App\Model\User', 'owner_id', 'id');
+    }
+
+    public function cxtBelongs()
+    {
+        return $this->belongsTo('App\Model\AlsRptIbCxt', 'cxt_id', 'id');
     }
     
     public function cxt()
@@ -26,6 +33,6 @@ class AmtAlsRpt extends Model
 
     public function replica()
     {
-        return $this->hasOne('App\Model\AmtReplica', 'report_id', 'id');
+        return $this->belongsTo('App\Model\AmtReplica', 'replica_id', 'id');
     }
 }

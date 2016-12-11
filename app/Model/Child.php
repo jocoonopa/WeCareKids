@@ -93,4 +93,11 @@ class Child extends Model
             }
         }
     }
+
+    public static function getMonthFromMap($level)
+    {
+        $levels = array_get(static::$levelMap, (int) $level);
+        
+        return floor(($levels[0] + $levels[1])/60);
+    }
 }

@@ -8,6 +8,7 @@ class AmtCategory extends Model
 {
     const RECURSIVE_CURRENT_KEY = 'content';
     const RECURSIVE_CHILD_KEY = 'child';
+    const STEP_STAT_ID = 2;
 
     protected $table = 'amt_categorys';
 

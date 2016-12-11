@@ -17,6 +17,16 @@ class AmtReplica extends Model
      */
     protected $guarded = [];
 
+    public function amt()
+    {
+        return $this->belongsTo('App\Model\Amt');
+    }
+
+    public function creater()
+    {
+        return $this->belongsTo('App\Model\User', 'creater_id', 'id');
+    }
+
     public function child()
     {
         return $this->belongsTo('App\Model\Child');
@@ -38,6 +48,11 @@ class AmtReplica extends Model
     }
 
     public function report()
+    {
+        return $this->hasOne('App\Model\AmtAlsRpt', 'replica_id', 'id');
+    }
+
+    public function reportBelong()
     {
         return $this->belongsTo('App\Model\AmtAlsRpt', 'report_id', 'id');
     }
@@ -80,7 +95,7 @@ class AmtReplica extends Model
          */
         $finals = [];
 
-        // 找尋並儲存最末分類
+        // 透過 \App\Model\AmtCategory::findFinals() 找尋並儲存最末分類
         $category->findFinals($finals);
         
         foreach ($finals as $final) {
@@ -92,7 +107,7 @@ class AmtReplica extends Model
             });
         }
         
-        return 0 === $count ? 0 : floor($level/$groups->count());
+        return 0 === $count ? 0 : floor($level/$count);
     }
 
     /**

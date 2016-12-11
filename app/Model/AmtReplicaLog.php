@@ -6,12 +6,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class AmtReplicaLog extends Model
 {
+    protected $table = 'amt_replica_logs';
     /**
      * The attributes that aren't mass assignable.
      *
      * @var array
      */
     protected $guarded = [];
+
+    public function replica()
+    {
+        return $this->belongsTo('App\Model\AmtReplica', 'replica_id', 'id');
+    }
 
     public function add(array $appendLog)
     {

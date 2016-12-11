@@ -141,19 +141,21 @@ class AmtReplicaController extends Controller
              * 
              * @var \App\Model\AmtReplica
              */
-            $replica = AmtReplica::create([
-                'amt_id' => $amt->id,
-                'creater_id' => Auth::user()->id,
-                'child_id' => $child->id,
-                'status' => AmtReplica::STATUS_ORIGIN_ID
-            ]);
+            $replica = new AmtReplica();
+            $replica->creater()->associate(Auth::user());
+            $replica->amt()->associate($amt);
+            $replica->child()->associate($child);
+            $replica->status = AmtReplica::STATUS_ORIGIN_ID;
+            $replica->save();
 
             /**
              * 新增之 AmtReplicaLog 實體, 記錄作答過程, 回到上一題功能需要透過此實體實現
              * 
              * @var \App\Model\AmtReplicaLog
              */
-            $log = AmtReplicaLog::create(['replica_id' => $replica->id]);
+            $log = new AmtReplicaLog();
+            $log->replica()->associate($replica);
+            $log->save();
 
             $amt->groups()->each(function ($group) use ($replica) {
                 /**
@@ -161,10 +163,10 @@ class AmtReplicaController extends Controller
                  * 
                  * @var \App\Model\AmtReplicaDiagGroup
                  */
-                $replicaGroup = AmtReplicaDiagGroup::create([
-                    'replica_id' => $replica->id,
-                    'group_id' => $group->id
-                ]);
+                $replicaGroup = new AmtReplicaDiagGroup();
+                $replicaGroup->replica()->associate($replica);
+                $replicaGroup->group()->associate($group);
+                $replicaGroup->save();
 
                 /**
                  * 新增之 AmtReplicaDiag 實體, 可想像為建立初始化大題中的題目
@@ -172,10 +174,10 @@ class AmtReplicaController extends Controller
                  * @var \App\Model\AmtReplicaDiag
                  */
                 $group->diags()->get()->each(function ($diag) use ($replicaGroup) {
-                    $replicaDiag = AmtReplicaDiag::create([
-                        'diag_id' => $diag->id,
-                        'group_id' => $replicaGroup->id
-                    ]);
+                    $replicaDiag = new AmtReplicaDiag();
+                    $replicaDiag->diag()->associate($diag);
+                    $replicaDiag->group()->associate($replicaGroup);
+                    $replicaDiag->save();
                 });
             });
 
@@ -198,17 +200,22 @@ class AmtReplicaController extends Controller
             }
 
             //  綁定指向的 Cell
-            $replicaCurrentDiagGroup->update(['current_cell_id' => $entryCell->id]);
+            $replicaCurrentDiagGroup->currentCell()->associate($entryCell);
+            $replicaCurrentDiagGroup->save();
 
             // 更新 replica group 指標
-            $replica->update(['current_group_id' => $replicaCurrentDiagGroup->id]);
+            $replica->currentGroup()->associate($replicaCurrentDiagGroup);
+            $replica->save();
 
-            $report = AmtAlsRpt::create([
-                'owner_id' => Auth::user()->id,
-                'replica_id' => $replica->id
-            ]);
+            // 新增關聯報告實體 AmtAlsRpt
+            $report = new AmtAlsRpt();
+            $report->owner()->associate(Auth::user());
+            $report->replica()->associate($replica);
+            $report->save();
 
-            $replica->update(['report_id' => $report->id]);
+            // AmtReplica 同時也綁定 AmtAlsRpt, 形成 One To One replation ship
+            $replica->reportBelong()->associate($report);
+            $replica->save();
 
             if ($replicaCurrentDiagGroup->currentCell->isEmpty()) {
                 $isNotFinish = $this->switchGroup($replica);
