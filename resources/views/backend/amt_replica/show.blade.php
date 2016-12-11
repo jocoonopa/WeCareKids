@@ -33,7 +33,7 @@
                                 
                                 @if ($replicaGroup->isDone())                                
                                     <span class="badge">
-                                         {{ $replicaGroup->getLevel() }}
+                                        {{ $replicaGroup->getLevel() }}
                                     </span>
                                 @endif
 

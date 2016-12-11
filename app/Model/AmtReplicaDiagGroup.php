@@ -60,7 +60,7 @@ class AmtReplicaDiagGroup extends Model
             return NULL;
         }
 
-        if (is_null($this->dir)) {
+        if (is_null($this->dir)) {// 方向為空表示並未作答過, 直接帶入預設 level
             return $this->replica->getLevel();
         }
 
@@ -137,9 +137,22 @@ class AmtReplicaDiagGroup extends Model
         ]);
     }
 
+    /**
+     * 切換指向的 AmtCell
+     *
+     * 若判斷為終止狀態, 移動完畢後回傳 false
+     * 若不為終止, 進行重新指向
+     * 
+     * @param  boolean $isPass
+     * @return boolean
+     */
     public function switchCell($isPass)
     {
         if ($this->isDirTerminate($isPass)) {
+            $resultCell = true === $isPass ? $this->currentCell->next : $this->currentCell->prev;
+
+            $this->bindCurrentCell($resultCell);
+
             return false;
         }
 
@@ -148,48 +161,53 @@ class AmtReplicaDiagGroup extends Model
         return true === $isPass ? $this->swtichToNextCell() : $this->swtichToPrevCell();
     }
 
-    protected function isDirTerminate($isPass)
-    {
-        return !is_null($this->dir) && ((bool) $this->dir !== (bool) $isPass);
-    }
-
     /*
     |--------------------------------------------------------------------------
     | AmtReplicaDiagGroup 切換到較高等級的 AmtCell
     |--------------------------------------------------------------------------
     | 1. 取得 league 中最高等級之 cell 之 next
-    | 2. 若為空, return false
+    | 2. 若為空或 next和自身id相同, 表示到底了(level20), return false
     | 3. 若 next 沒有任何 standard, return false
     | 4. 若有 standard, 更新 AmtReplicaDiagGroup->currentCell
     | 5. 若 standard 對應到的 AmtReplicaDiag 有尚未作答的, 回傳 true
+    | 5a. 若為最末, 驗證完後必定結束
     | 6. 若所有 AmtReplicaDiag 都已經有答案, 進行驗證
     | 7. 驗證過關, 遞迴 $this->swtichToNextCell()
     | 8. 若驗證沒過, return false
     */
     public function swtichToNextCell() 
     {
+        //1
         if (is_null($this->currentCell)) {
             return false;
         }
-        
+        //2
         $next = $this->currentCell->findHighest()->next;
 
         if (is_null($next)) {
             return false;
         }
-
+        //3
         if ($next->isEmpty()) {// 本身沒有任何standards
             return false;
         }
-
-        $this->currentCell()->associate($next);
-        $this->save();
-
+        //4
+        $this->bindCurrentCell($next);
+        //5
         if (AmtCell::hasFreshDiags($this)) {
             return true;
         }
+        //5a
+        if ($this->currentCell->isEnd()) {
+            if (!$this->currentCell->isPass($this)) {
+                $this->bindCurrentCell($this->currentCel->prev);
+            }
 
-        return $next->isPass($this) ? $this->swtichToNextCell() : false;
+            return false;
+        }
+
+        //6
+        return true === $next->isPass($this) ? $this->swtichToNextCell() : false;
     }
 
     /*
@@ -197,10 +215,11 @@ class AmtReplicaDiagGroup extends Model
     | AmtReplicaDiagGroup 切換到較低等級的 AmtCell
     |--------------------------------------------------------------------------
     | 1. 取得 league 中最低等級之 prev
-    | 2. 若為空, 則 return false
+    | 2. 若為空, 表示已經到底(level1), 則 return false
     | 3. 若 prev 沒有任何 standard, 則回傳 false
     | 4. 若有 standard, 更新 AmtReplicaDiagGroup->currentCell
     | 5. 若 standard 對應到的 replicaDiag 有尚未作答的, 回傳 true
+    | 5a. 若為最末, 驗證完後必定結束
     | 6. 若所有 AmtReplicaDiag 都已經有答案, 進行驗證
     | 7. 若驗證沒過關, 遞迴 $this->swtichToPrevCell()
     | 8. 若驗證過了, return false
@@ -208,27 +227,47 @@ class AmtReplicaDiagGroup extends Model
     */
     public function swtichToPrevCell() 
     {
+        // 1
         if (is_null($this->currentCell)) {
             return false;
         }
-
+        //2
         $prev = $this->currentCell->findLowest()->prev;
         
         if (is_null($prev)) {
             return false;
         }
-
+        //3
         if ($prev->isEmpty()) {
             return false;
         }
-
-        $this->currentCell()->associate($prev);
-        $this->save();
-
+        //4
+        $this->bindCurrentCell($prev);
+        //5
         if (AmtCell::hasFreshDiags($this)) {
             return true;
         }
+        
+        //5a
+        if ($this->currentCell->isEnd()) {
+            if (!$this->currentCell->isPass($this)) {
+                $this->bindCurrentCell($this->currentCel->prev);
+            }
 
-        return $prev->isPass($this) ? $this->swtichToPrevCell() : false; 
+            return false;
+        }
+        //6
+        return false === $prev->isPass($this) ? $this->swtichToPrevCell() : false; 
+    }
+
+    protected function bindCurrentCell(AmtCell $cell)
+    {        
+        $this->currentCell()->associate($cell);
+        $this->save();
+    }
+
+    protected function isDirTerminate($isPass)
+    {
+        return !is_null($this->dir) && ((bool) $this->dir !== (bool) $isPass);
     }
 }

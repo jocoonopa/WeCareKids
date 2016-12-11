@@ -73,6 +73,11 @@ class AmtCell extends Model
         return $this->hasMany('App\Model\AmtReplicaDiagGroup', 'result_cell_id', 'id');
     }
 
+    public function isEnd()
+    {
+        return (static::MAX_LEVEL === $this->next->level) || is_null($this->prev);
+    }
+
     /**
      * 可讓 AmtReplicaDiag::isPass 呼叫, 用來尋找 AmtReplicaDiag 在該 AmtCell 中對應到的
      * AmtDiagStandard
@@ -99,7 +104,13 @@ class AmtCell extends Model
     {
         $defaultLevel = $replica->getLevel();
 
-        $levels = array_pluck($this->league()->orderBy('level', 'asc')->get()->toArray(), 'level');
+        $levels = [];
+
+        if (!is_null($this->league_id)) {
+            $leagueArr = AmtCell::where('league_id', $this->league_id)->orderBy('level', 'asc')->get()->toArray();
+
+            $levels = array_pluck($leagueArr, 'level');
+        }
 
         if (Wck::isEmpty($levels)) {
             return $this->level;
@@ -110,13 +121,30 @@ class AmtCell extends Model
 
     protected function getBubbleLeve(array $levels, $defaultLevel)
     {
-        if ($defaultLevel < head($levels)) {
-            return head($levels);
-        }
+        /*
+        |--------------------------------------------------------------------------
+        | 算分邏輯
+        |--------------------------------------------------------------------------
+        | - 最外層先檢查 "結果level" 是否落在league 區間中(基本上應該一定是)
+        |   - 檢查"預設level" 是否在區間中, 若是, 返回"預設level"
+        |   - 檢查"預設level" 是否比區間最小值小, 若是, 返回區間最小值
+        |   - 檢查"預設level" 是否比區間最大值大, 若是, 返回區間最大值
+        | 
+        | - 其他: 返回實際值
+        */
+        if (head($levels) <= $this->level && last($levels) >= $this->level) {
+            if (head($levels) <= $defaultLevel && last($levels) >= $defaultLevel) {
+                return $defaultLevel;
+            }
 
-        if ($defaultLevel > last($levels)) {
-            return last($levels);
-        }
+            if (head($levels) > $defaultLevel) {
+                return head($levels);
+            }
+
+            if (last($levels) < $defaultLevel) {
+                return last($levels);
+            }
+        }        
 
         return $this->level;
     }
@@ -179,11 +207,18 @@ class AmtCell extends Model
      */
     public function isPass(AmtReplicaDiagGroup $replicaGroup)
     {
+        /**
+         * !!注意!!
+         * 
+         * 此變數會被 statementWouldBeExecuted 中的語句引用, 切不可隨意更改該變數名稱
+         * 
+         * @var Collection
+         */
         $replicaDiags = static::findDoneDiags($replicaGroup);
     
         $statementWouldBeExecuted = AC::setStr($this->getChief()->statement)->convertToStatment();
                 
-        return eval($statementWouldBeExecuted . ';');
+        return eval('return ' . $statementWouldBeExecuted . ';');
     }
 
     /**
@@ -266,11 +301,7 @@ class AmtCell extends Model
     {
         $diags = static::findFreshDiags($replicaGroup);
         
-        if (is_null($diags)) {
-            return NULL;
-        }
-
-        return 0 < $diags->count();
+        return !Wck::isEmpty($diags);
     }
 
     /**

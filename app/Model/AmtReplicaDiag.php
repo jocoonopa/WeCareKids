@@ -129,24 +129,25 @@ class AmtReplicaDiag extends Model
 
     protected function procSwitch(AmtDiagStandard $standard)
     {
-        return (bool) $this->value === (bool) $standard->condition_value;
+        return (bool) json_decode($this->value) === (bool) json_decode($standard->condition_value);
     }
 
     protected function procRange(AmtDiagStandard $standard)
     {
         $conditions = json_decode($standard->condition_value, true);
+        $answer = json_decode($this->value);
 
         $min = array_get($conditions, 'm');
         $max = array_get($conditions, 'M');
 
         if (!is_null($min)) {
-            if ((int) $this->value < (int) $this->min) {
+            if ((int) $answer < (int) $min) {
                 return false;
             }
         }
 
         if (!is_null($max)) {
-            if ((int) $this->value > (int) $this->max) {
+            if ((int) $answer > (int) $max) {
                 return false;
             }
         }
@@ -158,7 +159,7 @@ class AmtReplicaDiag extends Model
     {
         $condition = head(json_decode($standard->condition_value, true));
         $answer = head(json_decode($this->value, true));
-
+        
         return $answer === $condition;
     }
 
