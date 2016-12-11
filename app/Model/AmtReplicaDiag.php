@@ -3,6 +3,7 @@
 namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
+use Wck;
 
 class AmtReplicaDiag extends Model
 {    
@@ -90,7 +91,7 @@ class AmtReplicaDiag extends Model
             ->leftJoin('amt_replica_diag_groups', 'amt_replica_diag_groups.id', '=', 'amt_replica_diags.group_id')
             ->leftJoin('cells_standards', 'cells_standards.standard_id', '=', 'amt_diag_standards.id')
             ->leftJoin('amt_cells', 'amt_cells.id', '=', 'cells_standards.cell_id')
-            ->where('amt_replica_diag_groups.id', $replicaGroup->id)
+            ->where('amt_replica_diag_groups.replica_id', $replicaGroup->replica->id)
             ->where('amt_cells.id', $leagueCell->id)
             ->groupBy('amt_replica_diags.id')
         ;
@@ -165,18 +166,6 @@ class AmtReplicaDiag extends Model
 
     public function getUTF8value()
     {
-        $data = json_decode($this->value, true);
-
-        if (!is_array($data)) {
-            return $this->value;
-        }
-
-        array_walk_recursive($data, function(&$value, $key) {
-            if(is_string($value)) {
-                $value = urlencode($value);
-            }
-        });
-        
-        return urldecode(json_encode($data));
+        return Wck::convertJson2Utf8($this->value);
     }
 }
