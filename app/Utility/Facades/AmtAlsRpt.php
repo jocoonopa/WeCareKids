@@ -2,7 +2,7 @@
 
 namespace App\Utility\Facades;
 
-class AlsRpt extends \Illuminate\Support\Facades\Facade
+class AmtAlsRpt extends \Illuminate\Support\Facades\Facade
 {
     /**
      * Get the registered name of the component.
@@ -11,7 +11,7 @@ class AlsRpt extends \Illuminate\Support\Facades\Facade
      */
     protected static function getFacadeAccessor() 
     { 
-        return 'als_rpt';
+        return 'amt_als_rpt';
     }
 
     public static function foo()

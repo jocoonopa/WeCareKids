@@ -61,7 +61,7 @@ trait ParserTrait
     private function _convertExecuteCode()
     {
         return $this->setStr(preg_replace_callback('/\d+/', function($m) {
-            return '$replicaDiags->first(function($replicaDiag){ return \App\Model\AmtDiagStandard::find(' . $m[0] .')->diag_id === $replicaDiag->diag_id; })->isPass()';
+            return '\App\Model\AmtDiagStandard::find(' . $m[0] .')->isPassWithMacthed($replicaDiags)';
         }, $this->str));
     }
 

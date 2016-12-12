@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Backend;
 
+use AmtAlsRpt as AAR;
 use App\Model\AlsRptIbCxt;
 use App\Model\AmtAlsRpt;
 use App\Model\AmtCatgory;
@@ -9,16 +10,11 @@ use Auth;
 use DB;
 use Illuminate\Http\Request;
 use Log;
+use Wck;
 use Symfony\Component\HttpFoundation\Response;
 
 class AmtAlsRptController extends Controller
 {
-    protected static $levelStats = [
-        14 => NULL, 15 => NULL, 16 => NULL, 
-        17 => NULL, 18 => NULL, 19 => NULL, 
-        21 => NULL, 22 => NULL, 23 => NULL
-    ];
-
     /**
      * Display a listing of the resource.
      *
@@ -54,10 +50,32 @@ class AmtAlsRptController extends Controller
             abort(Response::HTTP_FORBIDDEN, '此報告沒有包含任何資料!');
         }
 
-        $categorys = \App\Model\AmtCategory::find(array_keys(static::$levelStats));
+        $levelStats = [];
+        $complexStats = ['優勢能力' => [], '符合標準' => [], '弱勢能力' => []];
+        $defaultLevel = $report->replica->getLevel();
 
-        foreach (static::$levelStats as $id => $levelStat) {
-            $levelStats[$id] = $report->replica->getLevelByCategory($this->findMapCategory($categorys, $id));
+        $categorys = \App\Model\AmtCategory::findIsStat()->get();
+
+        foreach ($categorys as $category) {
+            $levelStats[$category->content] = AAR::getLevelByCategory($report, $category);
+        }
+
+        $avgLevel = Wck::calculateAverageLevel($levelStats);
+
+        foreach ($levelStats as $content => $levelStat) {
+            if ($levelStat <= $defaultLevel - AmtAlsRpt::ABILITY_COMPARE_THREAD_ID) {
+                $complexStats['弱勢能力'][] = [$content => $levelStat]; 
+
+                continue;
+            }
+
+            if ($levelStat >= $defaultLevel + AmtAlsRpt::ABILITY_COMPARE_THREAD_ID) {
+                $complexStats['優勢能力'][] = [$content => $levelStat];
+
+                continue;
+            }
+
+            $complexStats['符合標準'][] = [$content => $levelStat];
         }
 
         DB::beginTransaction();
@@ -66,7 +84,12 @@ class AmtAlsRptController extends Controller
 
             DB::commit();
 
-            return view('backend/amt_als_rpt/show', compact('report', 'levelStats'));
+            return view('backend/amt_als_rpt/show', compact(
+                'report', 
+                'levelStats', 
+                'avgLevel',
+                'complexStats'
+            ));
         } catch (\Exception $e) {
             DB::rollback();
 

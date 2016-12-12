@@ -87,8 +87,11 @@ class AmtCell extends Model
      */
     public function getDiagMapStandard(AmtReplicaDiag $replicaDiag)
     {
+        echo 'cellid =>' . $this->getChief()->id . "<br/><br/>";
         return $this->getChief()->standards()->get()->first(function ($standard) use ($replicaDiag) {
-            return $standard->diag_id === $replicaDiag->diag_id;
+            echo 'standard =>'. $standard->id . ':' . $standard->diag->id . "<hr>";
+            echo 'replicaDiag =>' . $replicaDiag->diag->id . ':' . $replicaDiag->diag_id . "<br>";
+            return $standard->diag->id === $replicaDiag->diag->id;
         });
     }
 

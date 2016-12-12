@@ -10,46 +10,28 @@
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <td style="background-color:#ef9a9a; color:#424242;">
-                <strong>優勢能力</strong>
-            </td>
-            <td></td>
-            <td>認知思維</td>
-            <td></td>
-        </tr>
-        <tr>
-            <td rowspan=6 style="background-color:#FFCC80;color:#424242;vertical-align: middle;"><strong>符合標準</strong></td>
-            <td rowspan=6></td>
-            <td>精細動作</td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>專注力</td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>社交情緒</td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>語言能力</td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>感覺統合</td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>粗大動作</td>
-            <td></td>
-        </tr>
-        <tr>
-            <td style="background-color:#81D4FA;color:#424242;"><strong>弱勢能力</strong></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
+        @foreach ($complexStats as $key => $complexStat)
+            <tr>
+                @if($loop->first)
+                    <td class="amt-compare-td amt-greater-td" rowspan="{{count($complexStat) + 1}}">
+                @elseif(1 === $loop->index)
+                    <td class="amt-compare-td amt-equal-td" rowspan="{{count($complexStat) + 1}}">
+                @else
+                    <td class="amt-compare-td amt-worse-td" rowspan="{{count($complexStat) + 1}}">
+                @endif
+                    <strong>{{$key}}</strong>
+                </td>
+                <td rowspan="{{count($complexStat) + 1}}">系統提供的建議</td>
+            </tr>
+            @foreach ($complexStat as $stats)
+                @foreach ($stats as $content => $level)
+                <tr>
+                    <td>{{ $content }}</td>
+                    <td>{{ $level }}</td>
+                </tr>
+                @endforeach
+            @endforeach
+        @endforeach
     </tbody>
 </table>
 </h2>

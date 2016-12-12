@@ -1,21 +1,5 @@
 @extends('layouts.blank')
 
-@push('stylesheets')
-<style>
-
-.analyze-border {
-    border-style: solid;
-    border-color: #000;
-    border-width: 1px;
-}
-.analyze-border td {
-    text-align: center;
-    border: none !important;
-}
-
-</style>
-@endpush
-
 @section('main_container')
 <div class="right_col" role="main">
     <div class="row">

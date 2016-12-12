@@ -26,7 +26,7 @@
                         <td>
                             @if ($report->replica)
                                 {{"{$report->replica->child->name}{$report->replica->child->getSex()}"}}
-                                <a href="{{"/backend/amt_replica/{$report->replica}"}}" class="btn btn-xs btn-info">
+                                <a href="{{"/backend/amt_replica/{$report->replica->id}"}}" class="btn btn-xs btn-info">
                                     評測結果
                                 </a>
                             @endif

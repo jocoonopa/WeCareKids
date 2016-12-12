@@ -41,7 +41,7 @@
         $standard->condition_value, 
         [
             'class' => 'form-control', 
-            'placeholder' => '是非題: 0, 範圍題: {"m": 0, "M": 99}, 單選: ["好吃"]']) 
+            'placeholder' => '是非題: 0, 範圍題: {"m": 0, "M": 99}, 單選: ["好吃"], 閾值: NULL']) 
     !!}
 </div>
 

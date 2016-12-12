@@ -212,7 +212,7 @@ return [
 
 		'Gravatar' => Thomaswelton\LaravelGravatar\Facades\Gravatar::class,
         'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
-        'AlsRpt' => App\Utility\Facades\AlsRpt::class,
+        'AmtAlsRpt' => App\Utility\Facades\AmtAlsRpt::class,
         'Wck' => App\Utility\Facades\Wck::class,
         'AmtCell' => App\Utility\Facades\AmtCell::class,
 

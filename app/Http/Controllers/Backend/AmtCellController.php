@@ -34,7 +34,8 @@ class AmtCellController extends Controller
             'step' => (int) $request->get('step'),
         ]);
 
-        $str = AC::setStr($cell->statement)->convertToStatment();
+        AC::setStr($cell->statement)->convertToStatment();
+        
         $standards = AC::getStandards();
 
         $cell->standards()->sync(array_pluck($standards->toArray(), 'id'));

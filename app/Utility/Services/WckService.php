@@ -26,4 +26,42 @@ class WckService
 
         return false;
     }
+
+    public function convertJson2Utf8($value)
+    {
+        $data = json_decode($value, true);
+
+        if (!is_array($data)) {
+            return $value;
+        }
+
+        array_walk_recursive($data, function(&$value, $key) {
+            if(is_string($value)) {
+                $value = urlencode($value);
+            }
+        });
+        
+        return urldecode(json_encode($data));
+    }
+
+    public function extractValue2JsonUtf8($data)
+    {   
+        $new = [];
+        foreach ($data as $key => $val) {
+            $new[urlencode($key)] = urlencode($val);
+        }
+
+        return urldecode(json_encode($new));
+    }
+
+    public function calculateAverageLevel(array $arr)
+    {
+        $sum = 0;
+
+        foreach ($arr as $val) {
+            $sum += $val;
+        }
+
+        return floor($sum/count($arr));
+    }
 }

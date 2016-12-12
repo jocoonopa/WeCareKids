@@ -20,6 +20,7 @@
     @foreach ($amt->groups as $group)
     <div class="my-group" style="width: 400px; float: left;">
         <h4>
+            <small>{{$group->id}}:</small>
             <small>
             {{ 26 > mb_strlen($group->content) ? $group->content : (mb_substr($group->content, 0, 26) . '...') }}</small>
         </h4>
@@ -31,6 +32,7 @@
                     <tr>
                         <td>
                             {{$cell->level}}
+                            <span class="label label-warning">{{$cell->id}}</span>
                             <span class="badge">{{$cell->league_id}}</span>
                         </td>
                         <td class="my-background"><div style="width:130px;height: 50px;"></div></td>
@@ -39,6 +41,7 @@
                     @else
                     <tr>
                         <td>{{$cell->level}}
+                            <span class="label label-warning">{{$cell->id}}</span>
                             <span class="badge">{{$cell->league_id}}</span>
                         </td>
 
@@ -85,34 +88,4 @@ $(function () {
     $('#my-container').css('width', (count + 1) * (400 + 40));
 })
 </script>
-
-{{-- <script>
-$(function () {
-    var i = 0;
-    var height = 0;
-    var $divs = [];
-    
-    $('.my-group').each(function () {
-        i ++;
-        $div = $(this);
-
-        if ($div.height() > height) {
-            height = $div.height();
-        }
-
-        $divs.push($div);
-        
-        if (i > 2) {
-            i = 0;
-
-            for (var k = 0; k < 3; k ++) {
-                $divs[k].find('table').height(height);
-            }
-
-            height = 0;
-            $divs = [];
-        }
-    });
-});
-</script> --}}
 @endpush

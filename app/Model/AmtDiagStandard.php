@@ -2,7 +2,10 @@
 
 namespace App\Model;
 
+use App\Model\AmtDiag;
+use App\Model\AmtReplicaDiag;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
 class AmtDiagStandard extends Model
 {
@@ -36,6 +39,75 @@ class AmtDiagStandard extends Model
         return $this->belongsTo('App\Model\AmtDiag', 'diag_id', 'id');
     }
 
+    public function isPassWithMacthed(Collection $replicaDiags)
+    {
+        $replicaDiag = $replicaDiags->first(function ($replicaDiag) { 
+            return $this->diag_id === $replicaDiag->diag_id; 
+        });
+
+        return $this->isPass($replicaDiag);
+    }
+
+    public function isPass(AmtReplicaDiag $replicaDiag)
+    {
+        switch ($this->diag->type)
+        {
+            case AmtDiag::TYPE_SWITCH_ID:
+                return $this->procSwitch($replicaDiag);
+            break;
+
+            case AmtDiag::TYPE_SLIDER_ID:
+                return $this->procRange($replicaDiag);
+            break;
+
+            case AmtDiag::TYPE_RADIO_ID:
+                return $this->procRadio($replicaDiag);
+            break;
+
+            default:
+                return false;
+            break;
+        }
+
+        return false;
+    }
+
+    public function procSwitch(AmtReplicaDiag $replicaDiag)
+    {
+        return (bool) json_decode($replicaDiag->value) === (bool) json_decode($this->condition_value);
+    }
+
+    public function procRange(AmtReplicaDiag $replicaDiag)
+    {
+        $conditions = json_decode($this->condition_value, true);
+        $answer = json_decode($replicaDiag->value);
+
+        $min = array_get($conditions, 'm');
+        $max = array_get($conditions, 'M');
+
+        if (!is_null($min)) {
+            if ((int) $answer < (int) $min) {
+                return false;
+            }
+        }
+
+        if (!is_null($max)) {
+            if ((int) $answer > (int) $max) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public function procRadio(AmtReplicaDiag $replicaDiag)
+    {
+        $condition = head(json_decode($this->condition_value, true));
+        $answer = head(json_decode($replicaDiag->value, true));
+        
+        return $answer === $condition;
+    }
+
     public function getCondDesc()
     {
         switch($this->diag->type)
@@ -55,7 +127,7 @@ class AmtDiagStandard extends Model
                 }
 
                 if (!is_null($max)) {
-                    $output .= "{$max}<=,";
+                    $output .= "<={$max},";
                 }
 
                 return substr($output, 0, -1);

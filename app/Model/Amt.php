@@ -13,7 +13,7 @@ class Amt extends Model
     {
         return $this->belongsTo('App\Model\User', 'creater_id', 'id');
     }
-
+    
     public function groups()
     {
         return $this->hasMany('App\Model\AmtDiagGroup', 'amt_id', 'id');
@@ -22,5 +22,10 @@ class Amt extends Model
     public function diags()
     {
         return $this->hasManyThrough('App\Model\AmtDiag', 'App\Model\AmtDiagGroup', 'amt_id', 'group_id', 'id');
+    }
+
+    public function cells()
+    {
+        return $this->hasManyThrough('App\Model\AmtCell', 'App\Model\AmtDiagGroup', 'amt_id', 'group_id', 'id');
     }
 }

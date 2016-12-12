@@ -56,11 +56,11 @@
                             </div>
                         @endif
 
-                        @if (\App\Model\AmtDiag::TYPE_CHECKBOX_ID === $replicaDiag->diag->type)
+                        @if (\App\Model\AmtDiag::TYPE_THREAD_ID === $replicaDiag->diag->type)
                             @foreach (json_decode($replicaDiag->diag->available_value, true) as $value)
-                                <div class="checkbox">
+                                <div class="radio">
                                     <label>
-                                        <input type="checkbox" name="{{$replicaDiag->id}}[]" value="{{$value}}">
+                                        <input type="radio" name="{{$replicaDiag->id}}[]" value="{{$value}}">
                                         {{$value}} 
                                     </label>
                                 </div>

@@ -8,6 +8,7 @@ class AmtCategory extends Model
 {
     const RECURSIVE_CURRENT_KEY = 'content';
     const RECURSIVE_CHILD_KEY = 'child';
+    const STEP_ROOT_ID = 0;
     const STEP_STAT_ID = 2;
 
     protected $table = 'amt_categorys';
@@ -36,6 +37,21 @@ class AmtCategory extends Model
         return $this->hasMany('App\Model\AmtDiagGroup', 'category_id', 'id');
     }
 
+    public function scopeFindIsFinal($query)
+    {
+        return $query->where('is_final', true);
+    }
+
+    public function scopeFindIsRoot($query)
+    {
+        return $query->where('step', static::STEP_ROOT_ID);
+    }
+
+    public function scopeFindIsStat($query)
+    {
+        return $query->where('step', static::STEP_STAT_ID);
+    }
+
     /**
      * 找出所有屬於該 AmtCategory 且為最末的 AmtCategory(含自己)
      * 
@@ -43,18 +59,20 @@ class AmtCategory extends Model
      * @return \App\Model\AmtCategory $this
      */
     public function findFinals(array &$finals)
-    {
+    {   
         if ($this->isFinal()) {
             $finals[] = $this;
 
             return $this;
         }
 
-        $this->childs()->each(function ($category) use (&$finals) {            
+        return $this->childs()->each(function ($category) use (&$finals) {                
+            if ($category->isFinal()) {
+                $finals[] = $category;
+            }      
+
             return $category->findFinals($finals);
         });
-
-        return $this;
     }
 
     /**
@@ -105,15 +123,5 @@ class AmtCategory extends Model
         }
 
         return $menus;
-    }
-
-    public function scopeFindFinals($query)
-    {
-        return $query->where('is_final', true);
-    }
-
-    public function scopeFindRoots($query)
-    {
-        return $query->where('step', 0);
     }
 }

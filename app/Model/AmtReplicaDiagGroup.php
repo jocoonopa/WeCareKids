@@ -2,6 +2,7 @@
 
 namespace App\Model;
 
+use App\Model\AmtCategory;
 use App\Model\AmtCell;
 use Illuminate\Database\Eloquent\Model;
 
@@ -56,11 +57,11 @@ class AmtReplicaDiagGroup extends Model
      */
     public function getLevel()
     {
-        if (!$this->isDone()) {
+        if (!$this->isFinish()) {
             return NULL;
         }
 
-        if (is_null($this->dir)) {// 方向為空表示並未作答過, 直接帶入預設 level
+        if ($this->isSkip()) {
             return $this->replica->getLevel();
         }
 
@@ -88,6 +89,21 @@ class AmtReplicaDiagGroup extends Model
     public function isDone()
     {
         return static::STATUS_DONE_ID === $this->status;
+    }
+
+    /**
+     * 檢查此 AmtReplicaGroup 是否為被略過
+     * 
+     * @return boolean
+     */
+    public function isSkip()
+    {
+        return static::STATUS_SKIP_ID === $this->status;
+    }
+
+    public function isFinish()
+    {
+        return $this->isSkip() || $this->isDone();
     }
 
     /**

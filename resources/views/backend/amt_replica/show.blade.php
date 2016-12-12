@@ -23,15 +23,23 @@
                         <a href="/backend/amt_replica/{{$replica->id}}/edit" class="pull-right btn btn-default btn-sm">
                             作答
                         </a>
+                        @else
+                        <a href="/backend/amt_als_rpt/{{$replica->report->id}}" class="pull-right btn btn-primary btn-sm">
+                            報表
+                        </a>
                         @endif
                     </h4>
                     <hr>
                     <ul>
                         @foreach ($replica->groups as $replicaGroup)
-                            <li @if ($replicaGroup->isDone()) class="text-success" @endif>
+                            @if ($replicaGroup->isDone())
+                                <li class="text-success">
+                            @elseif ($replicaGroup->isSkip())
+                                <li class="text-warning">
+                            @endif
                                 {{$replicaGroup->id}}:{{$replicaGroup->group->content}}
                                 
-                                @if ($replicaGroup->isDone())                                
+                                @if ($replicaGroup->isDone() or $replicaGroup->isSkip())                                
                                     <span class="badge">
                                         {{ $replicaGroup->getLevel() }}
                                     </span>
@@ -44,7 +52,7 @@
                                 @endif
                             </li>
                             <ul>
-                                @foreach ($replicaGroup->diags()->get() as $replicaDiag)
+                                @foreach ($replicaGroup->diags as $replicaDiag)
                                     <li @if (!is_null($replicaDiag->value)) class="text-success" @endif>
                                         {{ "{$replicaDiag->id}:{$replicaDiag->diag->description}" }}
                                         

@@ -13,6 +13,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
+        Commands\RepairCellStandard::class,
         Commands\RepairCell::class,
         Commands\RepairDiag::class,
         Commands\CopyGroup::class,

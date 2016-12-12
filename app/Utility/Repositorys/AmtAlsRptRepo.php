@@ -2,7 +2,7 @@
 
 namespace App\Utility\Repositorys;
 
-class AlsRptRepo
+class AmtAlsRptRepo
 {
    
 }

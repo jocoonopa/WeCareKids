@@ -1,0 +1,25 @@
+.analyze-border {
+    border-style: solid;
+    border-color: #000;
+    border-width: 1px;
+}
+.analyze-border td {
+    text-align: center;
+    border: none !important;
+}
+
+.amt-compare-td {
+    vertical-align: middle !important;
+}
+
+.amt-greater-td {
+    background-color:#ef9a9a; color:#424242;
+}
+
+.amt-equal-td {
+    background-color:#FFCC80; color:#424242;
+}
+
+.amt-worse-td {
+    background-color:#81D4FA; color:#424242;
+}

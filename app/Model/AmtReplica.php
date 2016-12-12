@@ -57,57 +57,18 @@ class AmtReplica extends Model
         return $this->belongsTo('App\Model\AmtAlsRpt', 'report_id', 'id');
     }
 
-    public function scopeFindPendingDiagGroups($query)
+    public function findPendingDiagGroups()
     {
         return $this->groups()->where('status', static::STATUS_ORIGIN_ID);
     }
 
-    public function scopeFindGroupsByCategory($query, AmtCategory $category)
+    public function findGroupsByCategory($final)
     {
         return $this->groups()
-            ->leftJoin('amt_diag_groups', 'amt_replica_diag_groups.group_id', '=', 'amt_diag_groups.id')
-            ->where('amt_diag_groups.category_id', $category->id)
+            ->leftJoin('amt_diag_groups', 'amt_diag_groups.id', '=', 'amt_replica_diag_groups.group_id')
+            ->where('category_id', $final->id)
+            ->get()
         ;
-    }
-
-    /**
-     * 根據傳入的 AmtCategory, 取得此 AmtReplica 所有關聯隸屬的 AmtReplicaDiagGroup,
-     * 加總 group 的 level後返回平均 level
-     *
-     * @param \App\Model\AmtCategory $category
-     * @return integer
-     */
-    public function getLevelByCategory(AmtCategory $category)
-    {
-        $count = 0;
-
-        /**
-         * 計算的 level
-         * 
-         * @var integer
-         */
-        $level = 0;
-
-        /**
-         * 存放取得的最末 AmtCategory 
-         * 
-         * @var array [\App\Model\AmtCategory]
-         */
-        $finals = [];
-
-        // 透過 \App\Model\AmtCategory::findFinals() 找尋並儲存最末分類
-        $category->findFinals($finals);
-        
-        foreach ($finals as $final) {
-            $groups = static::findGroupsByCategory($final)->get();
-
-            $groups->each(function ($group) use (&$level, &$count) {
-                $count ++;
-                $level += $group->getLevel();
-            });
-        }
-        
-        return 0 === $count ? 0 : floor($level/$count);
     }
 
     /**

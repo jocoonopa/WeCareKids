@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Utility\Services\AlsRptService;
+use App\Utility\Services\AmtAlsRptService;
 use App\Utility\Services\AmtCellService;
 use App\Utility\Services\WckService;
 use Illuminate\Support\ServiceProvider;
@@ -23,8 +23,8 @@ class WckServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind('als_rpt', function ($app) {
-            return new AlsRptService($app->make('App\Utility\Repositorys\AlsRptRepo'));
+        $this->app->bind('amt_als_rpt', function ($app) {
+            return new AmtAlsRptService($app->make('App\Utility\Repositorys\AmtAlsRptRepo'));
         });
 
         $this->app->singleton('wck', function () {
@@ -38,6 +38,6 @@ class WckServiceProvider extends ServiceProvider
 
     public function provides()
     {
-        return ['als_rpt', 'wck', 'amt_cell'];
+        return ['amt_als_rpt', 'wck', 'amt_cell'];
     }
 }
