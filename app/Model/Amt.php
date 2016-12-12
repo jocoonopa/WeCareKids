@@ -18,4 +18,9 @@ class Amt extends Model
     {
         return $this->hasMany('App\Model\AmtDiagGroup', 'amt_id', 'id');
     }
+
+    public function diags()
+    {
+        return $this->hasManyThrough('App\Model\AmtDiag', 'App\Model\AmtDiagGroup', 'amt_id', 'group_id', 'id');
+    }
 }

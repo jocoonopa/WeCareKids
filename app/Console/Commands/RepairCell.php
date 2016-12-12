@@ -19,7 +19,7 @@ class RepairCell extends Command
      *
      * @var string
      */
-    protected $description = '修復Cell的next錯誤';
+    protected $description = '修復Cell的 next/prev 綁定錯誤';
 
     /**
      * Execute the console command.
@@ -28,7 +28,14 @@ class RepairCell extends Command
      */
     public function handle()
     {
-        $this->info("開始修復!\n------------------\n");
+        $this->repairlink();
+
+        return 0;
+    }
+
+    protected function repairLink()
+    {
+        $this->info("開始重新綁定Cell prev/next!\n------------------\n");
         AmtCell::chunk(100, function ($cells) {
             foreach ($cells as $cell) {
                 if ($cell->level < 20) {
@@ -38,6 +45,6 @@ class RepairCell extends Command
                 }
             }
         });
-        $this->info("\n------------------\n完成");
+        $this->info("\n------------------\n綁定完成");
     }
 }

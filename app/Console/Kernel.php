@@ -14,6 +14,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         Commands\RepairCell::class,
+        Commands\RepairDiag::class,
         Commands\CopyGroup::class,
         Commands\CellSeed::class
         // Commands\Inspire::class,
