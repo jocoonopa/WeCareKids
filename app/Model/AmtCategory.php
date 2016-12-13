@@ -93,7 +93,7 @@ class AmtCategory extends Model
     public static function getMenus()
     {
         $menus = [];
-        $categorys = static::findRoots()->get();
+        $categorys = static::findIsRoot()->get();
 
         $categorys->each(function ($category) use (&$menus) {
             static::pushMenus($menus, $category);

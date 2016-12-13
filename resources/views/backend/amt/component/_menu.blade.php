@@ -12,7 +12,7 @@
     </ul>
     @endif
 
-    @if(true === (bool) $category->is_final)
+    @if(true === $category->isFinal())
     <ul>
         @foreach ($category->groups()->where('amt_id', $amt->id)->get() as $group)
         <li>
