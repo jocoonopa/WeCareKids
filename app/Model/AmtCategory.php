@@ -11,6 +11,9 @@ class AmtCategory extends Model
     const STEP_ROOT_ID = 0;
     const STEP_STAT_ID = 2;
 
+    const ID_FEEL_INTEGRATE = 4;
+    const ID_ROUGH_ACTION = 5;
+
     protected $table = 'amt_categorys';
 
     /**
@@ -58,9 +61,9 @@ class AmtCategory extends Model
      * @param  array  &$finals
      * @return \App\Model\AmtCategory $this
      */
-    public function findFinals(array &$finals)
+    public function findFinals(array &$finals, $isInLoop = false)
     {   
-        if ($this->isFinal()) {
+        if ($this->isFinal() && false === $isInLoop) {
             $finals[] = $this;
 
             return $this;
@@ -71,8 +74,21 @@ class AmtCategory extends Model
                 $finals[] = $category;
             }      
 
-            return $category->findFinals($finals);
+            return $category->findFinals($finals, true);
         });
+    }
+
+    public function findPosterity(array &$posteritys)
+    {
+        foreach ($this->childs as $child) {
+            $posteritys[] = $child;
+
+            if (false === $child->isFinal()) {
+                $child->findPosterity($posteritys);
+            }
+        }
+
+        return $this;
     }
 
     /**
@@ -83,6 +99,11 @@ class AmtCategory extends Model
     public function isFinal()
     {
         return true === $this->is_final;
+    }
+
+    public function isStat()
+    {
+        return static::STEP_STAT_ID === $this->step;
     }
 
     /**

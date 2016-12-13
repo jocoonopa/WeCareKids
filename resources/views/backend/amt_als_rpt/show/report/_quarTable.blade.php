@@ -7,10 +7,10 @@
         \App\Model\AlsRptIbCxt::SYMBOL_DODGE => '#BBDEFB'
     ] as $symbol => $color
 )
-<?php $level = $report->cxtBelongs->getQuadrantSumLevel($symbol); ?>
+<?php $quarLevel = array_get($quarLevels, $symbol); ?>
 <?php $loopCursor = 0; ?>
 
-<div class="col-md-6 col-sm-0 col-xs-6">
+<div class="col-md-6 col-sm-0 col-xs-6" style="padding: 0;">
     <table class="table analyze-border" style="margin: 0; padding: 0; background-color: {{$color}}">
     <tbody>
     @if ($symbol === \App\Model\AlsRptIbCxt::SYMBOL_LAND)
@@ -19,7 +19,7 @@
             @for ($j = 0; $j < 5; $j ++)
                 @if ($j === $loopCursor)
                     <td>
-                        @if ($i === $level)
+                        @if ($i === $quarLevel)
                         <i class="fa fa-circle" fa-2x></i>
                         @else
                         <i class="fa fa-circle-o" fa-2x></i>
@@ -40,7 +40,7 @@
             @for ($j = 4; $j >= 0; $j --)
                 @if ($j === $loopCursor)
                     <td>
-                        @if ($i === $level)
+                        @if ($i === $quarLevel)
                         <i class="fa fa-circle" fa-2x></i>
                         @else
                         <i class="fa fa-circle-o" fa-2x></i>
@@ -61,7 +61,7 @@
             @for ($j = 4; $j >= 0; $j --)
                 @if ($j === $loopCursor)
                     <td>
-                        @if ($i === $level)
+                        @if ($i === $quarLevel)
                         <i class="fa fa-circle" fa-2x></i>
                         @else
                         <i class="fa fa-circle-o" fa-2x></i>
@@ -82,7 +82,7 @@
             @for ($j = 0; $j < 5; $j ++)
                 @if ($j === $loopCursor)
                     <td>
-                        @if ($i === $level)
+                        @if ($i === $quarLevel)
                         <i class="fa fa-circle" fa-2x></i>
                         @else
                         <i class="fa fa-circle-o" fa-2x></i>

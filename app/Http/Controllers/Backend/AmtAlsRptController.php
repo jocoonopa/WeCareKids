@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Backend;
 use AmtAlsRpt as AAR;
 use App\Model\AlsRptIbCxt;
 use App\Model\AmtAlsRpt;
-use App\Model\AmtCatgory;
+use App\Model\AmtCategory;
 use Auth;
 use DB;
 use Illuminate\Http\Request;
@@ -50,18 +50,79 @@ class AmtAlsRptController extends Controller
             abort(Response::HTTP_FORBIDDEN, '此報告沒有包含任何資料!');
         }
 
+        DB::beginTransaction();
+        try {
+            $this->bindCxtIfNeedTo($report, $request);
+
+            $defaultLevel = $report->replica->getLevel();
+            $levelStats   = $this->getLevelStats($report);
+            $avgLevel     = Wck::calculateAverageLevel($levelStats);
+            $complexStats = $this->getComplexStats($levelStats, $defaultLevel);
+            $alsData      = is_null($report->cxtBelongs) ? [] : $report->cxtBelongs->getSenseAlsData();
+            $iLevel       = AAR::getLevelByCategory($report, AmtCategory::find(AmtCategory::ID_FEEL_INTEGRATE));
+            $eLevel       = AAR::getLevelByCategory($report, AmtCategory::find(AmtCategory::ID_ROUGH_ACTION));
+            $quarLevels    = $this->getQuadrantSumLevels($report);
+
+            DB::commit();
+
+            return view('backend/amt_als_rpt/show', compact(
+                'report', 
+                'levelStats', 
+                'avgLevel',
+                'complexStats',
+                'alsData',
+                'iLevel',
+                'eLevel',
+                'quarLevels'
+            ));
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            Log::error($e);
+
+            return redirect('/backend/amt_als_rpt')->with('error', "{$e->getMessage()}");
+        }   
+    }
+
+    protected function getQuadrantSumLevels(AmtAlsRpt $report)
+    {
+        if (is_null($report->cxtBelongs)) {
+            return [];
+        }
+
+        $quarLevels = [];
+
+        $symbols = [
+            AlsRptIbCxt::SYMBOL_LAND,
+            AlsRptIbCxt::SYMBOL_SEARCH,
+            AlsRptIbCxt::SYMBOL_SENSITIVE,
+            AlsRptIbCxt::SYMBOL_DODGE
+        ];
+
+        foreach ($symbols as $symbol) {
+            $quarLevels[$symbol] = $report->cxtBelongs->getQuadrantSumLevel($symbol); 
+        }
+
+        return $quarLevels;
+    }
+
+    protected function getLevelStats(AmtAlsRpt $report)
+    {
         $levelStats = [];
-        $complexStats = ['優勢能力' => [], '符合標準' => [], '弱勢能力' => []];
-        $defaultLevel = $report->replica->getLevel();
-
-        $categorys = \App\Model\AmtCategory::findIsStat()->get();
-
+        
+        $categorys = AmtCategory::findIsStat()->get();
+        
         foreach ($categorys as $category) {
             $levelStats[$category->content] = AAR::getLevelByCategory($report, $category);
         }
 
-        $avgLevel = Wck::calculateAverageLevel($levelStats);
+        return $levelStats;
+    }
 
+    protected function getComplexStats(array $levelStats, $defaultLevel)
+    {
+        $complexStats = ['優勢能力' => [], '符合標準' => [], '弱勢能力' => []];
+        
         foreach ($levelStats as $content => $levelStat) {
             if ($levelStat <= $defaultLevel - AmtAlsRpt::ABILITY_COMPARE_THREAD_ID) {
                 $complexStats['弱勢能力'][] = [$content => $levelStat]; 
@@ -78,28 +139,7 @@ class AmtAlsRptController extends Controller
             $complexStats['符合標準'][] = [$content => $levelStat];
         }
 
-        DB::beginTransaction();
-        try {
-            $this->bindCxtIfNeedTo($report, $request);
-
-            $alsData = is_null($report->cxtBelongs) ? [] : $report->cxtBelongs->getSenseAlsData();
-
-            DB::commit();
-
-            return view('backend/amt_als_rpt/show', compact(
-                'report', 
-                'levelStats', 
-                'avgLevel',
-                'complexStats',
-                'alsData'
-            ));
-        } catch (\Exception $e) {
-            DB::rollback();
-
-            Log::error($e);
-
-            return redirect('/backend/amt_als_rpt')->with('error', "{$e->getMessage()}");
-        }   
+        return $complexStats;
     }
 
     protected function findMapCategory($categorys, $id)

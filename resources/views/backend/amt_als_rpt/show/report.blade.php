@@ -10,9 +10,10 @@
     
     @include('backend/amt_als_rpt/show/report/_summary')
     
-    @include('backend/amt_als_rpt/show/report/_quarDesc')
-    
-    @include('backend/amt_als_rpt/show/report/_quarTable')
+    @if (!is_null($report->cxtBelongs))
+        @include('backend/amt_als_rpt/show/report/_quarDesc')
+        @include('backend/amt_als_rpt/show/report/_quarTable')
+    @endif
     
     @include('backend/amt_als_rpt/show/report/_amtTable')
     

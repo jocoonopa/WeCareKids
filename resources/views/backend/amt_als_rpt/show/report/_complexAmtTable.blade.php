@@ -1,281 +1,55 @@
-<h1 class="text-center" style="color:#f0ad4e;"><strong>智能運動能力等級：Level 8</strong></h1>
-<p class="lead">智能運動為孩子的感覺統合與粗大動作之發展狀況，從孩子大腦整合與肢體協調的了解孩子在體能方面的發展潛能。
-    <br/> 您的孩子在智能運動項目為Level 8，發展年齡為3y7m-4y0m，與您的實際年齡相比，發展年齡與實際年齡落差小於6個月：能力相符合，應持續給予相關活動，以維持智能運動的整體發展。
+<?php $ieLevel = floor(($iLevel + $eLevel)/2);
+?>
+<h1 class="text-center" style="color:#f0ad4e;">
+    <strong class="text-danger">智能運動能力等級：Level {{ $ieLevel}}</strong>
+</h1>
+<p class="lead text-danger">智能運動為孩子的感覺統合與粗大動作之發展狀況，從孩子大腦整合與肢體協調的了解孩子在體能方面的發展潛能。
+    <br/> 您的孩子在智能運動項目為Level {{$ieLevel}}，發展年齡為3y7m-4y0m，與您的實際年齡相比，發展年齡與實際年齡落差小於6個月：能力相符合，應持續給予相關活動，以維持智能運動的整體發展。
 </p>
 <br/>
-<h1 class="text-center"><strong>感觉统合</strong></h1>
+
+{{-- 感觉统合 --}}
+<h1 class="text-center">
+    <strong>感觉统合</strong>
+</h1>
 <p class="lead">感覺統合是大腦神經系統組織、詮釋周遭環境的感覺訊息，讓我們對環境刺激有正確的認識後，才能對外界做適當的互動和學習。若我們對環境的訊息接收不當，易出現感覺調節困難、專注力不集中、學習困難等狀況。</p>
 <div class="table-responsive text-center">
-    <h2>
-        <table class="table table-bordered">
-            <thead>
-                <th>評測能力</th>
-                <th colspan=2>評測項目</th>
-                <th>實際能力表現</th>
-                <th>實際能力等級</th>
-                <th>同齡能力等級</th>
-            </thead>
-            <tbody>
-                <tr>
-                    <td rowspan=4>視覺</td>
-                    <td colspan=2>惯用侧</td>
-                    <td>
-                    </td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td colspan=2>脸部肌肉</td>
-                    <td>
-                    </td>
-                    <td>
-                    </td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td colspan=2>追視</td>
-                    <td>
-                    </td>
-                    <td>
-                    </td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td colspan=2>聚焦</td>
-                    <td>
-                    </td>
-                    <td>
-                    </td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>聽覺</td>
-                    <td colspan=2>聽覺整合</td>
-                    <td>
-                    </td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>觸覺</td>
-                    <td colspan=2>觸覺整合</td>
-                    <td>
-                    </td>
-                    <td>
-                    </td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>前庭覺</td>
-                    <td colspan=2>前庭整合</td>
-                    <td>
-                    </td>
-                    <td>
-                    </td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td rowspan=10>本体觉</td>
-                    <td rowspan=5>肌肉力量</td>
-                    <td>未满一岁六个月</td>
-                    <td>
-                    </td>
-                    <td>
-                    </td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>背肌肌力</td>
-                    <td>
-                    </td>
-                    <td>
-                    </td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>腹侧肌力</td>
-                    <td>
-                    </td>
-                    <td>
-                    </td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>上肢抵抗肌力</td>
-                    <td>
-                    </td>
-                    <td>
-                    </td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>躯干肌力</td>
-                    <td>
-                    </td>
-                    <td>
-                    </td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td rowspan=5>雙側協調</td>
-                    <td>未满一岁六个月</td>
-                    <td>
-                    </td>
-                    <td>
-                    </td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>上臂</td>
-                    <td>
-                    </td>
-                    <td>
-                    </td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>前臂</td>
-                    <td>
-                    </td>
-                    <td>
-                    </td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>掌指</td>
-                    <td>
-                    </td>
-                    <td>
-                    </td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>舌头</td>
-                    <td>
-                    </td>
-                    <td>
-                    </td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td colspan=3>動作計畫</td>
-                    <td>
-                    </td>
-                    <td>
-                    </td>
-                    <td></td>
-                </tr>
-            </tbody>
-        </table>
-    </h2>
+    <table class="table table-bordered">
+        <thead>
+            <th>評測能力</th>
+            <th colspan=2>評測項目</th>
+            <th>實際能力表現</th>
+            <th>實際能力等級</th>
+            <th>同齡能力等級</th>
+        </thead>
+        <tbody>
+            @include('backend/amt_als_rpt/show/report/component/tdRec', [
+                'childCategory' => \App\Model\AmtCategory::find(\App\Model\AmtCategory::ID_FEEL_INTEGRATE), 
+                'colSpanCount' => 3
+            ])  
+        </tbody>
+    </table>
 </div>
-<h1 class="text-center"><strong>粗大动作</strong></h1>
+
+{{-- 粗大動作 --}}
+<h1 class="text-center">
+    <strong>粗大动作</strong>
+</h1>
 <p class="lead">動作發展是指孩子的神經與肌肉骨骼系統會隨著年齡的增加，出現簡單至複雜的大肌肉活動，如：嬰幼兒翻身至成人踢球。每個年齡皆有黃金動作發展里程碑，而動作發展的表現不單是肌肉骨骼的成熟，還包括感覺系統整合、心肺功能、心理認知發展等多元系統的互動關係。建議家長應隨時注意孩童的動作發展狀況，以瞭解與掌握孩子全方面的發展</p>
 <div class="table-responsive text-center">
-    <h2>
-        <table class="table table-bordered">
-            <thead>
-                <th>評測能力</th>
-                <th>評測項目</th>
-                <th>實際能力表現</th>
-                <th>實際能力等級</th>
-                <th>同齡能力等級</th>
-            </thead>
-            <tbody>
-                <tr>
-                    <td rowspan=5>姿勢控制</td>
-                    <td>坐姿</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>跪姿</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>站立</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>单脚站立</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>双脚脚尖站立</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td rowspan=6>移位能力</td>
-                    <td>转位</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>爬行</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>行走</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>雙腳跳</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>倒退走</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>單腳跳</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td rowspan=4>协调能力</td>
-                    <td>丟球</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>接球</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>踢球</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>拍球</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-            </tbody>
-        </table>
-    </h2>
+    <table class="table table-bordered">
+        <thead>
+            <th>評測能力</th>
+            <th colspan=2>評測項目</th>
+            <th>實際能力表現</th>
+            <th>實際能力等級</th>
+            <th>同齡能力等級</th>
+        </thead>
+        <tbody>
+            @include('backend/amt_als_rpt/show/report/component/tdRec', [
+                'childCategory' => \App\Model\AmtCategory::find(\App\Model\AmtCategory::ID_ROUGH_ACTION), 
+                'colSpanCount' => 3
+            ])  
+        </tbody>
+    </table>
 </div>

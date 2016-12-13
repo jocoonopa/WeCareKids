@@ -21,7 +21,7 @@
                 @endif
                     <strong>{{$key}}</strong>
                 </td>
-                <td rowspan="{{count($complexStat) + 1}}">系統提供的建議</td>
+                <td class="text-danger" rowspan="{{count($complexStat) + 1}}">系統提供的建議</td>
             </tr>
             @foreach ($complexStat as $stats)
                 @foreach ($stats as $content => $level)
