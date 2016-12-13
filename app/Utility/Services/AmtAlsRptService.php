@@ -82,7 +82,7 @@ class AmtAlsRptService
 
         // 透過 \App\Model\AmtCategory::findFinals() 找尋並儲存最末分類
         $category->findFinals($finals);
-
+        
         foreach ($finals as $final) {
             $groups = $report->replica->findGroupsByCategory($final);
 

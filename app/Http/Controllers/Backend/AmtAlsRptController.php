@@ -82,13 +82,16 @@ class AmtAlsRptController extends Controller
         try {
             $this->bindCxtIfNeedTo($report, $request);
 
+            $alsData = is_null($report->cxtBelongs) ? [] : $report->cxtBelongs->getSenseAlsData();
+
             DB::commit();
 
             return view('backend/amt_als_rpt/show', compact(
                 'report', 
                 'levelStats', 
                 'avgLevel',
-                'complexStats'
+                'complexStats',
+                'alsData'
             ));
         } catch (\Exception $e) {
             DB::rollback();

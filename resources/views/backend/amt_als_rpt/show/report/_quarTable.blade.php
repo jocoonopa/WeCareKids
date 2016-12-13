@@ -1,190 +1,104 @@
 <!-- #################### 感覺處理剖析圖 Begin #################### -->
 <div class="row">
-    <div class="col-md-offset-2 col-md-4 col-sm-0 col-xs-6">
-        <table class="table analyze-border" style="background-color:#FFCDD2;">
-            <tbody>
-                <tr>
-                    <!-- #1-->
-                    <td><i class="fa fa-circle-o" fa-2x></i></td>
+@foreach ([
+        \App\Model\AlsRptIbCxt::SYMBOL_LAND => '#FFCDD2',
+        \App\Model\AlsRptIbCxt::SYMBOL_SEARCH => '#C8E6C9',
+        \App\Model\AlsRptIbCxt::SYMBOL_SENSITIVE => '#D1C4E9',
+        \App\Model\AlsRptIbCxt::SYMBOL_DODGE => '#BBDEFB'
+    ] as $symbol => $color
+)
+<?php $level = $report->cxtBelongs->getQuadrantSumLevel($symbol); ?>
+<?php $loopCursor = 0; ?>
+
+<div class="col-md-6 col-sm-0 col-xs-6">
+    <table class="table analyze-border" style="margin: 0; padding: 0; background-color: {{$color}}">
+    <tbody>
+    @if ($symbol === \App\Model\AlsRptIbCxt::SYMBOL_LAND)
+        @for ($i = 4; $i >= 0; $i --)
+        <tr>
+            @for ($j = 0; $j < 5; $j ++)
+                @if ($j === $loopCursor)
+                    <td>
+                        @if ($i === $level)
+                        <i class="fa fa-circle" fa-2x></i>
+                        @else
+                        <i class="fa fa-circle-o" fa-2x></i>
+                        @endif
+                    </td>
+                @else
                     <td></td>
+                @endif
+            @endfor
+        </tr>
+        <?php $loopCursor ++ ?>
+        @endfor
+    @endif
+
+    @if ($symbol === \App\Model\AlsRptIbCxt::SYMBOL_SEARCH)
+        @for ($i = 4; $i >= 0; $i --)
+        <tr>
+            @for ($j = 4; $j >= 0; $j --)
+                @if ($j === $loopCursor)
+                    <td>
+                        @if ($i === $level)
+                        <i class="fa fa-circle" fa-2x></i>
+                        @else
+                        <i class="fa fa-circle-o" fa-2x></i>
+                        @endif
+                    </td>
+                @else
                     <td></td>
+                @endif
+            @endfor
+        </tr>
+        <?php $loopCursor ++ ?>
+        @endfor
+    @endif
+
+    @if ($symbol === \App\Model\AlsRptIbCxt::SYMBOL_SENSITIVE)
+        @for ($i = 0; $i < 5; $i ++)
+        <tr>
+            @for ($j = 4; $j >= 0; $j --)
+                @if ($j === $loopCursor)
+                    <td>
+                        @if ($i === $level)
+                        <i class="fa fa-circle" fa-2x></i>
+                        @else
+                        <i class="fa fa-circle-o" fa-2x></i>
+                        @endif
+                    </td>
+                @else
                     <td></td>
+                @endif
+            @endfor
+        </tr>
+        <?php $loopCursor ++ ?>
+        @endfor
+    @endif
+
+    @if ($symbol === \App\Model\AlsRptIbCxt::SYMBOL_DODGE)
+        @for ($i = 0; $i < 5; $i ++)
+        <tr>
+            @for ($j = 0; $j < 5; $j ++)
+                @if ($j === $loopCursor)
+                    <td>
+                        @if ($i === $level)
+                        <i class="fa fa-circle" fa-2x></i>
+                        @else
+                        <i class="fa fa-circle-o" fa-2x></i>
+                        @endif
+                    </td>
+                @else
                     <td></td>
-                </tr>
-                <tr>
-                    <!-- #2-->
-                    <td></td>
-                    <td><i class="fa fa-circle-o" fa-2x></i></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <!-- #3-->
-                    <td></td>
-                    <td></td>
-                    <td><i class="fa fa-circle-o" fa-2x></i></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <!-- #4-->
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td><i class="fa fa-circle-o" fa-2x></i></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <!-- #5-->
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td><i class="fa fa-circle-o" fa-2x></i></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    <div class="col-md-4 col-sm-0 col-xs-6">
-        <table class="table analyze-border" style="background-color:#C8E6C9;">
-            <tbody>
-                <tr>
-                    <!-- #1-->
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td><i class="fa fa-circle-o" aria-hidden="true"></i></td>
-                </tr>
-                <tr>
-                    <!-- #2-->
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td><i class="fa fa-circle-o" aria-hidden="true"></i></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <!-- #3-->
-                    <td></td>
-                    <td></td>
-                    <td><i class="fa fa-circle-o" aria-hidden="true"></i></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <!-- #4-->
-                    <td></td>
-                    <td><i class="fa fa-circle-o" aria-hidden="true"></i></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <!-- #5-->
-                    <td><i class="fa fa-circle-o" aria-hidden="true"></i></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+                @endif
+            @endfor
+        </tr>
+        <?php $loopCursor ++ ?>
+        @endfor
+    @endif
+    </tbody>  
+    </table>
 </div>
-<div class="row">
-    <div class="col-md-offset-2 col-md-4 col-sm-0 col-xs-6">
-        <table class="table analyze-border" style="background-color:#D1C4E9;">
-            <tbody>
-                <tr>
-                    <!-- #1-->
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td><i class="fa fa-circle-o" aria-hidden="true"></i></td>
-                </tr>
-                <tr>
-                    <!-- #2-->
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td><i class="fa fa-circle-o" aria-hidden="true"></i></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <!-- #3-->
-                    <td></td>
-                    <td></td>
-                    <td><i class="fa fa-circle-o" aria-hidden="true"></i></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <!-- #4-->
-                    <td></td>
-                    <td><i class="fa fa-circle-o" aria-hidden="true"></i></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <!-- #5-->
-                    <td><i class="fa fa-circle-o" aria-hidden="true"></i></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    <div class="col-md-4 col-sm-0 col-xs-6">
-        <table class="table analyze-border" style="background-color:#BBDEFB;">
-            <tbody>
-                <tr>
-                    <!-- #1-->
-                    <td><i class="fa fa-circle-o" aria-hidden="true"></i></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <!-- #2-->
-                    <td></td>
-                    <td><i class="fa fa-circle-o" aria-hidden="true"></i></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <!-- #3-->
-                    <td></td>
-                    <td></td>
-                    <td><i class="fa fa-circle-o" aria-hidden="true"></i></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <!-- #4-->
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td><i class="fa fa-circle-o" aria-hidden="true"></i></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <!-- #5-->
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td><i class="fa fa-circle-o" aria-hidden="true"></i></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+@endforeach
 </div>
 <br/>
