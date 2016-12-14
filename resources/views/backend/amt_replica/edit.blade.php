@@ -68,7 +68,7 @@
                         @endif
 
                         @if (\App\Model\AmtDiag::TYPE_SLIDER_ID === $replicaDiag->diag->type)
-                            <input type="text" class="slider" data-min="{{json_decode($replicaDiag->diag->available_value, true)['m']}}" data-max="{{json_decode($replicaDiag->diag->available_value, true)['M']}}" data-step="{{json_decode($replicaDiag->diag->available_value, true)['i']}}" name="{{$replicaDiag->id}}" value="" />
+                            <input type="text" class="slider" data-min="{{json_decode($replicaDiag->diag->available_value, true)['m']}}" data-max="{{json_decode($replicaDiag->diag->available_value, true)['M']}}" data-step="{{array_get(json_decode($replicaDiag->diag->available_value, true), 1)}}" name="{{$replicaDiag->id}}" value="" />
                         @endif
                     </div>
                 </div>

@@ -86,13 +86,13 @@ class AmtDiagStandard extends Model
         $max = array_get($conditions, 'M');
 
         if (!is_null($min)) {
-            if ((int) $answer < (int) $min) {
+            if ((float) $answer < (float) $min) {
                 return false;
             }
         }
 
         if (!is_null($max)) {
-            if ((int) $answer > (int) $max) {
+            if ((float) $answer > (float) $max) {
                 return false;
             }
         }

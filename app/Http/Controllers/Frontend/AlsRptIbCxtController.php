@@ -85,7 +85,6 @@ class AlsRptIbCxtController extends Controller
         return redirect("/analysis/r/i/channel/{$channel->id}/cxt/login")->withCookie(Cookie::forget($channel->public_key));
     }
 
-
     public function auth(AlsRptIbChannel $channel, Request $request)
     {
         $validator = $this->validate($request, [
