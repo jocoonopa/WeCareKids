@@ -35,6 +35,16 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Model\Child');
     }
 
+    public function usages()
+    {
+        return $this->morphMany('App\Model\WckUsageRecord', 'usable');
+    }
+
+    public function organization()
+    {
+        return $this->belongsTo('App\Model\Organization');
+    }
+    
     /**
      * The childs that belong to the user.
      */

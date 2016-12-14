@@ -62,6 +62,16 @@ class Child extends Model
         return $this->hasMany('App\Model\AmtReplica', 'child_id', 'id');
     }
 
+    public function usages()
+    {
+        return $this->morphMany('App\Model\WckUsageRecord', 'usable');
+    }
+
+    public function organization()
+    {
+        return $this->belongsTo('App\Model\Organization');
+    }
+
     /**
      * Get the user's date of birth for forms.
      *
