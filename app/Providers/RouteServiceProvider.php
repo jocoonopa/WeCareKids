@@ -34,6 +34,7 @@ class RouteServiceProvider extends ServiceProvider
         Route::model('amt_diag_standard', 'App\Model\AmtDiagStandard');
         Route::model('amt_diag', 'App\Model\AmtDiag');
         Route::model('amt', 'App\Model\Amt');
+        Route::model('organization', 'App\Model\Organization');
         Route::model('child', 'App\Model\Child');
         Route::model('user', 'App\Model\User');
     }

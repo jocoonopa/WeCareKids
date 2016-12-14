@@ -64,7 +64,7 @@ class Child extends Model
 
     public function usages()
     {
-        return $this->morphMany('App\Model\WckUsageRecord', 'usable');
+        return $this->hasMany('App\Model\WckUsageRecord');
     }
 
     public function organization()

@@ -45,6 +45,7 @@
                     <li>
                         <a href="/backend/child"><i class="fa fa-file-text-o"></i>受測者</a>
                     </li>
+                    <li><a href="/backend/organization/1"><i class="fa fa-file-text-o"></i>組織</a></li>
                 </ul>
             </div>
         </div>

@@ -37,7 +37,7 @@ class User extends Authenticatable
 
     public function usages()
     {
-        return $this->morphMany('App\Model\WckUsageRecord', 'usable');
+        return $this->hasMany('App\Model\WckUsageRecord');
     }
 
     public function organization()

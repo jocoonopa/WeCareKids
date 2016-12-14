@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Backend;
 
+use AmtAlsRpt as AAR;
 use App\Http\Requests;
 use App\Model\Amt;
 use App\Model\AmtAlsRpt;
@@ -220,6 +221,9 @@ class AmtReplicaController extends Controller
             if ($replicaCurrentDiagGroup->currentCell->isEmpty()) {
                 $isNotFinish = $this->switchGroup($replica);
             }
+
+            // 扣錢
+            AAR::genUsageRecord($report);
 
             DB::commit();
 

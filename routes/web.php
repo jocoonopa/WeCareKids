@@ -57,5 +57,7 @@ Route::get('/backend/amt_diag_group/{amt_diag_group}/amt_diag_standard/{amt_diag
 Route::post('/backend/amt_diag_group/{amt_diag_group}/amt_diag_standard', 'Backend\AmtDiagStandardController@store');
 Route::put('/backend/amt_diag_group/{amt_diag_group}/amt_diag_standard/{amt_diag_standard}', 'Backend\AmtDiagStandardController@update');
 
+Route::resource('/backend/organization', 'Backend\OrganizationController');
+
 
 

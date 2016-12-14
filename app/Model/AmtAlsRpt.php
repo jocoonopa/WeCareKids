@@ -21,6 +21,11 @@ class AmtAlsRpt extends Model
         return $this->belongsTo('App\Model\User', 'owner_id', 'id');
     }
 
+    public function usages()
+    {
+        return $this->morphMany('App\Model\WckUsageRecord', 'usage');
+    }
+
     public function cxtBelongs()
     {
         return $this->belongsTo('App\Model\AlsRptIbCxt', 'cxt_id', 'id');
@@ -34,5 +39,10 @@ class AmtAlsRpt extends Model
     public function replica()
     {
         return $this->belongsTo('App\Model\AmtReplica', 'replica_id', 'id');
+    }
+
+    public function getUsageDesc()
+    {
+        return '評測';
     }
 }

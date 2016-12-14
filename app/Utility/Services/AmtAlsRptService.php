@@ -5,6 +5,7 @@ namespace App\Utility\Services;
 use App\Model\AmtAlsRpt;
 use App\Model\AmtCategory;
 use App\Model\AmtReplica;
+use App\Model\WckUsageRecord;
 use DB;
 
 // 智能運動能力等級, 粗大動作等敘述留給職治師填寫 
@@ -93,5 +94,21 @@ class AmtAlsRptService
         }
         
         return 0 === $count ? 0 : floor($level/$count);
+    }
+
+    public function genUsageRecord(AmtAlsRpt $report)
+    {
+        $usage = new WckUsageRecord;
+        $usage->user()->associate($report->owner);
+        $usage->child()->associate($report->replica->child);
+        $usage->organization()->associate($report->owner->organization);
+        $usage->usage()->associate($report);
+
+        $usage->save();
+
+        $report->owner->organization->points = $report->owner->organization->points - 1;
+        $report->owner->organization->save();
+
+        return $usage;
     }
 }
