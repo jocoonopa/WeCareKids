@@ -85,7 +85,7 @@ class AlsRptIbChannelController extends Controller
      */
     public function show(AlsRptIbChannel $channel)
     {
-        $this->authorize('view', $channel);
+        //$this->authorize('view', $channel);
 
         return view('backend/als_rpt_ib_channel/show', compact('channel'));
     }
@@ -110,7 +110,7 @@ class AlsRptIbChannelController extends Controller
      */
     public function update(Request $request, AlsRptIbChannel $channel)
     {
-        $this->authorize('update', $channel);
+        //$this->authorize('update', $channel);
 
         try {
             $channel->update([

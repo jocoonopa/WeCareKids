@@ -80,7 +80,7 @@ $(document).ready(function() {
             ctx.fillText(text02, textX02, textY02);
             ctx.font = (fontSize / 2) + "em sans-serif";
             
-            var text03 = "發展年齡約為{{\App\Model\Child::getMonthFromMap($avgLevel)}}個月", // 對應到的年齡
+            var text03 = "發展年齡約為{{\App\Model\Child::getMonthFromMap($avgLevel)}}", // 對應到的年齡
                 textX03 = Math.round((width - ctx.measureText(text03).width) / 2),
                 textY03 = height / 1.4; // + parseInt(ctx.font)* */
             

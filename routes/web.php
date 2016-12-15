@@ -14,6 +14,10 @@ Route::get('/auth/login', 'Auth\LoginController@showLoginForm');
 Route::post('/auth/login', 'Auth\LoginController@login');
 Route::get('/auth/logout', 'Auth\LoginController@logout');
 Auth::routes();
+
+Route::get('/', function () {
+    return redirect('/auth/login');
+});
 Route::get('/login', function (){abort(404);});
 Route::get('/backend/home', 'Backend\AlsRptIbChannelController@index');
 
@@ -58,6 +62,8 @@ Route::post('/backend/amt_diag_group/{amt_diag_group}/amt_diag_standard', 'Backe
 Route::put('/backend/amt_diag_group/{amt_diag_group}/amt_diag_standard/{amt_diag_standard}', 'Backend\AmtDiagStandardController@update');
 
 Route::resource('/backend/organization', 'Backend\OrganizationController');
+
+Route::get('/api/datetime/age', 'Api\DateTimeController@getYMAge');
 
 
 

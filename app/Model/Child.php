@@ -93,6 +93,15 @@ class Child extends Model
         return $this->birthday->diffInYears(Carbon::now());
     }
 
+    public static function getYMAge(\DateTime $dateTime)
+    {
+        $birthday = Carbon::instance($dateTime);
+
+        $diff = Carbon::now()->diff($birthday);
+        
+        return $diff->format('%y歲%m個月');
+    }
+
     public function getLevel(Carbon $dateTime)
     {
         $dayCounts = $this->birthday->diffInDays($dateTime);
@@ -107,8 +116,10 @@ class Child extends Model
     public static function getMonthFromMap($level)
     {
         $levels = array_get(static::$levelMap, (int) $level);
+
+        $days = ($levels[0] + $levels[1])/2;
         
-        return floor(($levels[0] + $levels[1])/60);
+        return static::getYMAge(with(new \DateTime)->modify("-{$days} days"));
     }
 
     public static function getYearMonthRangeFromMap($level)

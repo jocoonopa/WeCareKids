@@ -21,6 +21,7 @@
     <link href="{{ asset("css/bootstrap-datetimepicker.min.css") }}" rel="stylesheet">
     <link href="{{ asset("css/holdon.min.css") }}" rel="stylesheet">
     <link href="{{ asset("css/switchery.min.css") }}" rel="stylesheet">
+    <link href="{{ asset("css/custom.css") }}" rel="stylesheet">
 
     @stack('stylesheets')
 </head>

@@ -1,4 +1,4 @@
-<table class="table table-bordered table-hover table-condensed">
+<table class="als-table table table-bordered table-hover table-condensed">
     <thead style="background-color: #E91E63; color:#fff;">
         <tr>
             <th colspan="2"><strong>项 目</strong></th>

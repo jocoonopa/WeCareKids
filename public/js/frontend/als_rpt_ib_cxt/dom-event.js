@@ -3,14 +3,14 @@ $('#child_birthday').datetimepicker({
     locale: 'zh-cn',
     viewMode: 'years',
     maxDate: moment()
-});
+}).val($('#child_birthday').data('birthday'));
 
 $('#child_birthday').blur(function () {
-    let birthday = new Date($(this).val());
+    $.get('/api/datetime/age?birthday=' + $(this).val(), function (res) {
+        let age = res;
 
-    let age = calculateAge(birthday);
-
-    if (0 < age) {
-        $('#child_age').text(age + '歲');
-    }
+        if (0 < age.length) {
+            $('#child_age').text(age);
+        }
+    }); 
 }).blur();

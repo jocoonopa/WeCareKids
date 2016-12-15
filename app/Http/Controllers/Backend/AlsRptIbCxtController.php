@@ -18,7 +18,7 @@ class AlsRptIbCxtController extends Controller
      */
     public function show(AlsRptIbCxt $cxt)
     {
-        $this->authorize('view', $cxt->channel);
+        //$this->authorize('view', $cxt->channel);
 
         $sums = $cxt->getQuadrantSums();
 

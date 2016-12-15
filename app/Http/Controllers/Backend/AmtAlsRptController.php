@@ -42,9 +42,9 @@ class AmtAlsRptController extends Controller
         |--------------------------------------------------------------------------
         |
         */
-        if (Auth::user()->id !== $report->owner_id) {
-            abort(Response::HTTP_FORBIDDEN);
-        }
+        // if (Auth::user()->id !== $report->owner_id) {
+        //     abort(Response::HTTP_FORBIDDEN);
+        // }
 
         if (is_null($report->replica)) { // Should be move to middleware
             abort(Response::HTTP_FORBIDDEN, '此報告沒有包含任何資料!');
