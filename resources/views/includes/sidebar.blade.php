@@ -36,12 +36,14 @@
                     </li>
                     <li>
                         <a href="/backend/amt_als_rpt"><i class="fa fa-file-text-o"></i>报告</a>
-                    </li>       
+                    </li> 
+                    @if (Auth::user()->is_super)      
                     <li>
                         <a href="/backend/amt">
                             <i class="fa fa-file-text-o"></i>赶工爆肝区
                         </a>
                     </li>
+                    @endif
                     <li>
                         <a href="/backend/child"><i class="fa fa-file-text-o"></i>受测者</a>
                     </li>
