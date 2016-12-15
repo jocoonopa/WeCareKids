@@ -4,7 +4,7 @@
     <thead style="background-color:#F5F5F5;color:#424242;">
         <tr>
             <th class="text-center">能力評比</th>
-            <th class="text-center">整體建議</th>
+            <th class="text-center" style="width: 350px;">整體建議</th>
             <th class="text-center">天賦能力</th>
             <th class="text-center">Level</th>
         </tr>
@@ -21,7 +21,26 @@
                 @endif
                     <strong>{{$key}}</strong>
                 </td>
-                <td class="text-danger" rowspan="{{count($complexStat) + 1}}">系統提供的建議</td>
+                <td rowspan="{{count($complexStat) + 1}}">
+                    <?php $strDescs = []; ?>
+                    @foreach ($complexStat as $stats)
+                        @foreach ($stats as $content => $level)
+                            <?php $strDescs[] = $content; ?>
+                        @endforeach
+                    @endforeach
+                    @if('優勢能力' === $key)
+                        孩子的<strong>{{ implode($strDescs, ',') }}</strong>，在測驗中表現良好，可做為重點培育能力。
+                    @endif
+
+                    @if('符合標準' === $key)
+                        孩子的<strong>{{ implode($strDescs, ',') }}</strong>在測驗過程中表現一般，若從生活中多給予練習，可提升整體能力發展。
+                    @endif
+
+                    @if('弱勢能力' === $key)
+                        孩子的<strong>{{ implode($strDescs, ',') }}</strong>，在測驗過程中表現稍落後，建議及早補強，以避免影響學習效率。
+                    @endif
+
+                </td>
             </tr>
             @foreach ($complexStat as $stats)
                 @foreach ($stats as $content => $level)

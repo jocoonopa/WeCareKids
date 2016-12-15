@@ -110,4 +110,22 @@ class Child extends Model
         
         return floor(($levels[0] + $levels[1])/60);
     }
+
+    public static function getYearMonthRangeFromMap($level)
+    {
+        $levels = array_get(static::$levelMap, (int) $level);
+
+        return [
+            static::convertDaysToYearMonth(array_get($levels, 0)),
+            static::convertDaysToYearMonth(array_get($levels, 1)),
+        ];
+    }
+
+    protected static function convertDaysToYearMonth($days)
+    {
+        $years = floor($days / 365);
+        $months = floor(($days % 365)/30);
+
+        return $years > 0 ? "{$years}Y{$months}M" : "{$months}M";
+    }
 }

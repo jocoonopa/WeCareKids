@@ -1,10 +1,25 @@
-<?php $ieLevel = floor(($iLevel + $eLevel)/2);
-?>
+<?php $ieLevel = floor(($iLevel + $eLevel)/2);?>
+<?php $ranges = \App\Model\Child::getYearMonthRangeFromMap($ieLevel); ?>
 <h1 class="text-center" style="color:#f0ad4e;">
-    <strong class="text-danger">智能運動能力等級：Level {{ $ieLevel}}</strong>
+    <strong>智能運動能力等級：Level {{ $ieLevel}}</strong>
 </h1>
-<p class="lead text-danger">智能運動為孩子的感覺統合與粗大動作之發展狀況，從孩子大腦整合與肢體協調的了解孩子在體能方面的發展潛能。
-    <br/> 您的孩子在智能運動項目為Level {{$ieLevel}}，發展年齡為3y7m-4y0m，與您的實際年齡相比，發展年齡與實際年齡落差小於6個月：能力相符合，應持續給予相關活動，以維持智能運動的整體發展。
+
+<p class="lead">智能運動為孩子的感覺統合與粗大動作之發展狀況，從孩子大腦整合與肢體協調的了解孩子在體能方面的發展潛能。
+    <br/> 您的孩子在智能運動項目為Level {{$ieLevel}}，發展年齡為
+    {{ array_get($ranges, 0) . '~' . array_get($ranges, 1) }}
+    ，與您的實際年齡相比，發展年齡與實際年齡
+    
+    @if ($ieLevel > $defaultLevel)
+    超前6個月：相較下發展潛力高，應增加給予相關活動，以培育為優勢能力。
+    @endif
+
+    @if ($ieLevel == $defaultLevel)
+    落差小於6個月：相符合，應持續給予相關活動，以維持智能運動的整體發展。
+    @endif
+
+    @if ($ieLevel < $defaultLevel)
+    稍慢6個月：相較下發展落後，應積極給予相關活動，及早補強，避免影響學習效率。
+    @endif
 </p>
 <br/>
 
@@ -18,7 +33,7 @@
         <thead>
             <th>評測能力</th>
             <th colspan=2>評測項目</th>
-            <th>實際能力表現</th>
+            {{-- <th>實際能力表現</th> --}}
             <th>實際能力等級</th>
             <th>同齡能力等級</th>
         </thead>
@@ -41,7 +56,7 @@
         <thead>
             <th>評測能力</th>
             <th colspan=2>評測項目</th>
-            <th>實際能力表現</th>
+            {{-- <th>實際能力表現</th> --}}
             <th>實際能力等級</th>
             <th>同齡能力等級</th>
         </thead>

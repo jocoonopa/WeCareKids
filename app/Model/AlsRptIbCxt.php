@@ -2,6 +2,7 @@
 
 namespace App\Model;
 
+use App\Model\AlsCategory;
 use App\Model\Child;
 use Illuminate\Database\Eloquent\Model;
 
@@ -19,7 +20,7 @@ class AlsRptIbCxt extends Model
     const SYMBOL_SENSITIVE     = '○';
     const SYMBOL_SEARCH        = '§';
     const SYMBOL_DODGE         = '|';
-    
+
     const SENSE_KEY_TASTE      = 'taste';
     const SENSE_KEY_ACTION     = 'action';
     const SENSE_KEY_VISUAL     = 'visual';
@@ -29,6 +30,13 @@ class AlsRptIbCxt extends Model
 
     const SEX_MALE_ID = 1;
     const SEX_FEMALE_ID = 0;
+
+    public static $symbolMap = array(
+        self::SYMBOL_LAND => '低登陸量',
+        self::SYMBOL_SENSITIVE => '感覺敏感',
+        self::SYMBOL_SEARCH => '感覺需求',
+        self::SYMBOL_DODGE => '感覺逃避'
+    ); 
 
     public static $map = array(
         self::SYMBOL_LAND => array(
@@ -203,6 +211,11 @@ class AlsRptIbCxt extends Model
         return $cxt;
     }
 
+    protected function getContent()
+    {
+        return json_decode($this->content, true);
+    }
+    
     public function getContentValue($name)
     {
         $content = json_decode($this->content, true);
@@ -308,8 +321,15 @@ class AlsRptIbCxt extends Model
         return $sums;
     }
 
-    protected function getContent()
+    /**
+     * 取得分數最高的分類
+     * 
+     * @return \App\Model\AlsRptIbCxt
+     */
+    public function getMaxAlsCategory()
     {
-        return json_decode($this->content, true);
+        $sums = $this->getQuadrantSums();
+
+        return AlsCategory::where('symbol', array_first(array_keys($sums, max($sums))))->first();
     }
 }

@@ -2,7 +2,7 @@
     @if (true === $child->isFinal())
     <tr>
         <td colspan="{{$colSpanCount}}">{{$child->content}}</td>
-        <td class="text-danger">NotYet</td>
+        {{-- <td class="text-danger">NotYet</td> --}}
         <td>{{ \AmtAlsRpt::getLevelByCategory($report, $child) }}</td>
         <td>{{ $report->replica->getLevel() }}</td>
     </tr>
@@ -17,7 +17,7 @@
 
         @else
         <tr>
-            <td colspan="{{$colSpanCount}}" rowspan="{{count($posteritys) + 1}}">{{$child->content}}</td>
+            <td colspan="{{$colSpanCount - 1}}" rowspan="{{count($posteritys) + 1}}">{{$child->content}}</td>
         </tr>
         @endif
 

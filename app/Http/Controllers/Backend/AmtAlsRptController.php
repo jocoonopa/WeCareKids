@@ -54,18 +54,24 @@ class AmtAlsRptController extends Controller
         try {
             $this->bindCxtIfNeedTo($report, $request);
 
-            $defaultLevel = $report->replica->getLevel();
-            $levelStats   = $this->getLevelStats($report);
-            $avgLevel     = Wck::calculateAverageLevel($levelStats);
-            $complexStats = $this->getComplexStats($levelStats, $defaultLevel);
-            $alsData      = is_null($report->cxtBelongs) ? [] : $report->cxtBelongs->getSenseAlsData();
-            $iLevel       = AAR::getLevelByCategory($report, AmtCategory::find(AmtCategory::ID_FEEL_INTEGRATE));
-            $eLevel       = AAR::getLevelByCategory($report, AmtCategory::find(AmtCategory::ID_ROUGH_ACTION));
-            $quarLevels    = $this->getQuadrantSumLevels($report);
+            $organiztion          = $report->owner->organization;
+            $defaultLevel         = $report->replica->getLevel();
+            $levelStats           = $this->getLevelStats($report);
+            $avgLevel             = Wck::calculateAverageLevel($levelStats);
+            $complexStats         = $this->getComplexStats($levelStats, $defaultLevel);
+            $alsData              = is_null($report->cxtBelongs) ? [] : $report->cxtBelongs->getSenseAlsData();
+            $iLevel               = AAR::getLevelByCategory($report, AmtCategory::find(AmtCategory::ID_FEEL_INTEGRATE));
+            $eLevel               = AAR::getLevelByCategory($report, AmtCategory::find(AmtCategory::ID_ROUGH_ACTION));
+            $quarLevels           = $this->getQuadrantSumLevels($report);
+            $maxAlsCategory       = is_null($report->cxtBelongs) ? '' : $report->cxtBelongs->getMaxAlsCategory();
+            // $bestAmtCategoryName  = array_first(array_keys($levelStats, max($levelStats)));
+            // $worseAmtCategoryName = array_first(array_keys($levelStats, min($levelStats)));
 
             DB::commit();
 
             return view('backend/amt_als_rpt/show', compact(
+                'organiztion',
+                'defaultLevel',
                 'report', 
                 'levelStats', 
                 'avgLevel',
@@ -73,7 +79,10 @@ class AmtAlsRptController extends Controller
                 'alsData',
                 'iLevel',
                 'eLevel',
-                'quarLevels'
+                'quarLevels',
+                'maxAlsCategory'
+                //'bestAmtCategoryName',
+                //'worseAmtCategoryName'
             ));
         } catch (\Exception $e) {
             DB::rollback();

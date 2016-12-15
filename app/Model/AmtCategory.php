@@ -40,6 +40,11 @@ class AmtCategory extends Model
         return $this->hasMany('App\Model\AmtDiagGroup', 'category_id', 'id');
     }
 
+    public function commentDescs()
+    {
+        return $this->hasMany('App\Model\AmtCommentDesc', 'category_id', 'id');
+    }
+
     public function scopeFindIsFinal($query)
     {
         return $query->where('is_final', true);
