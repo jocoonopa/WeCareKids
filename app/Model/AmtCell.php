@@ -14,7 +14,7 @@ class AmtCell extends Model
     const MIN_LEVEL = 0;
     const MAX_LEVEL = 20;
 
-    public static $threadMap = ['l' => -1, 'e' => 0, 'h' => 1];
+    public static $threadMap = ['l' => -1, 'e' => 0, 'h' => -1];
 
     /**
      * The attributes that aren't mass assignable.
