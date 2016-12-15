@@ -20,7 +20,7 @@ class ChildController extends Controller
      */
     public function index()
     {
-        $childs = Auth::user()->childs()->orderBy('id', 'desc')->get();
+        $childs = Child::latest()->paginate(env('PERPAGE_COUNT', 50));
 
         $amts = Amt::all();
 

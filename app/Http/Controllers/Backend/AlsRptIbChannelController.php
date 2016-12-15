@@ -20,7 +20,8 @@ class AlsRptIbChannelController extends Controller
      */
     public function index()
     {
-        $channels = AlsRptIbChannel::findByCreater(Auth::user())->get();
+        $channels = AlsRptIbChannel::simplePaginate(10);
+        //$channels = AlsRptIbChannel::findByCreater(Auth::user())->get();
 
         return view('backend/als_rpt_ib_channel/index', compact('channels'));
     }

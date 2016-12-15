@@ -42,7 +42,9 @@
                     </tr>
                 @endforeach                    
                 </tbody>
-            </table>            
+            </table>
+
+            {{ $reports->links() }}            
         </div>
     </div>
 </div>

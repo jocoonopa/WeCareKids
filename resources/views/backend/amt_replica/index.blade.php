@@ -59,6 +59,8 @@
                     @endforeach
                 </tbody>
             </table>
+
+            {{ $replicas->links() }}
         </div>
     </div>
 </div>

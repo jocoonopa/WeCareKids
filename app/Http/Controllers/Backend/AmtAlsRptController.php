@@ -22,7 +22,7 @@ class AmtAlsRptController extends Controller
      */
     public function index()
     {
-        $reports = Auth::user()->reports()->orderBy('id', 'desc')->get();
+        $reports = AmtAlsRpt::latest()->paginate(env('PERPAGE_COUNT', 50));
 
         return view('/backend/amt_als_rpt/index', compact('reports'));
     }

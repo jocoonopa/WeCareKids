@@ -18,7 +18,7 @@ class AmtController extends Controller
      */
     public function index(Request $request)
     {
-        $amts = Auth::user()->amts;
+        $amts = Amt::paginate(env('PERPAGE_COUNT', 50));
 
         return view('/backend/amt/index', compact('amts'));
     }

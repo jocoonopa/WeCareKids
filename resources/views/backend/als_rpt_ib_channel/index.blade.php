@@ -16,6 +16,8 @@
             @include('component/flash')
             
             @include('backend/als_rpt_ib_channel/index/table')
+
+            {{ $channels->links() }}
         </div>
     </div>
 </div>
