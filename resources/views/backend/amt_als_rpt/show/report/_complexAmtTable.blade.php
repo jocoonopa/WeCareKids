@@ -9,15 +9,15 @@
     {{ array_get($ranges, 0) . '~' . array_get($ranges, 1) }}
     ，與您的實際年齡相比，發展年齡與實際年齡
     
-    @if ($ieLevel > $defaultLevel)
+    @if ((int) $ieLevel > (int) $defaultLevel)
     超前6個月：相較下發展潛力高，應增加給予相關活動，以培育為優勢能力。
     @endif
 
-    @if ($ieLevel == $defaultLevel)
+    @if ((int) $ieLevel === (int) $defaultLevel)
     落差小於6個月：相符合，應持續給予相關活動，以維持智能運動的整體發展。
     @endif
 
-    @if ($ieLevel < $defaultLevel)
+    @if ((int) $ieLevel < (int) $defaultLevel)
     稍慢6個月：相較下發展落後，應積極給予相關活動，及早補強，避免影響學習效率。
     @endif
 </p>
@@ -32,15 +32,14 @@
     <table class="table table-bordered">
         <thead>
             <th>評測能力</th>
-            <th colspan=2>評測項目</th>
-            {{-- <th>實際能力表現</th> --}}
+            <th colspan="{{ \App\Model\AmtAlsRpt::TOTAL_DEEP_STEP - 1 }}">評測項目</th>
             <th>實際能力等級</th>
             <th>同齡能力等級</th>
         </thead>
         <tbody>
             @include('backend/amt_als_rpt/show/report/component/tdRec', [
                 'childCategory' => \App\Model\AmtCategory::find(\App\Model\AmtCategory::ID_FEEL_INTEGRATE), 
-                'colSpanCount' => 3
+                'colSpanCount' => \App\Model\AmtAlsRpt::TOTAL_DEEP_STEP
             ])  
         </tbody>
     </table>
@@ -55,15 +54,14 @@
     <table class="table table-bordered">
         <thead>
             <th>評測能力</th>
-            <th colspan=2>評測項目</th>
-            {{-- <th>實際能力表現</th> --}}
+            <th colspan="{{ \App\Model\AmtAlsRpt::TOTAL_DEEP_STEP - 1 }}">評測項目</th>
             <th>實際能力等級</th>
             <th>同齡能力等級</th>
         </thead>
         <tbody>
             @include('backend/amt_als_rpt/show/report/component/tdRec', [
                 'childCategory' => \App\Model\AmtCategory::find(\App\Model\AmtCategory::ID_ROUGH_ACTION), 
-                'colSpanCount' => 3
+                'colSpanCount' => \App\Model\AmtAlsRpt::TOTAL_DEEP_STEP
             ])  
         </tbody>
     </table>

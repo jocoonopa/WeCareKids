@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class AmtAlsRpt extends Model
 {
     const ABILITY_COMPARE_THREAD_ID = 2;
+    const TOTAL_DEEP_STEP = 5;
 
     protected $table = 'amt_als_rpts';
 
