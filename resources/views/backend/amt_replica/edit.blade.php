@@ -33,7 +33,7 @@
                             @foreach (json_decode($replicaDiag->diag->available_value, true) as $value)
                                 <div class="radio">
                                     <label>
-                                        <input type="radio" name="{{$replicaDiag->id}}[]" value="{{$value}}" />
+                                        <input type="radio" name="{{$replicaDiag->id}}[]" value="{{$value}}" @if(array_get($answer, $replicaDiag->id) == $value) checked @endif/>
                                         {{$value}}                                           
                                     </label>                                
                                 </div>
@@ -43,14 +43,14 @@
                         @if (\App\Model\AmtDiag::TYPE_SWITCH_ID === $replicaDiag->diag->type)
                             <div class="radio">
                                 <label>
-                                    <input type="radio" name="{{$replicaDiag->id}}" value="1" />
+                                    <input type="radio" name="{{$replicaDiag->id}}" value="1" @if(array_get($answer, $replicaDiag->id) == '1') checked @endif/>
                                     是                                           
                                 </label>                                
                             </div>
 
                             <div class="radio">
                                 <label>
-                                    <input type="radio" name="{{$replicaDiag->id}}" value="0" />
+                                    <input type="radio" name="{{$replicaDiag->id}}" value="0" @if(array_get($answer, $replicaDiag->id) == '0') checked @endif/>
                                     否                                           
                                 </label>                                
                             </div>
@@ -59,8 +59,11 @@
                         @if (\App\Model\AmtDiag::TYPE_THREAD_ID === $replicaDiag->diag->type)
                             @foreach (json_decode($replicaDiag->diag->available_value, true) as $key => $value)
                                 <div class="radio">
-                                    <label>
-                                        <input type="radio" name="{{$replicaDiag->id}}[]" value="{{$key}}">
+                                    <label>                                        
+                                        <?php $arr = is_array(array_get($answer, $replicaDiag->id)) 
+                                            ? array_get($answer, $replicaDiag->id) : []
+                                        ?>
+                                        <input type="radio" name="{{$replicaDiag->id}}[]" value="{{$key}}" @if(in_array($key, $arr)) checked @endif>
                                         {{$value}} 
                                     </label>
                                 </div>
@@ -68,7 +71,7 @@
                         @endif
 
                         @if (\App\Model\AmtDiag::TYPE_SLIDER_ID === $replicaDiag->diag->type)
-                            <input type="text" class="slider" data-min="{{json_decode($replicaDiag->diag->available_value, true)['m']}}" data-max="{{json_decode($replicaDiag->diag->available_value, true)['M']}}" data-step="{{array_get(json_decode($replicaDiag->diag->available_value, true), 1)}}" name="{{$replicaDiag->id}}" value="" />
+                            <input type="text" class="slider" data-min="{{json_decode($replicaDiag->diag->available_value, true)['m']}}" data-max="{{json_decode($replicaDiag->diag->available_value, true)['M']}}" data-step="{{array_get(json_decode($replicaDiag->diag->available_value, true), 1)}}" name="{{$replicaDiag->id}}" value="{{ array_get($answer, $replicaDiag->id, '') }}" />
                         @endif
                     </div>
                 </div>

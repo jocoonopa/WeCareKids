@@ -59,7 +59,14 @@ class AmtReplicaController extends Controller
          */
         $level = $replica->getLevel();
 
-        return view('backend/amt_replica/edit', compact('replica', 'replicaDiags', 'level'));
+        /**
+         * 保留的答案
+         * 
+         * @var array
+         */
+        $answer = json_decode($request->get('answer'), true);
+
+        return view('backend/amt_replica/edit', compact('replica', 'replicaDiags', 'level', 'answer'));
     }
 
     /**
@@ -405,8 +412,17 @@ class AmtReplicaController extends Controller
                 'result_cell_id' => $record->rc
             ]);
 
+            /**
+             * 答案之鍵值對
+             * 
+             * @var array
+             */
+            $answer = [];
+
             // ~3
-            $replicaDiags->each(function ($replicaDiag) use ($record) {
+            $replicaDiags->each(function ($replicaDiag) use ($record, &$answer) {
+                $answer[$replicaDiag->id] = json_decode($replicaDiag->value);
+
                 $replicaDiag->update(['value' => NULL]);
             });
 
@@ -415,7 +431,7 @@ class AmtReplicaController extends Controller
 
             DB::commit();
 
-            return redirect("/backend/amt_replica/{$replica->id}/edit")->with('success', "返回上一題");
+            return redirect("/backend/amt_replica/{$replica->id}/edit?answer=" . urlencode(json_encode($answer)))->with('success', "返回上一題");
         } catch (\Exception $e) {
             DB::rollback();
 

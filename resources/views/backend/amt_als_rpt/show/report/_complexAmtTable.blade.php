@@ -4,23 +4,22 @@
     <strong>智能運動能力等級：Level {{ $ieLevel}}</strong>
 </h1>
 
-<p class="lead">智能運動為孩子的感覺統合與粗大動作之發展狀況，從孩子大腦整合與肢體協調的了解孩子在體能方面的發展潛能。
-    <br/> 您的孩子在智能運動項目為Level {{$ieLevel}}，發展年齡為
-    {{ array_get($ranges, 0) . '~' . array_get($ranges, 1) }}
-    ，與您的實際年齡相比，發展年齡與實際年齡
-    
-    @if ((int) $ieLevel > (int) $defaultLevel)
-    超前6個月：相較下發展潛力高，應增加給予相關活動，以培育為優勢能力。
-    @endif
+@if ((int) $ieLevel > (int) $defaultLevel)
+<?php $theDesc = '超前6個月：相較下發展潛力高，應增加給予相關活動，以培育為優勢能力。' ?>
+@endif
 
-    @if ((int) $ieLevel === (int) $defaultLevel)
-    落差小於6個月：相符合，應持續給予相關活動，以維持智能運動的整體發展。
-    @endif
+@if ((int) $ieLevel === (int) $defaultLevel)
+<?php $theDesc = '落差小於6個月：相符合，應持續給予相關活動，以維持智能運動的整體發展。' ?>
+@endif
 
-    @if ((int) $ieLevel < (int) $defaultLevel)
-    稍慢6個月：相較下發展落後，應積極給予相關活動，及早補強，避免影響學習效率。
-    @endif
-</p>
+@if ((int) $ieLevel < (int) $defaultLevel)
+<?php $theDesc = '稍慢6個月：相較下發展落後，應積極給予相關活動，及早補強，避免影響學習效率。' ?>
+@endif
+
+<p class="lead">智能運動為孩子的感覺統合與粗大動作之發展狀況，從孩子大腦整合與肢體協調的了解孩子在體能方面的發展潛能。</p>
+<p class="lead">您的孩子在智能運動項目為<strong>Level {{$ieLevel}}</strong>，發展年齡為
+    <strong>{{ array_get($ranges, 0) . '~' . array_get($ranges, 1) }}</strong>
+    ，與您的實際年齡相比，發展年齡與實際年齡{{$theDesc}}</p>
 <br/>
 
 {{-- 感觉统合 --}}

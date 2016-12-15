@@ -1,27 +1,18 @@
-@foreach ($childCategory->childs as $child)
-    @if (true === $child->isFinal())
+@foreach ($childCategory->childs as $childCategory)
+    @if (true === $childCategory->isFinal())
     <tr>
-        <td colspan="{{$colSpanCount}}">{{$child->content}}</td>
-        <td>{{ \AmtAlsRpt::getLevelByCategory($report, $child) }}</td>
+        <td colspan="{{$colSpanCount}}">{{$childCategory->content}}</td>
+        <td>{{ \AmtAlsRpt::getLevelByCategory($report, $childCategory) }}</td>
         <td>{{ $report->replica->getLevel() }}</td>
     </tr>
     @else
-    
-    <?php $posteritys = []; $child->findPosterity($posteritys);?>
-
-        @if ($child->isStat())
+        <?php $posteritys = []; $childCategory->findPosterity($posteritys);?>
         <tr>
-            <td rowspan={{count($posteritys) + 1}}>{{$child->content}}</td>
+            <td rowspan="{{count($posteritys) + 1}}">{{$childCategory->content}}</td>
         </tr>
-
-        @else
-        <tr>
-            <td colspan="1" rowspan="{{count($posteritys) + 1}}">{{$child->content}}</td>
-        </tr>
-        @endif
 
         @include('backend/amt_als_rpt/show/report/component/tdRec', [
-            'childCategory' => $child, 
+            'childCategory' => $childCategory, 
             'colSpanCount' => ($colSpanCount - 1)
         ])
     @endif
