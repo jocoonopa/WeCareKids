@@ -7,32 +7,32 @@
         
         <h3>
             <small>
-                <a href="/backend/amt/{{$group->amt->id}}" class="pull-left btn btn-default">大題列表</a>
+                <a href="/backend/amt/{{$group->amt->id}}" class="pull-left btn btn-default">大题列表</a>
             </small>
 
             {{$group->content}}
 
             <small>
-                <a href="/backend/amt_diag_group/{{$group->id}}/amt_diag/create" class="pull-right btn btn-primary">新增問題</a>
+                <a href="/backend/amt_diag_group/{{$group->id}}/amt_diag/create" class="pull-right btn btn-primary">新增问题</a>
             </small>
         </h3>
 
         <a class="pull-right btn btn-info btn-sm" href="{{"/backend/amt_diag_group/" . ($group->id + 1) . "/amt_diag"}}">
-            切換到下一個大題
+            切换到下一个大题
         </a>
         <a class="pull-right btn btn-info btn-sm" href="{{"/backend/amt_diag_group/" . ($group->id - 1) . "/amt_diag"}}">
-            切換到上一個大題
+            切换到上一个大题
         </a>    
 
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>問題流水號</th>
-                    <th>類型</th>
-                    <th>問題描述</th>
+                    <th>问题流水号</th>
+                    <th>类型</th>
+                    <th>问题描述</th>
                     <th>可用值</th>
-                    <th>動作</th>
-                    <th>關聯標準</th>
+                    <th>动作</th>
+                    <th>关联标准</th>
                 </tr>
             </thead>
             <tbody>
@@ -44,7 +44,7 @@
                     <td>{{ $diag->available_value}}</td>
                     <td>
                         <a href="/backend/amt_diag_group/{{$group->id}}/amt_diag/{{$diag->id}}/edit" class="btn btn-default">
-                            編輯
+                            编辑
                         </a>
                     </td>
                     <td>
@@ -57,7 +57,7 @@
                             @endforeach
 
                             <li>
-                                <a class="btn btn-success btn-sm" href="{{"/backend/amt_diag_group/{$group->id}/amt_diag_standard/create"}}">新增標準</a>
+                                <a class="btn btn-success btn-sm" href="{{"/backend/amt_diag_group/{$group->id}/amt_diag_standard/create"}}">新增标准</a>
                             </li>
                         </ul>
                     </td>

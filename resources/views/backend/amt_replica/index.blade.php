@@ -4,7 +4,7 @@
 <div class="right_col" role="main">
     <div class="page-title">
         <div class="title_left">
-            <h3>評測列表</h3>
+            <h3>评测列表</h3>
         </div>
         <div class="clearfix"></div>
     </div>
@@ -16,10 +16,10 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>狀態</th>
+                        <th>状态</th>
                         <th>版本</th>   
-                        <th>受測者姓名</th>
-                        <th>受測時間</th>
+                        <th>受测者姓名</th>
+                        <th>受测时间</th>
                         <th>操作</th>
                     </tr>
                 </thead>
@@ -32,7 +32,7 @@
                             @if ($replica->isDone())
                                 <span class="label label-success">完成</span>
                             @else
-                                <span class="label label-default">未開始</span>
+                                <span class="label label-default">未开始</span>
                             @endif
                         </td>
                         <td>
@@ -45,13 +45,13 @@
                             {{ $replica->created_at->format('Y-m-d H:i:s') }}
                         </td>
                         <td>
-                            <form action="/backend/amt_replica/{{$replica->id}}" method="post" onsubmit="return confirm('確定刪除嗎?');">
+                            <form action="/backend/amt_replica/{{$replica->id}}" method="post" onsubmit="return confirm('确定删除吗?');">
                                 {{csrf_field()}}
                                 
                                 <input type="hidden" name="_method" value="delete">
                                 
                                 <button class="btn btn-danger btn-sm pull-right" >
-                                    刪除
+                                    删除
                                 </button>
                             </form>
                         </td>

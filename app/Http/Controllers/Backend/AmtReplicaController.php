@@ -36,7 +36,7 @@ class AmtReplicaController extends Controller
     }
 
     /**
-     * 顯示題目
+     * 显示题目
      *
      * @param  App\Model\AmtReplica $replica
      * @return \Illuminate\Http\Response
@@ -53,7 +53,7 @@ class AmtReplicaController extends Controller
         }
 
         /**
-         * 此 AmtReplica 的 Child 之預設 Level
+         * 此 AmtReplica 的 Child 之预设 Level
          * 
          * @var integer
          */
@@ -82,7 +82,7 @@ class AmtReplicaController extends Controller
     /**
      * Store a newly created resource in storage.
      * 
-     * @todo 新增的過程之後透過 Observer 模式處理
+     * @todo 新增的过程之后透过 Observer 模式处理
      * 
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -91,61 +91,61 @@ class AmtReplicaController extends Controller
     {
         /* 
         |--------------------------------------------------------------------------
-        | 初始化評測所需實體
+        | 初始化评测所需实体
         |--------------------------------------------------------------------------
         |
-        | 1. 新增 AmtReplica(此Model可當作Amt的複印品, Amt 為評測的模板, AmtReplica 可想像為印製出來的考卷, 
-        |    受測者填寫的是印製出來的考卷)
+        | 1. 新增 AmtReplica(此Model可当作Amt的复印品, Amt 为评测的模板, AmtReplica 可想像为印制出来的考卷, 
+        |    受测者填写的是印制出来的考卷)
         |
-        | 2. 產生對應的 AmtReplicaLog, 此實體用來記錄答題過程 
+        | 2. 产生对应的 AmtReplicaLog, 此实体用来记录答题过程 
         |    @example [{"d": [1,2,3], "l": 7, "s": 0},{...}] 
         |    
-        |    d: AmtReplicaDiag 的 id, l 為 level, s為 AmtReplica 指向之 AmtReplicaDiagGroup 的狀態
+        |    d: AmtReplicaDiag 的 id, l 为 level, s为 AmtReplica 指向之 AmtReplicaDiagGroup 的状态
         | 
-        | 3. 將已經完成的 AmtDiagGroup 選取出來(目前做到 19), 將 groups 和隸屬之 AmtDiag 建立
-        |    對應之 AmtReplicaDiagGroup 和  AmtReplicaDiag
+        | 3. 将已经完成的 AmtDiagGroup 选取出来(目前做到 19), 将 groups 和隶属之 AmtDiag 建立
+        |    对应之 AmtReplicaDiagGroup 和  AmtReplicaDiag
         |
-        | 4. 將新增之 AmtReplica.currentGroup 指向第一個 AmtReplicaDiagGroup,
+        | 4. 将新增之 AmtReplica.currentGroup 指向第一个 AmtReplicaDiagGroup,
         |    AmtReplicaDiagGroup.currentCell 指向 AmtReplicaDiagGroup::findEntryMapCell 
         |    找到的 AmtCell
         |
-        |    AmtReplica(考卷)的第一個 AmtReplicaDiagGroup(大題)
+        |    AmtReplica(考卷)的第一个 AmtReplicaDiagGroup(大题)
         |
         | 5. 新增 AmtAlsReport, AmtReplica.report 指向此AmtAlsReport
         | 
-        | 6. 檢查目前指向的 AmtCell 是否需要作答, 若否進行 switch(), 讓 AmtReplica 指到需要作答的 AmtCell
+        | 6. 检查目前指向的 AmtCell 是否需要作答, 若否进行 switch(), 让 AmtReplica 指到需要作答的 AmtCell
         | 
         */
         DB::beginTransaction();
 
         /**
-         * 此 AmtReplica 是否尚未結束
+         * 此 AmtReplica 是否尚未结束
          * 
          * @var boolean
          */
         $isNotFinish = true;
 
         /**
-         * 欲綁定之 Child 
+         * 欲绑定之 Child 
          * 
          * @var \App\Model\Child
          */
         $child = Child::find($request->get('child_id'));
 
         /**
-         * 欲用來複製的評測模板
+         * 欲用来复制的评测模板
          * 
          * @var \App\Model\Amt
          */
         $amt = Amt::find($request->get('amt_id'));
 
         if (is_null($child) || is_null($amt)) {
-            abort(Response::HTTP_NOT_FOUND, '受測者或評測模板為空!');
+            abort(Response::HTTP_NOT_FOUND, '受测者或评测模板为空!');
         }
 
         try {
             /**
-             * 新增之 AmtReplica 實體, 即問卷
+             * 新增之 AmtReplica 实体, 即问卷
              * 
              * @var \App\Model\AmtReplica
              */
@@ -157,7 +157,7 @@ class AmtReplicaController extends Controller
             $replica->save();
 
             /**
-             * 新增之 AmtReplicaLog 實體, 記錄作答過程, 回到上一題功能需要透過此實體實現
+             * 新增之 AmtReplicaLog 实体, 记录作答过程, 回到上一题功能需要透过此实体实现
              * 
              * @var \App\Model\AmtReplicaLog
              */
@@ -167,7 +167,7 @@ class AmtReplicaController extends Controller
 
             $amt->groups()->each(function ($group) use ($replica) {
                 /**
-                 * 新增之 AmtReplicaDiagGroup 實體, 可想像為建立初始化問卷的大題/題組
+                 * 新增之 AmtReplicaDiagGroup 实体, 可想像为建立初始化问卷的大题/题组
                  * 
                  * @var \App\Model\AmtReplicaDiagGroup
                  */
@@ -177,7 +177,7 @@ class AmtReplicaController extends Controller
                 $replicaGroup->save();
 
                 /**
-                 * 新增之 AmtReplicaDiag 實體, 可想像為建立初始化大題中的題目
+                 * 新增之 AmtReplicaDiag 实体, 可想像为建立初始化大题中的题目
                  *
                  * @var \App\Model\AmtReplicaDiag
                  */
@@ -190,38 +190,38 @@ class AmtReplicaController extends Controller
             });
 
             /**
-             * 取得目前應該給使用者作答之 group
+             * 取得目前应该给使用者作答之 group
              * 
              * @var \App\Model\AmtReplicaDiagGroup
              */
             $replicaCurrentDiagGroup = $replica->groups()->first();
 
             /**
-             * 進入 AmtGroup 透過的 AmtCell
+             * 进入 AmtGroup 透过的 AmtCell
              * 
              * @var \App\Model\AmtCell 
              */
             $entryCell = $replicaCurrentDiagGroup->findEntryMapCell();
 
             if (is_null($entryCell)) {
-                abort(Response::HTTP_FORBIDDEN, '小孩年齡過小, 目前沒有評測必要');
+                abort(Response::HTTP_FORBIDDEN, '小孩年龄过小, 目前没有评测必要');
             }
 
-            //  綁定指向的 Cell
+            //  绑定指向的 Cell
             $replicaCurrentDiagGroup->currentCell()->associate($entryCell);
             $replicaCurrentDiagGroup->save();
 
-            // 更新 replica group 指標
+            // 更新 replica group 指标
             $replica->currentGroup()->associate($replicaCurrentDiagGroup);
             $replica->save();
 
-            // 新增關聯報告實體 AmtAlsRpt
+            // 新增关联报告实体 AmtAlsRpt
             $report = new AmtAlsRpt();
             $report->owner()->associate(Auth::user());
             $report->replica()->associate($replica);
             $report->save();
 
-            // AmtReplica 同時也綁定 AmtAlsRpt, 形成 One To One replation ship
+            // AmtReplica 同时也绑定 AmtAlsRpt, 形成 One To One replation ship
             $replica->reportBelong()->associate($report);
             $replica->save();
 
@@ -229,14 +229,14 @@ class AmtReplicaController extends Controller
                 $isNotFinish = $this->switchGroup($replica);
             }
 
-            // 扣錢
+            // 扣钱
             AAR::genUsageRecord($report);
 
             DB::commit();
 
             return true === $isNotFinish 
-                ? redirect('/backend/child')->with('success', "{$replica->child->name}{$replica->child->getSex()}的評測新增囉!")
-                : redirect('/backend/child')->with('warning', "{$replica->child->name}{$replica->child->getSex()} 此問卷沒有作答必要");
+                ? redirect('/backend/child')->with('success', "{$replica->child->name}{$replica->child->getSex()}的评测新增啰!")
+                : redirect('/backend/child')->with('warning', "{$replica->child->name}{$replica->child->getSex()} 此问卷没有作答必要");
         } catch (\Exception $e) {
             DB::rollback();
 
@@ -247,7 +247,7 @@ class AmtReplicaController extends Controller
     }
 
     /**
-     * 答題
+     * 答题
      *
      * @param  App\Model\AmtReplica  $replica
      * @param  \Illuminate\Http\Request  $request
@@ -257,20 +257,20 @@ class AmtReplicaController extends Controller
     {
         /* 
         |--------------------------------------------------------------------------
-        | 更新作答結果並導向 @edit
+        | 更新作答结果并导向 @edit
         |--------------------------------------------------------------------------
         |
-        | 1. 根據 post 過來的 replica_diag_id 和 值, 更新 AmtReplicaDiag.value
+        | 1. 根据 post 过来的 replica_diag_id 和 值, 更新 AmtReplicaDiag.value
         |
-        | 2. 記錄答題 AmtReplicaLog
+        | 2. 记录答题 AmtReplicaLog
         |
-        | 3. 檢核答案
+        | 3. 检核答案
         |
         | 4. switchCell or switchGroup or finish
         */
         
         /**
-         * 取得目前應該給使用者作答之 group
+         * 取得目前应该给使用者作答之 group
          * 
          * @var \App\Model\AmtReplicaDiagGroup
          */
@@ -293,7 +293,7 @@ class AmtReplicaController extends Controller
                 AmtReplicaDiag::find($diagId)->update(['value' => json_encode($value)]);
             }  
 
-            // 將動作添加至 AmtReplicaLog
+            // 将动作添加至 AmtReplicaLog
             $replica->log->add([
                 'd' => array_keys($pairs), 
                 'l' => $request->get('level'), 
@@ -303,8 +303,8 @@ class AmtReplicaController extends Controller
             ])->save();
 
             /**
-             * 是否有成功切換 Cell 或是 Group, 如果沒有表示該 AmtReplica 已經作答完畢,
-             * 應導向使用者至 @finish
+             * 是否有成功切换 Cell 或是 Group, 如果没有表示该 AmtReplica 已经作答完毕,
+             * 应导向使用者至 @finish
              * 
              * @var bool
              */
@@ -313,8 +313,8 @@ class AmtReplicaController extends Controller
             DB::commit();
 
             return true === $hasSwitched
-                ? redirect("/backend/amt_replica/{$replica->id}/edit")->with('success', '作答狀態更新')
-                : redirect("/backend/amt_replica/{$replica->id}/finish")->with('success', '評測完成!')
+                ? redirect("/backend/amt_replica/{$replica->id}/edit")->with('success', '作答状态更新')
+                : redirect("/backend/amt_replica/{$replica->id}/finish")->with('success', '评测完成!')
             ;
         } catch (\Exception $e) {
             DB::rollback();
@@ -326,7 +326,7 @@ class AmtReplicaController extends Controller
     }
 
     /**
-     * AmtReplica 答題結束的處理
+     * AmtReplica 答题结束的处理
      * 
      * @param  App\Model\AmtReplica  $replica
      * @param  \Illuminate\Http\Request  $request
@@ -335,7 +335,7 @@ class AmtReplicaController extends Controller
     public function finish(AmtReplica $replica, Request $request)
     {
         if (!is_null($replica->findPendingDiagGroups()->first())) {
-            return redirect("/backend/amt_replica/{$replica->id}/edit")->with('error', "評測{$replica}尚未作答完畢!");
+            return redirect("/backend/amt_replica/{$replica->id}/edit")->with('error', "评测{$replica}尚未作答完毕!");
         } 
 
         DB::beginTransaction();
@@ -345,7 +345,7 @@ class AmtReplicaController extends Controller
 
             DB::commit();
 
-            $request->session()->flash('success', "{$replica->child->name}{$replica->child->getSex()}評測完畢囉!");
+            $request->session()->flash('success', "{$replica->child->name}{$replica->child->getSex()}评测完毕啰!");
 
             return view("/backend/amt_replica/finish", compact('replica'));
         } catch (\Exception $e) {
@@ -358,7 +358,7 @@ class AmtReplicaController extends Controller
     }
 
     /**
-     * 回到上一題
+     * 回到上一题
      * 
      * @param  App\Model\AmtReplica $replica
      * @param  \Illuminate\Http\Request $request
@@ -368,34 +368,34 @@ class AmtReplicaController extends Controller
     {
         /*
         |--------------------------------------------------------------------------
-        | 上一步的動作
+        | 上一步的动作
         |--------------------------------------------------------------------------
         |
-        | 1. AmtReplica: AmtReplica.currentGroup 設為 AmtReplicaDiag.group
-        | 2. AmtReplicaGroup: AmtReplicaGroup.level 重設為 log['l'], AmtReplicaGroup.status 重設為 log['s']
-        | 3. AmtReplicaDiag: 把log['d']指到的 AmtReplicaDiag之[value,standard_id] 設為 NULL, level 改為 0
-        | 4. AmtReplicaLog: 最後的紀錄物件將其刪除
+        | 1. AmtReplica: AmtReplica.currentGroup 设为 AmtReplicaDiag.group
+        | 2. AmtReplicaGroup: AmtReplicaGroup.level 重设为 log['l'], AmtReplicaGroup.status 重设为 log['s']
+        | 3. AmtReplicaDiag: 把log['d']指到的 AmtReplicaDiag之[value,standard_id] 设为 NULL, level 改为 0
+        | 4. AmtReplicaLog: 最后的纪录物件将其删除
         */
        
         DB::beginTransaction();
 
         try {
             /**
-             * 最後的動作紀錄
+             * 最后的动作纪录
              * 
              * @var array
              */
             $record = $replica->log->getLast();
 
             /**
-             * 前一次答題時的出題
+             * 前一次答题时的出题
              * 
              * @var \App\Model\AmtReplicaDiag
              */
             $replicaDiags = AmtReplicaDiag::whereIn('id', $record->d)->get();
             
             /**
-             * 前一次答題時 AmtReplica 的 currentGroup
+             * 前一次答题时 AmtReplica 的 currentGroup
              * 
              * @var \App\Model\AmtReplicaDiagGroup
              */
@@ -413,7 +413,7 @@ class AmtReplicaController extends Controller
             ]);
 
             /**
-             * 答案之鍵值對
+             * 答案之键值对
              * 
              * @var array
              */
@@ -431,7 +431,7 @@ class AmtReplicaController extends Controller
 
             DB::commit();
 
-            return redirect("/backend/amt_replica/{$replica->id}/edit?answer=" . urlencode(json_encode($answer)))->with('success', "返回上一題");
+            return redirect("/backend/amt_replica/{$replica->id}/edit?answer=" . urlencode(json_encode($answer)))->with('success', "返回上一题");
         } catch (\Exception $e) {
             DB::rollback();
 
@@ -462,24 +462,24 @@ class AmtReplicaController extends Controller
     {
         $replica->delete();
 
-        return redirect('/backend/amt_replica')->with('success', "{$replica->id}刪除完成!");
+        return redirect('/backend/amt_replica')->with('success', "{$replica->id}删除完成!");
     }
 
     /**
-     * 有成功切換 AmtReplicaDiagGroup 的指向 Cell, return true
+     * 有成功切换 AmtReplicaDiagGroup 的指向 Cell, return true
      *
-     * 若沒有成功切換, 表示該 AmtReplicaDiagGroup 已經完成, AmtReplicaDiagGroup 呼叫 finish(),
-     * 將該 AmtReplicaDiagGroup 狀態更新為完成.
+     * 若没有成功切换, 表示该 AmtReplicaDiagGroup 已经完成, AmtReplicaDiagGroup 呼叫 finish(),
+     * 将该 AmtReplicaDiagGroup 状态更新为完成.
      * 
-     * 並且讓 AmtReplica $this 呼叫 switchGroup() 切換 AmtReplicaDiagGroup.
+     * 并且让 AmtReplica $this 呼叫 switchGroup() 切换 AmtReplicaDiagGroup.
      *
-     * 若切換 AmtReplicaGroup 失敗, 表示此 AmtReplica 已經完成,
-     * AmtReplica 呼叫 finish(), 將 AmtReplica 狀態更新為完成
+     * 若切换 AmtReplicaGroup 失败, 表示此 AmtReplica 已经完成,
+     * AmtReplica 呼叫 finish(), 将 AmtReplica 状态更新为完成
      *
-     * 因此, 回傳 true 時, 要將使用者導向 @edit 繼續作答.
-     * 若回傳 false, 則將使用者導向完成頁面 @finish
+     * 因此, 回传 true 时, 要将使用者导向 @edit 继续作答.
+     * 若回传 false, 则将使用者导向完成页面 @finish
      *
-     * @todo  此 function 日後應該移動至 Service 處理
+     * @todo  此 function 日后应该移动至 Service 处理
      *
      * @param  \App\Model\AmtReplica $replica
      * @param  bool $isPass
@@ -495,8 +495,8 @@ class AmtReplicaController extends Controller
     }
 
     /**
-     * 切換 AmtReplica 指向的 AmtReplicaDiagGroup,
-     * @todo 此 function 日後應該移動至 Service 處理
+     * 切换 AmtReplica 指向的 AmtReplicaDiagGroup,
+     * @todo 此 function 日后应该移动至 Service 处理
      * 
      * @param  \App\Model\AmtReplica $replica
      * @return bool

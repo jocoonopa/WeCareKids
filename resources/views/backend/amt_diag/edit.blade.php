@@ -9,7 +9,7 @@
             {{$group->content}} 
             <small>
                 <a class="pull-right btn btn-default btb-sm" href="{{"/backend/amt_diag_group/" . ($group->id) . "/amt_diag"}}">
-                    回到問題列表
+                    回到问题列表
                 </a>    
             </small>
         </h4>
@@ -29,7 +29,7 @@
             @endforeach
 
             <li>
-                <a class="btn btn-success btn-sm" href="{{"/backend/amt_diag_group/{$group->id}/amt_diag_standard/create"}}">新增標準</a>
+                <a class="btn btn-success btn-sm" href="{{"/backend/amt_diag_group/{$group->id}/amt_diag_standard/create"}}">新增标准</a>
             </li>
         </ul>
     </div>

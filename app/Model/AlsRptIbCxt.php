@@ -32,10 +32,10 @@ class AlsRptIbCxt extends Model
     const SEX_FEMALE_ID = 0;
 
     public static $symbolMap = array(
-        self::SYMBOL_LAND => '低登陸量',
-        self::SYMBOL_SENSITIVE => '感覺敏感',
-        self::SYMBOL_SEARCH => '感覺需求',
-        self::SYMBOL_DODGE => '感覺逃避'
+        self::SYMBOL_LAND => '低登陆量',
+        self::SYMBOL_SENSITIVE => '感觉敏感',
+        self::SYMBOL_SEARCH => '感觉需求',
+        self::SYMBOL_DODGE => '感觉逃避'
     ); 
 
     public static $map = array(
@@ -88,17 +88,17 @@ class AlsRptIbCxt extends Model
     );
 
     public static $senseStandardColumns = [
-        [self::SYMBOL_SENSITIVE, self::SYMBOL_DODGE], // 神經閾值(低)
-        [self::SYMBOL_SEARCH, self::SYMBOL_LAND], // 神經閾值(高)
-        [self::SYMBOL_DODGE, self::SYMBOL_SEARCH],  // 行為反應/自我調節(主動)
-        [self::SYMBOL_LAND, self::SYMBOL_SENSITIVE] // 行為反應/自我調節(被動)
+        [self::SYMBOL_SENSITIVE, self::SYMBOL_DODGE], // 神经阈值(低)
+        [self::SYMBOL_SEARCH, self::SYMBOL_LAND], // 神经阈值(高)
+        [self::SYMBOL_DODGE, self::SYMBOL_SEARCH],  // 行为反应/自我调节(主动)
+        [self::SYMBOL_LAND, self::SYMBOL_SENSITIVE] // 行为反应/自我调节(被动)
     ];
 
     /**
-     * 味覺/嗅覺, 視覺, 動作, 聽覺, 觸覺, 活動量
+     * 味觉/嗅觉, 视觉, 动作, 听觉, 触觉, 活动量
      * 
-     * t => 0 表示閾值低, 1 表示閾值高
-     * a => 0 表示被動, 1 表示主動
+     * t => 0 表示阈值低, 1 表示阈值高
+     * a => 0 表示被动, 1 表示主动
      * ['t' => NULL, 'a' => NULL]
      * 
      * @var array
@@ -158,12 +158,12 @@ class AlsRptIbCxt extends Model
     }
 
     /**
-     * 取得感覺處理型態分析資料
+     * 取得感觉处理型态分析资料
      *
-     * 六大感覺類型 [味觉/嗅觉, 动作, 视觉, 听觉, 触觉, 活动量]
+     * 六大感觉类型 [味觉/嗅觉, 动作, 视觉, 听觉, 触觉, 活动量]
      *
      * [
-     *     '六大感覺-之一': [10, 15, 20, 15] //低登陸量, 感覺尋求, 感覺敏感, 感覺逃避
+     *     '六大感觉-之一': [10, 15, 20, 15] //低登陆量, 感觉寻求, 感觉敏感, 感觉逃避
      * ]
      * @return array
      */
@@ -289,7 +289,7 @@ class AlsRptIbCxt extends Model
     }
 
     /**
-     * 取得剖析量表個象限統計分數
+     * 取得剖析量表个象限统计分数
      * 
      * @example [
      *  '—' => num,
@@ -322,7 +322,7 @@ class AlsRptIbCxt extends Model
     }
 
     /**
-     * 取得分數最高的分類
+     * 取得分数最高的分类
      * 
      * @return \App\Model\AlsRptIbCxt
      */

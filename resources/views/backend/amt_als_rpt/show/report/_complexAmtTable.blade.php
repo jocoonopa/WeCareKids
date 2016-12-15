@@ -1,39 +1,39 @@
 <?php $ieLevel = floor(($iLevel + $eLevel)/2);?>
 <?php $ranges = \App\Model\Child::getYearMonthRangeFromMap($ieLevel); ?>
 <h1 class="text-center" style="color:#f0ad4e;">
-    <strong>智能運動能力等級：Level {{ $ieLevel}}</strong>
+    <strong>智能运动能力等级：Level {{ $ieLevel}}</strong>
 </h1>
 
 @if ((int) $ieLevel > (int) $defaultLevel)
-<?php $theDesc = '超前6個月：相較下發展潛力高，應增加給予相關活動，以培育為優勢能力。' ?>
+<?php $theDesc = '超前6个月：相较下发展潜力高，应增加给予相关活动，以培育为优势能力。' ?>
 @endif
 
 @if ((int) $ieLevel === (int) $defaultLevel)
-<?php $theDesc = '落差小於6個月：相符合，應持續給予相關活動，以維持智能運動的整體發展。' ?>
+<?php $theDesc = '落差小于6个月：相符合，应持续给予相关活动，以维持智能运动的整体发展。' ?>
 @endif
 
 @if ((int) $ieLevel < (int) $defaultLevel)
-<?php $theDesc = '稍慢6個月：相較下發展落後，應積極給予相關活動，及早補強，避免影響學習效率。' ?>
+<?php $theDesc = '稍慢6个月：相较下发展落后，应积极给予相关活动，及早补强，避免影响学习效率。' ?>
 @endif
 
-<p class="lead">智能運動為孩子的感覺統合與粗大動作之發展狀況，從孩子大腦整合與肢體協調的了解孩子在體能方面的發展潛能。</p>
-<p class="lead">您的孩子在智能運動項目為<strong>Level {{$ieLevel}}</strong>，發展年齡為
+<p class="lead">智能运动为孩子的感觉统合与粗大动作之发展状况，从孩子大脑整合与肢体协调的了解孩子在体能方面的发展潜能。</p>
+<p class="lead">您的孩子在智能运动项目为<strong>Level {{$ieLevel}}</strong>，发展年龄为
     <strong>{{ array_get($ranges, 0) . '~' . array_get($ranges, 1) }}</strong>
-    ，與您的實際年齡相比，發展年齡與實際年齡{{$theDesc}}</p>
+    ，与您的实际年龄相比，发展年龄与实际年龄{{$theDesc}}</p>
 <br/>
 
 {{-- 感觉统合 --}}
 <h1 class="text-center">
     <strong>感觉统合</strong>
 </h1>
-<p class="lead">感覺統合是大腦神經系統組織、詮釋周遭環境的感覺訊息，讓我們對環境刺激有正確的認識後，才能對外界做適當的互動和學習。若我們對環境的訊息接收不當，易出現感覺調節困難、專注力不集中、學習困難等狀況。</p>
+<p class="lead">感觉统合是大脑神经系统组织、诠释周遭环境的感觉讯息，让我们对环境刺激有正确的认识后，才能对外界做适当的互动和学习。若我们对环境的讯息接收不当，易出现感觉调节困难、专注力不集中、学习困难等状况。</p>
 <div class="table-responsive text-center">
     <table class="table table-bordered">
         <thead>
-            <th>評測能力</th>
-            <th colspan="{{ \App\Model\AmtAlsRpt::TOTAL_DEEP_STEP - 1 }}">評測項目</th>
-            <th>實際能力等級</th>
-            <th>同齡能力等級</th>
+            <th>评测能力</th>
+            <th colspan="{{ \App\Model\AmtAlsRpt::TOTAL_DEEP_STEP - 1 }}">评测项目</th>
+            <th>实际能力等级</th>
+            <th>同龄能力等级</th>
         </thead>
         <tbody>
             @include('backend/amt_als_rpt/show/report/component/tdRec', [
@@ -44,18 +44,18 @@
     </table>
 </div>
 
-{{-- 粗大動作 --}}
+{{-- 粗大动作 --}}
 <h1 class="text-center">
     <strong>粗大动作</strong>
 </h1>
-<p class="lead">動作發展是指孩子的神經與肌肉骨骼系統會隨著年齡的增加，出現簡單至複雜的大肌肉活動，如：嬰幼兒翻身至成人踢球。每個年齡皆有黃金動作發展里程碑，而動作發展的表現不單是肌肉骨骼的成熟，還包括感覺系統整合、心肺功能、心理認知發展等多元系統的互動關係。建議家長應隨時注意孩童的動作發展狀況，以瞭解與掌握孩子全方面的發展</p>
+<p class="lead">动作发展是指孩子的神经与肌肉骨骼系统会随着年龄的增加，出现简单至复杂的大肌肉活动，如：婴幼儿翻身至成人踢球。每个年龄皆有黄金动作发展里程碑，而动作发展的表现不单是肌肉骨骼的成熟，还包括感觉系统整合、心肺功能、心理认知发展等多元系统的互动关系。建议家长应随时注意孩童的动作发展状况，以了解与掌握孩子全方面的发展</p>
 <div class="table-responsive text-center">
     <table class="table table-bordered">
         <thead>
-            <th>評測能力</th>
-            <th colspan="{{ \App\Model\AmtAlsRpt::TOTAL_DEEP_STEP - 1 }}">評測項目</th>
-            <th>實際能力等級</th>
-            <th>同齡能力等級</th>
+            <th>评测能力</th>
+            <th colspan="{{ \App\Model\AmtAlsRpt::TOTAL_DEEP_STEP - 1 }}">评测项目</th>
+            <th>实际能力等级</th>
+            <th>同龄能力等级</th>
         </thead>
         <tbody>
             @include('backend/amt_als_rpt/show/report/component/tdRec', [

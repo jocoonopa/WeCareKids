@@ -1,18 +1,18 @@
 <h1 class="text-center">
-    <span class="label label-primary">三、測評解讀方法</span>
+    <span class="label label-primary">三、测评解读方法</span>
 </h1>
-<p class="lead">優尼爾的測評標準依據國際兒童發展里程碑為基礎，重新整合測評項目，搜集數千筆大中華區兒童發展資料，完成一套能夠將兒童天賦能力分級的系統「兒童天賦能力等級測評」，説明家長、老師、專業人員以科學化的方式，更深入地瞭解兒童天賦，讓兒童能夠大幅提升學習效率，彌補弱項，優者更優。</p>
+<p class="lead">优尼尔的测评标准依据国际儿童发展里程碑为基础，重新整合测评项目，搜集数千笔大中华区儿童发展资料，完成一套能够将儿童天赋能力分级的系统“儿童天赋能力等级测评”，说明家长、老师、专业人员以科学化的方式，更深入地了解儿童天赋，让儿童能够大幅提升学习效率，弥补弱项，优者更优。</p>
 
 <h1>
-    <strong>一. 實際能力等級-Level</strong>
+    <strong>一. 实际能力等级-Level</strong>
 </h1>
-<p class="lead">代表孩子實際能力的評分等級。家長可以與同齡能力等級相互比較，即可知道孩子目前能力的強弱；老師亦可根據此能力等級，判斷孩子在何種等級的課程內，有較大的成效。</p>
+<p class="lead">代表孩子实际能力的评分等级。家长可以与同龄能力等级相互比较，即可知道孩子目前能力的强弱；老师亦可根据此能力等级，判断孩子在何种等级的课程内，有较大的成效。</p>
 
 <h1>
-    <strong>二. 同齡能力等級</strong>
+    <strong>二. 同龄能力等级</strong>
 </h1>
-<p class="lead">能力等級以年齡為基準，如：10個月-1歲孩子的能力常態符合Level 2之能力標準。各等級符合之年齡如下表：</p>
-<!--####### Level 能力標準 ######-->
+<p class="lead">能力等级以年龄为基准，如：10个月-1岁孩子的能力常态符合Level 2之能力标准。各等级符合之年龄如下表：</p>
+<!--####### Level 能力标准 ######-->
 <div class="row">
     <div class="col-md-3 col-sm-0 col-xs-0"></div>
     <div class="col-md-6 col-sm-12 col-xs-12">
@@ -21,7 +21,7 @@
                 <thead style="background-color: #f0ad4e; color:#fff;">
                     <tr>
                         <th class="text-center"><strong>Level</strong></th>
-                        <th class="text-center"><strong>符合年齡</strong></th>
+                        <th class="text-center"><strong>符合年龄</strong></th>
                     </tr>
                 </thead>
                 <tbody>

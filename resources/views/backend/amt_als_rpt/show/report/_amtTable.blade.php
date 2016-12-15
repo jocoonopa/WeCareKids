@@ -3,18 +3,18 @@
     <table class="table table-bordered">
         <thead>
             <tr class="text-center" style="background-color:#FFB9B9">
-                <th><p>六大感覺</p></th>
+                <th><p>六大感觉</p></th>
                 <th>
-                    1.低登陸量<p>[閾值高-行為被動]</p>
+                    1.低登陆量<p>[阈值高-行为被动]</p>
                 </th>
                 <th>
-                    2.感覺需求<p>[閾值高-行為主動]</p>
+                    2.感觉需求<p>[阈值高-行为主动]</p>
                 </th>
                 <th>
-                    3.感覺敏感<p>[閾值低-行為被動]</p>
+                    3.感觉敏感<p>[阈值低-行为被动]</p>
                 </th>
                 <th>
-                    4.感覺逃避<p>[閾值低-行為主動]</p>
+                    4.感觉逃避<p>[阈值低-行为主动]</p>
                 </th>
             </tr>
         </thead>

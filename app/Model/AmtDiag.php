@@ -13,7 +13,7 @@ class AmtDiag extends Model
      */
     protected $guarded = [];
 
-    public static $types = ['是非', '選項', '範圍', '單選', '閾值'];
+    public static $types = ['是非', '选项', '范围', '单选', '阈值'];
 
     /**
      * Indicates if the model should be timestamped.

@@ -32,20 +32,20 @@
                         <a href="/backend/analysis/r/i/channel"><i class="fa fa-file-text-o"></i>剖析</a>
                     </li>
                     <li>
-                        <a href="/backend/amt_replica"><i class="fa fa-file-text-o"></i>評測</a>
+                        <a href="/backend/amt_replica"><i class="fa fa-file-text-o"></i>评测</a>
                     </li>
                     <li>
-                        <a href="/backend/amt_als_rpt"><i class="fa fa-file-text-o"></i>報告</a>
-                    </li>                    
+                        <a href="/backend/amt_als_rpt"><i class="fa fa-file-text-o"></i>报告</a>
+                    </li>       
                     <li>
                         <a href="/backend/amt">
-                            <i class="fa fa-file-text-o"></i>趕工爆肝區
+                            <i class="fa fa-file-text-o"></i>赶工爆肝区
                         </a>
                     </li>
                     <li>
-                        <a href="/backend/child"><i class="fa fa-file-text-o"></i>受測者</a>
+                        <a href="/backend/child"><i class="fa fa-file-text-o"></i>受测者</a>
                     </li>
-                    <li><a href="/backend/organization/1"><i class="fa fa-file-text-o"></i>組織</a></li>
+                    <li><a href="/backend/organization/1"><i class="fa fa-file-text-o"></i>组织</a></li>
                 </ul>
             </div>
         </div>

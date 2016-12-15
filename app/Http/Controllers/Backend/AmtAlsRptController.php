@@ -38,7 +38,7 @@ class AmtAlsRptController extends Controller
     {
         /*
         |--------------------------------------------------------------------------
-        | 連結 AlsRptIbCxt 
+        | 连结 AlsRptIbCxt 
         |--------------------------------------------------------------------------
         |
         */
@@ -47,7 +47,7 @@ class AmtAlsRptController extends Controller
         // }
 
         if (is_null($report->replica)) { // Should be move to middleware
-            abort(Response::HTTP_FORBIDDEN, '此報告沒有包含任何資料!');
+            abort(Response::HTTP_FORBIDDEN, '此报告没有包含任何资料!');
         }
 
         DB::beginTransaction();
@@ -126,22 +126,22 @@ class AmtAlsRptController extends Controller
 
     protected function getComplexStats(array $levelStats, $defaultLevel)
     {
-        $complexStats = ['優勢能力' => [], '符合標準' => [], '弱勢能力' => []];
+        $complexStats = ['优势能力' => [], '符合标准' => [], '弱势能力' => []];
         
         foreach ($levelStats as $content => $levelStat) {
             if ($levelStat <= $defaultLevel - AmtAlsRpt::ABILITY_COMPARE_THREAD_ID) {
-                $complexStats['弱勢能力'][] = [$content => $levelStat]; 
+                $complexStats['弱势能力'][] = [$content => $levelStat]; 
 
                 continue;
             }
 
             if ($levelStat >= $defaultLevel + AmtAlsRpt::ABILITY_COMPARE_THREAD_ID) {
-                $complexStats['優勢能力'][] = [$content => $levelStat];
+                $complexStats['优势能力'][] = [$content => $levelStat];
 
                 continue;
             }
 
-            $complexStats['符合標準'][] = [$content => $levelStat];
+            $complexStats['符合标准'][] = [$content => $levelStat];
         }
 
         return $complexStats;
@@ -172,7 +172,7 @@ class AmtAlsRptController extends Controller
                 $cxt->update(['report_id' => $report->id]);
                 $child->update(['identifier' => $cxt->child_identifier]);
 
-                $request->session()->flash('success', "已成功綁定連結{$child->name}的剖析量表!");
+                $request->session()->flash('success', "已成功绑定连结{$child->name}的剖析量表!");
             }               
         }
 

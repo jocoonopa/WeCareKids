@@ -9,7 +9,7 @@
 </div>
 
 <div class="form-group">
-    {!! Form::label('sex', '性別') !!}
+    {!! Form::label('sex', '性别') !!}
     <div>
         {!! Form::label('sex', '女') !!}
         {!! Form::radio('sex', 0, (false === (bool) $child->sex)) !!}
@@ -21,5 +21,5 @@
 </div>
 
 <div class="form-group">
-    <button type="submit" class="btn btn-default">確認</button>
+    <button type="submit" class="btn btn-default">确认</button>
 </div>

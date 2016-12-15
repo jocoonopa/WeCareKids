@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <title>Gentellela Alela! | </title>
+    <title>培奇智能运动</title>
     
     <!-- Bootstrap -->
     <link href="{{ asset("css/bootstrap.min.css") }}" rel="stylesheet">
@@ -27,7 +27,7 @@
             <form method="post" action="{{ url('/register') }}">
                 {!! csrf_field() !!}
                 
-                <h1>Create Account</h1>
+                <h1>建立帐号</h1>
                 
                 <div class="form-group has-feedback{{ $errors->has('name') ? ' has-error' : '' }}">
                     <input type="text" class="form-control" name="name" value="{{ old('name') }}" placeholder="Full Name">
@@ -87,8 +87,7 @@
                     <br />
                     
                     <div>
-                        <h1><i class="fa fa-paw"></i> Gentelella Alela!</h1>
-                        <p>©2016 All Rights Reserved. Gentelella Alela! is a Bootstrap 3 template. Privacy and Terms</p>
+                        <h1><i class="fa fa-paw"></i> 培奇智能运动</h1>
                     </div>
                 </div>
             </form>

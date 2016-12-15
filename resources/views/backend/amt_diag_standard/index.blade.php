@@ -7,31 +7,31 @@
         
         <h3>
             <small>
-                <a href="/backend/amt/{{$group->amt->id}}" class="pull-left btn btn-default">大題列表</a>
+                <a href="/backend/amt/{{$group->amt->id}}" class="pull-left btn btn-default">大题列表</a>
             </small>
 
             {{$group->content}}
 
             <small>
-                <a href="/backend/amt_diag_group/{{$group->id}}/amt_diag_standard/create" class="pull-right btn btn-primary">新增標準</a>
+                <a href="/backend/amt_diag_group/{{$group->id}}/amt_diag_standard/create" class="pull-right btn btn-primary">新增标准</a>
             </small>
         </h3>
 
         <a class="pull-right btn btn-info btn-sm" href="{{"/backend/amt_diag_group/" . ($group->id + 1) . "/amt_diag_standard"}}">
-            切換到下一個大題
+            切换到下一个大题
         </a>
         <a class="pull-right btn btn-info btn-sm" href="{{"/backend/amt_diag_group/" . ($group->id - 1) . "/amt_diag_standard"}}">
-            切換到上一個大題
+            切换到上一个大题
         </a>    
 
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>標準流水號</th>
-                    <th>對應題目描述</th>
-                    <th>level range(之後僅用來參考, level 相關處理之後都是cell處理)</th>
-                    <th>條件值</th>
-                    <th>動作</th>
+                    <th>标准流水号</th>
+                    <th>对应题目描述</th>
+                    <th>level range(之后仅用来参考, level 相关处理之后都是cell处理)</th>
+                    <th>条件值</th>
+                    <th>动作</th>
                 </tr>
             </thead>
             <tbody>
@@ -46,7 +46,7 @@
                     <td>{{ $standard->condition_value}}</td>
                     <td>
                         <a href="/backend/amt_diag_group/{{$group->id}}/amt_diag_standard/{{$standard->id}}/edit" class="btn btn-success btn-sm">
-                            編輯
+                            编辑
                         </a>
                     </td>
                 </tr>

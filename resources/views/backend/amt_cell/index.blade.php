@@ -7,23 +7,23 @@
         
         <h3>
             <small>
-                <a href="/backend/amt/{{$group->amt->id}}" class="pull-left btn btn-default">大題列表</a>
+                <a href="/backend/amt/{{$group->amt->id}}" class="pull-left btn btn-default">大题列表</a>
             </small>
 
             <small>
-                <a href="/backend/amt/{{$group->amt->id}}/map" class="pull-left btn btn-default" target="_blank">全圖</a>
+                <a href="/backend/amt/{{$group->amt->id}}/map" class="pull-left btn btn-default" target="_blank">全图</a>
             </small>
         </h3>
 
         <a class="pull-right btn btn-warning btn-sm" href="/backend/amt_diag_group/{{$group->id}}/amt_diag_standard" target="_blank">
-            標準參考視窗
+            标准参考视窗
         </a>
 
         <a class="pull-right btn btn-info btn-sm" href="{{"/backend/amt_diag_group/" . ($group->id + 1) . "/amt_cell"}}">
-            切換到下一個大題
+            切换到下一个大题
         </a>
         <a class="pull-right btn btn-info btn-sm" href="{{"/backend/amt_diag_group/" . ($group->id - 1) . "/amt_cell"}}">
-            切換到上一個大題
+            切换到上一个大题
         </a>    
     </div>
 
@@ -81,7 +81,7 @@ $(function () {
         };
 
         HoldOn.open({
-            message:"儲存中請稍候..."
+            message:"储存中请稍候..."
         });
 
         $.ajax({

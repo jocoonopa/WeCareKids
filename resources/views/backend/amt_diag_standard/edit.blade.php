@@ -9,7 +9,7 @@
             {{$group->content}} 
             <small>
                 <a class="pull-right btn btn-default btb-sm" href="{{"/backend/amt_diag_group/{$group->id}/amt_diag_standard"}}">
-                    回到標準列表
+                    回到标准列表
                 </a>    
             </small>
         </h4>
@@ -20,7 +20,7 @@
         {!! Form::close() !!}
 
         <a class="btn btn-success btn-sm" href="{{"/backend/amt_diag_group/{$group->id}/amt_diag/{$standard->diag->id}/edit"}}">
-            編輯{{ $standard->diag->id }}:{{ $standard->diag->description }}
+            编辑{{ $standard->diag->id }}:{{ $standard->diag->description }}
         </a>        
     </div>
 </div>

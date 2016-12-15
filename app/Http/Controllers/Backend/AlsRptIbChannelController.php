@@ -35,12 +35,12 @@ class AlsRptIbChannelController extends Controller
     {
         /*
         |--------------------------------------------------------------------------
-        | 不用新增頁面
+        | 不用新增页面
         |--------------------------------------------------------------------------
         |
-        | 對老師來說, 最方便的流程應該是在 @index 按下新增按鈕後
-        | 直接 post @store 自動產生一個從今天開始為期七天有效的 channel,
-        | 畫面重整後直接跳出該 channel 的 QRCode Modal.
+        | 对老师来说, 最方便的流程应该是在 @index 按下新增按钮后
+        | 直接 post @store 自动产生一个从今天开始为期七天有效的 channel,
+        | 画面重整后直接跳出该 channel 的 QRCode Modal.
         |
         */
     }
@@ -59,12 +59,12 @@ class AlsRptIbChannelController extends Controller
 
             return redirect('/backend/analysis/r/i/channel')->with('success', "新增成功: {$channel->id}");
         } catch (\Exception $e) {
-            return redirect('/backend/analysis/r/i/channel')->with('error', "新增失敗: {$e->getMessage()}");
+            return redirect('/backend/analysis/r/i/channel')->with('error', "新增失败: {$e->getMessage()}");
         }
     }
 
     /**
-     * 展示呈現該 Channel 對外 QRCode
+     * 展示呈现该 Channel 对外 QRCode
      *
      * @param  \App\Model\AlsRptIbChannel  $channel
      * @param  \Illuminate\Http\Request  $request
@@ -119,9 +119,9 @@ class AlsRptIbChannelController extends Controller
                 'close_at' => Carbon::instance(new \DateTime($request->get('close_at', false)))
             ]);
 
-            return redirect('/backend/analysis/r/i/channel')->with('success', "編輯成功: {$channel->id}");
+            return redirect('/backend/analysis/r/i/channel')->with('success', "编辑成功: {$channel->id}");
         } catch (\Exception $e) {
-            return redirect("/backend/analysis/r/i/channel/{$channel->id}/edit")->with('error', "編輯失敗: {$e->getMessage()}");
+            return redirect("/backend/analysis/r/i/channel/{$channel->id}/edit")->with('error', "编辑失败: {$e->getMessage()}");
         }
     }
 

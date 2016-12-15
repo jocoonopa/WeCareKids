@@ -1,7 +1,7 @@
 <div class="title_left">
     <h3>
         {!! $channel->getStatusDesc(true) !!}
-        評量頻道
+        评量频道
         <small>
             {{ "{$channel->open_at->format('Y-m-d')} ~ {$channel->close_at->format('Y-m-d')}" }}
         </small>

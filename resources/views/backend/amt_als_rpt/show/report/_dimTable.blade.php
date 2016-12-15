@@ -3,9 +3,9 @@
 <table class="table table-bordered table-hover text-center">
     <thead style="background-color:#F5F5F5;color:#424242;">
         <tr>
-            <th class="text-center">能力評比</th>
-            <th class="text-center" style="width: 350px;">整體建議</th>
-            <th class="text-center">天賦能力</th>
+            <th class="text-center">能力评比</th>
+            <th class="text-center" style="width: 350px;">整体建议</th>
+            <th class="text-center">天赋能力</th>
             <th class="text-center">Level</th>
         </tr>
     </thead>
@@ -28,16 +28,16 @@
                             <?php $strDescs[] = $content; ?>
                         @endforeach
                     @endforeach
-                    @if('優勢能力' === $key)
-                        孩子的<strong>{{ implode($strDescs, ',') }}</strong>，在測驗中表現良好，可做為重點培育能力。
+                    @if('优势能力' === $key)
+                        孩子的<strong>{{ implode($strDescs, ',') }}</strong>，在测验中表现良好，可做为重点培育能力。
                     @endif
 
-                    @if('符合標準' === $key)
-                        孩子的<strong>{{ implode($strDescs, ',') }}</strong>在測驗過程中表現一般，若從生活中多給予練習，可提升整體能力發展。
+                    @if('符合标准' === $key)
+                        孩子的<strong>{{ implode($strDescs, ',') }}</strong>在测验过程中表现一般，若从生活中多给予练习，可提升整体能力发展。
                     @endif
 
-                    @if('弱勢能力' === $key)
-                        孩子的<strong>{{ implode($strDescs, ',') }}</strong>，在測驗過程中表現稍落後，建議及早補強，以避免影響學習效率。
+                    @if('弱势能力' === $key)
+                        孩子的<strong>{{ implode($strDescs, ',') }}</strong>，在测验过程中表现稍落后，建议及早补强，以避免影响学习效率。
                     @endif
 
                 </td>

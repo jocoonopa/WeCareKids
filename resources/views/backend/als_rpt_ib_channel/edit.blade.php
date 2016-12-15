@@ -8,7 +8,7 @@
 <div class="right_col" role="main">
     <div class="page-title">
         <div class="title_left">
-            <h3>編輯評量頻道列表{{$channel->id}}</h3>
+            <h3>编辑评量频道列表{{$channel->id}}</h3>
         </div>
         <div class="clearfix"></div>
     </div>

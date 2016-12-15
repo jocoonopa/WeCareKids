@@ -23,21 +23,21 @@
             <li>
                 <a href="/backend/amt_diag_group/{{$group->id}}/amt_diag">
                     <i class="fa fa-file-text-o"></i> 
-                    評測問題列表
+                    评测问题列表
                 </a>
             </li>
 
             <li>
                 <a href="/backend/amt_diag_group/{{$group->id}}/amt_diag_standard">
                     <i class="fa fa-file-text-o"></i>
-                    評測標準列表
+                    评测标准列表
                 </a>
             </li>
 
             <li>
                 <a href="/backend/amt_diag_group/{{$group->id}}/amt_cell">
                     <i class="fa fa-file-text-o"></i>
-                    網格列表
+                    网格列表
                 </a>
             </li>                           
         </ul>

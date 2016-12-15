@@ -4,8 +4,8 @@
 <div class="right_col" role="main">
     <div class="page-title">
         <div class="title_left">
-            <h3>評量頻道列表 
-                <small>您所建立的評量頻道</small>
+            <h3>评量频道列表 
+                <small>您所建立的评量频道</small>
             </h3>
         </div>
         <div class="clearfix"></div>

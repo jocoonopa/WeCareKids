@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <title>Gentellela Alela! | </title>
+    <title>培奇智能运动</title>
     
     <!-- Bootstrap -->
     <link href="{{ asset("css/bootstrap.min.css") }}" rel="stylesheet">
@@ -25,22 +25,9 @@
             <div class="col-middle">
                 <div class="text-center text-center">
                     <h1 class="error-number">403</h1>
-                    <h2>Access denied</h2>
-                    <p>{{ $exception->getMessage() }} <a href="#">Report this?</a>
+                    <h2>非常抱歉，您没有访问此页面的权限</h2>
+                    <p>{{ $exception->getMessage() }}
                     </p>
-                    <div class="mid_center">
-                        <h3>Search</h3>
-                        <form>
-                            <div class="col-xs-12 form-group pull-right top_search">
-                                <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Search for...">
-                                    <span class="input-group-btn">
-                              <button class="btn btn-default" type="button">Go!</button>
-                          </span>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
                 </div>
             </div>
         </div>

@@ -18,14 +18,14 @@
                         <a href="/backend/amt_replica" class="pull-left btn btn-default btn-sm">
                             列表
                         </a>
-                        受測者預設等級:{{ $replica->child->getLevel($replica->created_at) }}
+                        受测者预设等级:{{ $replica->child->getLevel($replica->created_at) }}
                         @if (\App\Model\AmtReplica::STATUS_DONE_ID !== $replica->status)
                         <a href="/backend/amt_replica/{{$replica->id}}/edit" class="pull-right btn btn-default btn-sm">
                             作答
                         </a>
                         @else
                         <a href="/backend/amt_als_rpt/{{$replica->report->id}}" class="pull-right btn btn-primary btn-sm">
-                            報表
+                            报表
                         </a>
                         @endif
                     </h4>

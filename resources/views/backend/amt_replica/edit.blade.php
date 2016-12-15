@@ -27,13 +27,16 @@
                     </div>
                     <div class="panel-body">
                         <div class="form-group">
-                            <label>選項:</label>
+                            <label>选项:</label>
                         </div>
                         @if (\App\Model\AmtDiag::TYPE_RADIO_ID === $replicaDiag->diag->type)
                             @foreach (json_decode($replicaDiag->diag->available_value, true) as $value)
+                                <?php $arr = is_array(array_get($answer, $replicaDiag->id)) 
+                                    ? array_get($answer, $replicaDiag->id) : []
+                                ?>
                                 <div class="radio">
                                     <label>
-                                        <input type="radio" name="{{$replicaDiag->id}}[]" value="{{$value}}" @if(array_get($answer, $replicaDiag->id) == $value) checked @endif/>
+                                        <input type="radio" name="{{$replicaDiag->id}}[]" value="{{$value}}" @if(in_array($value, $arr)) checked @endif/>
                                         {{$value}}                                           
                                     </label>                                
                                 </div>
@@ -50,19 +53,18 @@
 
                             <div class="radio">
                                 <label>
-                                    <input type="radio" name="{{$replicaDiag->id}}" value="0" @if(array_get($answer, $replicaDiag->id) == '0') checked @endif/>
-                                    否                                           
+                                    <input type="radio" name="{{$replicaDiag->id}}" value="0" @if(array_get($answer, $replicaDiag->id) == '0') checked @endif/>否                                           
                                 </label>                                
                             </div>
                         @endif
 
                         @if (\App\Model\AmtDiag::TYPE_THREAD_ID === $replicaDiag->diag->type)
                             @foreach (json_decode($replicaDiag->diag->available_value, true) as $key => $value)
+                                <?php $arr = is_array(array_get($answer, $replicaDiag->id)) 
+                                    ? array_get($answer, $replicaDiag->id) : []
+                                ?>
                                 <div class="radio">
-                                    <label>                                        
-                                        <?php $arr = is_array(array_get($answer, $replicaDiag->id)) 
-                                            ? array_get($answer, $replicaDiag->id) : []
-                                        ?>
+                                    <label>                                                                        
                                         <input type="radio" name="{{$replicaDiag->id}}[]" value="{{$key}}" @if(in_array($key, $arr)) checked @endif>
                                         {{$value}} 
                                     </label>
@@ -77,8 +79,8 @@
                 </div>
                 @endforeach
 
-                <a href="/backend/amt_replica/{{$replica->id}}/prev" class="btn btn-default pull-left">上一題</a>
-                <button type="submit" class="btn btn-default pull-right">下一題</button>
+                <a href="/backend/amt_replica/{{$replica->id}}/prev" class="btn btn-default pull-left">上一题</a>
+                <button type="submit" class="btn btn-default pull-right">下一题</button>
             </form>
         </div>
     </div>

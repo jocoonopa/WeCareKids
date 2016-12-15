@@ -29,7 +29,7 @@
                 <form method="post" action="{{ url('/login') }}">
                     {!! csrf_field() !!}
                     
-                    <h1>We Care Kids</h1>
+                    <h1>培奇智能运动</h1>
                     <div class="form-group has-feedback {{ $errors->has('email') ? ' has-error' : '' }}">
                         <input type="email" class="form-control" name="email" value="{{ old('email') }}" placeholder="Email">
                         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
@@ -51,7 +51,7 @@
                     </div>
                     <div>
                         <input type="submit" class="btn btn-default submit" value="Log in">
-                        <a class="reset_pass" href="{{  url('/password/reset') }}">忘記密碼?</a>
+                        <a class="reset_pass" href="{{  url('/password/reset') }}">忘记密码?</a>
                     </div>
                     
                     <div class="clearfix"></div>

@@ -64,7 +64,7 @@ class AlsRptIbChannel extends Model
     private function _initStatusDescVariable()
     {
         return array(
-            (true === $this->is_open ? '開放' : '關閉'), 
+            (true === $this->is_open ? '开放' : '关闭'), 
             (true === $this->is_open ? 'label-success' : 'label-danger')
         );
     }

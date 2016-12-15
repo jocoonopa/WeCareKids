@@ -99,7 +99,7 @@ class Child extends Model
 
         $diff = Carbon::now()->diff($birthday);
         
-        return $diff->format('%y歲%m個月');
+        return $diff->format('%y岁%m个月');
     }
 
     public function getLevel(Carbon $dateTime)

@@ -5,7 +5,7 @@
     <div class="page-title">
         <div class="title_left">
             <h3>
-                受測者列表
+                受测者列表
             </h3>
         </div>
         <div class="clearfix"></div>
@@ -40,7 +40,7 @@
                         <td>
                             <a href="{{"/backend/child/{$child->id}/edit"}}" class="pull-right btn btn-default">
                                 <i class="fa fa-edit"></i>
-                                編輯
+                                编辑
                             </a>
                             @if (0 === $child->replicas()->where('status', \App\Model\AmtReplica::STATUS_ORIGIN_ID)->count())
                             <form class="form-inline" action="/backend/amt_replica" method="post">
@@ -53,11 +53,11 @@
                                             <option value="{{$amt->id}}">v{{$amt->id}}</option>
                                         @endforeach
                                     </select>       
-                                    <button type="submit" class="btn btn-default">新增評測</button>                                                             
+                                    <button type="submit" class="btn btn-default">新增评测</button>                                                             
                                 </div>                                
                             </form>
                             @else
-                            <a href="/backend/amt_replica/{{$child->replicas()->where('status', \App\Model\AmtReplica::STATUS_ORIGIN_ID)->first()->id}}/edit" class="pull-right btn btn-info" target="_blank">繼續評測</a>
+                            <a href="/backend/amt_replica/{{$child->replicas()->where('status', \App\Model\AmtReplica::STATUS_ORIGIN_ID)->first()->id}}/edit" class="pull-right btn btn-info" target="_blank">继续评测</a>
                             @endif
                         </td>
                     </tr>

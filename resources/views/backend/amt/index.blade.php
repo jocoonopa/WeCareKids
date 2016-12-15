@@ -4,7 +4,7 @@
 <div class="right_col" role="main">
     <div class="page-title">
         <div class="title_left">
-            <h3>評測管理</h3>
+            <h3>评测管理</h3>
         </div>
         <div class="clearfix"></div>
     </div>

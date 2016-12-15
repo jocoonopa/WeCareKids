@@ -8,7 +8,7 @@
                 v{{$amt->id}}
                 <small>
                     <a href="/backend/amt/{{$amt->id}}/map" class="pull-right btn btn-default" target="_blank">
-                        全圖
+                        全图
                     </a>
                 </small>
             </h1>

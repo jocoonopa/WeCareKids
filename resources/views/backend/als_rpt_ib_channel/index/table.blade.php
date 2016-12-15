@@ -16,12 +16,12 @@
     <thead>
         <tr>
             <th>id</th>
-            <th>公鑰</th>
-            <th>狀態</th>
-            <th>開始時間</th>
-            <th>截止時間</th>
-            <th>建立時間</th>
-            <th>動作</th>
+            <th>公钥</th>
+            <th>状态</th>
+            <th>开始时间</th>
+            <th>截止时间</th>
+            <th>建立时间</th>
+            <th>动作</th>
         </tr>
     </thead> 
     <tbody>

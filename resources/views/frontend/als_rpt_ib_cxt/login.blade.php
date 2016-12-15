@@ -9,14 +9,14 @@
             {{csrf_field()}}
 
             <div class="form-group">
-                <label for="phone">電話號碼:</label>
+                <label for="phone">电话号码:</label>
 
-                <input id="phone" name="phone" type="number" class="form-control" plcaeholder="請輸入電話號碼" value="" />
+                <input id="phone" name="phone" type="number" class="form-control" plcaeholder="请输入电话号码" value="" />
             </div>
 
             <div class="form-group">
                 <button type="submit" class="btn btn-default">
-                    確定
+                    确定
                 </button>
             </div>
         </form>

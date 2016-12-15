@@ -9,7 +9,7 @@
             <hr/>
 
             <a id="link" class="btn btn-default btn-large" href="/backend/amt_replica/{{$replica->id}}">
-                前往檢視結果<small id="count"></small>
+                前往检视结果<small id="count"></small>
             </a>
         </div>
     </div>

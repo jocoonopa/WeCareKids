@@ -2,11 +2,11 @@
     <thead>
         <tr>
             <th>id</th>
-            <th>家長姓名</th>
-            <th>家長電話</th>
+            <th>家长姓名</th>
+            <th>家长电话</th>
             <th>信箱</th>
             <th>小朋友姓名</th>
-            <th>私鑰</th>
+            <th>私钥</th>
         </tr>
     </thead>
     <tbody>

@@ -10,9 +10,9 @@
                 <thead>
                     <tr>
                         <th>id</th>
-                        <th>受測人員</th>
-                        <th>家長手機</th>
-                        <th>時間</th>
+                        <th>受测人员</th>
+                        <th>家长手机</th>
+                        <th>时间</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -27,7 +27,7 @@
                             @if ($report->replica)
                                 {{"{$report->replica->child->name}{$report->replica->child->getSex()}"}}
                                 <a href="{{"/backend/amt_replica/{$report->replica->id}"}}" class="btn btn-xs btn-info">
-                                    評測結果
+                                    评测结果
                                 </a>
                             @endif
                         </td>
