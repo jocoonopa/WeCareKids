@@ -28,6 +28,6 @@ class AmtCommentDesc extends Model
 
     public function scopeFindDescByLevel($query, $level)
     {
-        return $query->where('level', $level);
+        return $query->where('level', 0 === (int) $level ? 1 : $level);
     }
 }
