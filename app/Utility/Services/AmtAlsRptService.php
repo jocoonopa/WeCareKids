@@ -55,6 +55,7 @@ class AmtAlsRptService
      * 根據傳入的 AmtCategory, 取得此 AmtReplica 所有關聯隸屬的 AmtReplicaDiagGroup,
      * 加總 group 的 level後返回平均 level
      *
+     * @param \App\Model\AmtAlsRpt $report
      * @param \App\Model\AmtCategory $category
      * @return integer
      */

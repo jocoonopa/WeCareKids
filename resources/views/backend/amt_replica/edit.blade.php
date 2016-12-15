@@ -57,10 +57,10 @@
                         @endif
 
                         @if (\App\Model\AmtDiag::TYPE_THREAD_ID === $replicaDiag->diag->type)
-                            @foreach (json_decode($replicaDiag->diag->available_value, true) as $value)
+                            @foreach (json_decode($replicaDiag->diag->available_value, true) as $key => $value)
                                 <div class="radio">
                                     <label>
-                                        <input type="radio" name="{{$replicaDiag->id}}[]" value="{{$value}}">
+                                        <input type="radio" name="{{$replicaDiag->id}}[]" value="{{$key}}">
                                         {{$value}} 
                                     </label>
                                 </div>

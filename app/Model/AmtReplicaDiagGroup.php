@@ -216,7 +216,7 @@ class AmtReplicaDiagGroup extends Model
         //5a
         if ($this->currentCell->isEnd()) {
             if (!$this->currentCell->isPass($this)) {
-                $this->bindCurrentCell($this->currentCel->prev);
+                $this->bindCurrentCell($this->currentCell->prev);
             }
 
             return false;
@@ -267,7 +267,7 @@ class AmtReplicaDiagGroup extends Model
         //5a
         if ($this->currentCell->isEnd()) {
             if (!$this->currentCell->isPass($this)) {
-                $this->bindCurrentCell($this->currentCel->prev);
+                $this->bindCurrentCell($this->currentCell->prev);
             }
 
             return false;

@@ -235,7 +235,9 @@ class AmtCell extends Model
         
         $child = $replicaGroup->replica->child;
 
-        return $replicaGroup->replica->getLevel() + (array_get(static::$threadMap, $replicaDiag->value) * $this->step);
+        $value = array_first(json_decode($replicaDiag->value, true));
+
+        return $replicaGroup->replica->getLevel() + (array_get(static::$threadMap, $value) * $this->step);
     }
 
     /**
