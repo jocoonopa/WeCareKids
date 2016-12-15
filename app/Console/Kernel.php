@@ -29,7 +29,11 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+        $date = \Carbon\Carbon::now()->toW3cString();
+        $environment = env('APP_ENV');
+        $database = env('DB_CONNECTION');
+        $schedule->command(
+            "db:backup --database={$database} --destination=local --destinationPath=/{$environment}/{$environment}_{$date} --compression=gzip"
+            )->twiceDaily(12, 21);
     }
 }

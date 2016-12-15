@@ -25,7 +25,8 @@
         "doctrine/dbal": "^2.5",
         "simplesoftwareio/simple-qrcode": "~1",
         "laravelcollective/bus":"^5.3.0",
-        "laravelcollective/html": "^5.3.0"
+        "laravelcollective/html": "^5.3.0",
+        "backup-manager/laravel": "^1.1"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

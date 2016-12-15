@@ -162,7 +162,8 @@ return [
 		Thomaswelton\LaravelGravatar\LaravelGravatarServiceProvider::class,
         SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
         Collective\Bus\BusServiceProvider::class,
-        Collective\Html\HtmlServiceProvider::class
+        Collective\Html\HtmlServiceProvider::class,
+        BackupManager\Laravel\Laravel5ServiceProvider::class
     ],
 
     /*
