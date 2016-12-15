@@ -117,7 +117,7 @@ class Child extends Model
     {
         $levels = array_get(static::$levelMap, (int) $level);
 
-        $days = ($levels[0] + $levels[1])/2;
+        $days = floor(($levels[0] + $levels[1])/2);
         
         return static::getYMAge(with(new \DateTime)->modify("-{$days} days"));
     }
