@@ -16,10 +16,27 @@
                 </tr>
                 <tr>
                     <td style="background-color:#FF8181">感觉处理评分</td>
-                    <td>--<br/>比大多数人少很多</td>
-                    <td>++<br/>比大多数人多很多</td>
-                    <td>+<br/>比大多数人多</td>
-                    <td>=<br/>与大多数人类似</td>
+                    @foreach ([
+                        \App\Model\AlsRptIbCxt::SYMBOL_LAND,
+                        \App\Model\AlsRptIbCxt::SYMBOL_SEARCH,
+                        \App\Model\AlsRptIbCxt::SYMBOL_SENSITIVE,
+                        \App\Model\AlsRptIbCxt::SYMBOL_DODGE
+                    ] as $symbol)
+                    <?php $quarLevel = array_get($quarLevels, $symbol); ?>
+                    <td>
+                        @if (0 === (int) $quarLevel)
+                        --<br>比大多数人少很多
+                        @elseif (1 === (int) $quarLevel)
+                        -<br>比大多数人
+                        @elseif (2 === (int) $quarLevel)
+                        =<br>与大多数人类似
+                        @elseif (3 === (int) $quarLevel)
+                        +<br/>比大多数人多
+                        @elseif (4 === (int) $quarLevel)
+                        ++<br/>比大多数人多很多
+                        @endif
+                    </td>
+                    @endforeach
                 </tr>
             </tbody>
         </table>

@@ -123,7 +123,8 @@ class AlsRptIbCxt extends Model
         'grade_num', 
         'phone', 
         'email',
-        'report_id'
+        'report_id',
+        'status'
     ];
 
     /**

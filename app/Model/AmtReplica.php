@@ -57,6 +57,11 @@ class AmtReplica extends Model
         return $this->belongsTo('App\Model\AmtAlsRpt', 'report_id', 'id');
     }
 
+    public function courses()
+    {
+        return $this->hasMany('App\Model\Course', 'courses_replicas', 'id', 'course_id');
+    }
+
     public function findPendingDiagGroups()
     {
         return $this->groups()->where('status', static::STATUS_ORIGIN_ID);

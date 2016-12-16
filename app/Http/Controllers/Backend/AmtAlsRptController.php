@@ -56,12 +56,15 @@ class AmtAlsRptController extends Controller
 
             $organiztion = $report->owner->organization;
             $defaultLevel = $report->replica->getLevel();
-            $levelStats = $this->getLevelStats($report);
-            $avgLevel = Wck::calculateAverageLevel($levelStats);
+            
+            $levelStats = $this->getLevelStats($report);// Would call AAR::getLevelByCategory
+            $iLevel = AAR::getFeelIntegrationLevel($levelStats);
+            $eLevel = AAR::getRoughActLevel($levelStats);
+            $avgLevel = AAR::calculateAverageLevel($levelStats);
+            
             $complexStats = $this->getComplexStats($levelStats, $defaultLevel);
             $alsData = is_null($report->cxtBelongs) ? [] : $report->cxtBelongs->getSenseAlsData();
-            $iLevel = AAR::getLevelByCategory($report, AmtCategory::find(AmtCategory::ID_FEEL_INTEGRATE));
-            $eLevel = AAR::getLevelByCategory($report, AmtCategory::find(AmtCategory::ID_ROUGH_ACTION));
+           
             $quarLevels = $this->getQuadrantSumLevels($report);
             $maxAlsCategory = is_null($report->cxtBelongs) ? '' : $report->cxtBelongs->getMaxAlsCategory();
 
@@ -89,6 +92,12 @@ class AmtAlsRptController extends Controller
         }   
     }
 
+    /**
+     * 取得四個剖析向度的 level 
+     * 
+     * @param  AmtAlsRpt $report
+     * @return array
+     */
     protected function getQuadrantSumLevels(AmtAlsRpt $report)
     {
         if (is_null($report->cxtBelongs)) {
@@ -111,40 +120,27 @@ class AmtAlsRptController extends Controller
         return $quarLevels;
     }
 
+    /**
+     * 取得九大分類的等級統計陣列
+     * 
+     * @param  \App\Model\AmtAlsRpt $report
+     * @return array            [分類名稱: 統計等級]
+     */
     protected function getLevelStats(AmtAlsRpt $report)
     {
-        $levelStats = [];
-        
-        $categorys = AmtCategory::findIsStat()->get();
-        
-        foreach ($categorys as $category) {
-            $levelStats[$category->content] = AAR::getLevelByCategory($report, $category);
-        }
-
-        return $levelStats;
+        return AAR::getLevelStats($report);
     }
 
+    /**
+     * 根據傳入的 levelStats 陣列和預設的小孩等級, 進行優弱勢能力陣列組成
+     * 
+     * @param  array  $levelStats 
+     * @param  integer $defaultLevel
+     * @return array [優勢: [[分類名稱1: 等級1], [分類名稱2: 等級2] ...]]
+     */
     protected function getComplexStats(array $levelStats, $defaultLevel)
     {
-        $complexStats = ['优势能力' => [], '符合标准' => [], '弱势能力' => []];
-        
-        foreach ($levelStats as $content => $levelStat) {
-            if ($levelStat <= $defaultLevel - AmtAlsRpt::ABILITY_COMPARE_THREAD_ID) {
-                $complexStats['弱势能力'][] = [$content => $levelStat]; 
-
-                continue;
-            }
-
-            if ($levelStat >= $defaultLevel + AmtAlsRpt::ABILITY_COMPARE_THREAD_ID) {
-                $complexStats['优势能力'][] = [$content => $levelStat];
-
-                continue;
-            }
-
-            $complexStats['符合标准'][] = [$content => $levelStat];
-        }
-
-        return $complexStats;
+        return AAR::getComplexStats($levelStats, $defaultLevel);
     }
 
     protected function findMapCategory($categorys, $id)

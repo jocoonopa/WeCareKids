@@ -53,6 +53,47 @@ class AmtAlsRptService
         return $amtLevelData;
     }
 
+    public function calculateAverageLevel(array $levelStatus)
+    {
+        $sum = 0;
+
+        foreach ($levelStatus as $level) {
+            $sum += $level;
+        }
+
+        return floor($sum/count($levelStatus));
+    }
+
+    public function getFeelIntegrationLevel(array $levelStatus)
+    {
+        return $this->getSpecificHighLevel($levelStatus, AmtCategory::ID_FEEL_INTEGRATE);
+    }
+
+    public function getRoughActLevel(array $levelStatus)
+    {
+        return $this->getSpecificHighLevel($levelStatus, AmtCategory::ID_ROUGH_ACTION);
+    }
+
+    protected function getSpecificHighLevel(array $levelStatus, $id)
+    {
+        $sumLevel = 0;
+        $count = 0;
+        $categorys = AmtCategory::find($id)->childs()->get();
+
+        foreach ($categorys as $category) {
+            $level = array_get($levelStatus, $category->content);
+
+            if (is_null($level)) {
+                continue;
+            }
+
+            $sumLevel += $level;
+            $count ++; 
+        }
+
+        return floor($sumLevel/$count);
+    }
+
     /**
      * 根據傳入的 AmtCategory, 取得此 AmtReplica 所有關聯隸屬的 AmtReplicaDiagGroup,
      * 加總 group 的 level後返回平均 level
@@ -101,6 +142,12 @@ class AmtAlsRptService
         return 0 === $count ? '' : floor($level/$count);
     }
 
+    /**
+     * 產生使用紀錄
+     * 
+     * @param  AmtAlsRpt $report
+     * @return \App\Model\WckUsageRecord       
+     */
     public function genUsageRecord(AmtAlsRpt $report)
     {
         $usage = new WckUsageRecord;
@@ -117,5 +164,54 @@ class AmtAlsRptService
         $report->owner->organization->save();
 
         return $usage;
+    }
+
+    /**
+     * 取得九大分類的等級統計陣列
+     * 
+     * @param  \App\Model\AmtAlsRpt $report
+     * @return array            [分類名稱: 統計等級]
+     */
+    public function getLevelStats(AmtAlsRpt $report)
+    {
+        $levelStats = [];
+        
+        $categorys = AmtCategory::findIsStat()->get();
+        
+        foreach ($categorys as $category) {
+            $levelStats[$category->content] = static::getLevelByCategory($report, $category);
+        }
+
+        return $levelStats;
+    }
+
+    /**
+     * 根據傳入的 levelStats 陣列和預設的小孩等級, 進行優弱勢能力陣列組成
+     * 
+     * @param  array  $levelStats 
+     * @param  integer $defaultLevel
+     * @return array [優勢: [[分類名稱1: 等級1], [分類名稱2: 等級2] ...]]
+     */
+    public function getComplexStats(array $levelStats, $defaultLevel)
+    {
+        $complexStats = ['优势能力' => [], '符合标准' => [], '弱势能力' => []];
+        
+        foreach ($levelStats as $content => $levelStat) {
+            if ($levelStat <= ($defaultLevel - AmtAlsRpt::ABILITY_COMPARE_THREAD_ID)) {
+                $complexStats['弱势能力'][] = [$content => $levelStat]; 
+
+                continue;
+            }
+
+            if ($levelStat >= ($defaultLevel + AmtAlsRpt::ABILITY_COMPARE_THREAD_ID)) {
+                $complexStats['优势能力'][] = [$content => $levelStat];
+
+                continue;
+            }
+
+            $complexStats['符合标准'][] = [$content => $levelStat];
+        }
+
+        return $complexStats;
     }
 }

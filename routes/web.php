@@ -67,5 +67,7 @@ Route::resource('/backend/organization', 'Backend\OrganizationController');
 
 Route::get('/api/datetime/age', 'Api\DateTimeController@getYMAge');
 
+Route::get('/backend/recommend_course', 'Backend\RecommendCourseController@index');
+
 
 

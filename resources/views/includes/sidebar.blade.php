@@ -47,6 +47,7 @@
                     <li>
                         <a href="/backend/child"><i class="fa fa-file-text-o"></i>受测者</a>
                     </li>
+                    <li><a href="/backend/recommend_course"><i class="fa fa-file-text-o"></i>推薦課程</a></li>
                     <li><a href="/backend/organization/1"><i class="fa fa-file-text-o"></i>组织</a></li>
                 </ul>
             </div>

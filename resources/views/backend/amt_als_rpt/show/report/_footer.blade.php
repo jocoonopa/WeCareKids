@@ -1,7 +1,7 @@
 <h1 class="text-center">
     <strong>{{$child->name}}的天赋能力培育计划</strong>
 </h1>
-<div class="table-responsive">
+<div>
     <table class="table table-bordered">
         <tbody>
             <tr>

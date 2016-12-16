@@ -53,15 +53,4 @@ class WckService
 
         return urldecode(json_encode($new));
     }
-
-    public function calculateAverageLevel(array $arr)
-    {
-        $sum = 0;
-
-        foreach ($arr as $val) {
-            $sum += $val;
-        }
-
-        return floor($sum/count($arr));
-    }
 }
