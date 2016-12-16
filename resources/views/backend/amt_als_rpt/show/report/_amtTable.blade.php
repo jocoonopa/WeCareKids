@@ -1,5 +1,5 @@
 <!-- #################### End ####################  -->
-<div class="table-responsive text-center">
+<div class="text-center">
     <table class="table table-bordered">
         <thead>
             <tr class="text-center" style="background-color:#FFB9B9">
