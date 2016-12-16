@@ -4,7 +4,7 @@
     <ul class="list-inline">
         <li>施测日期：{{ $report->replica->created_at->format('Y-m-d') }}</li>
         <li>出生日期：{{ $child->birthday->format('Y-m-d') }}</li>
-        <li>实足年龄：{{ "{$child->getAge()}岁" }}</li>
+        <li>实足年龄：{{ \App\Model\Child::getYMAge($child->birthday) }}</li>
     </ul>
     <br/>
     

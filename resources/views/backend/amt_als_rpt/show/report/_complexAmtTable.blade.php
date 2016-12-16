@@ -51,10 +51,10 @@
 <div class="text-center">
     <table class="table table-bordered">
         <thead>
-            <th>评测能力</th>
-            <th colspan="{{ \App\Model\AmtAlsRpt::TOTAL_DEEP_STEP - 1 }}">评测项目</th>
-            <th>实际能力等级</th>
-            <th>同龄能力等级</th>
+            <th class="lead">评测能力</th>
+            <th class="lead" colspan="{{ \App\Model\AmtAlsRpt::TOTAL_DEEP_STEP - 1 }}">评测项目</th>
+            <th class="lead">实际能力等级</th>
+            <th class="lead">同龄能力等级</th>
         </thead>
         <tbody>
             @include('backend/amt_als_rpt/show/report/component/tdRec', [

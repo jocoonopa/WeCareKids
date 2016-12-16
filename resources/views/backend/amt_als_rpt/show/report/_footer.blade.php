@@ -5,9 +5,9 @@
     <table class="table table-bordered">
         <tbody>
             <tr>
-                <td>重点目标</td>
+                <td class="lead">重点目标</td>
                 <td>
-                     @foreach ($complexStats as $key => $complexStat)
+                    @foreach ($complexStats as $key => $complexStat)
                         <?php $strDescs = []; ?>
                         @foreach ($complexStat as $stats)
                             @foreach ($stats as $content => $level)
@@ -15,13 +15,13 @@
                             @endforeach
                         @endforeach
                         @if('优势能力' === $key and !empty($complexStat))
-                            <p>
+                            <p class="lead">
                                 优势能力:&nbsp;&nbsp;<strong>{{ implode($strDescs, ',') }}</strong>
                             </p>
                         @endif
 
                         @if('弱势能力' === $key and !empty($complexStat))
-                            <p>
+                            <p class="lead">
                                 弱势能力:&nbsp;&nbsp;<strong>{{ implode($strDescs, ',') }}</strong>
                             </p>
                         @endif
@@ -29,16 +29,34 @@
                 </td>
             </tr>
             <tr>
-                <td>教学计划</td>
+                <td class="lead">教学计划</td>
                 <td>
-                    
+                    @foreach ($complexStats as $key => $complexStat)
+                        <?php $strDescs = []; ?>
+                        @foreach ($complexStat as $stats)
+                            @foreach ($stats as $content => $level)
+                                <?php $strDescs[] = $content; ?>
+                            @endforeach
+                        @endforeach
+                        @if('优势能力' === $key and !empty($complexStat))
+                            @foreach ($strDescs as $str)
+                                <p class="lead">{!! \AmtAlsRpt::getSuggestion($str, $defaultLevel, true) !!}</p>
+                            @endforeach
+                        @endif
+
+                        @if('弱势能力' === $key and !empty($complexStat))
+                            @foreach ($strDescs as $str)
+                                <p class="lead">{!! \AmtAlsRpt::getSuggestion($str, $defaultLevel, false) !!}</p>
+                            @endforeach
+                        @endif
+                    @endforeach
                 </td>
             </tr>
             <tr>
-                <td>建议课程</td>
+                <td class="lead">建议课程</td>
                 <td>
                     @foreach ($courses as $course)
-                        <span class="label label-success">{{$course->name}}</span>
+                        <button class="lbtn btn-lg btn-success">{{$course->name}}</button>
                     @endforeach 
                 </td>
             </tr>
