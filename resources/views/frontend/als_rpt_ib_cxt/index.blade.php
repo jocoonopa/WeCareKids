@@ -19,6 +19,10 @@
     background-color: #3498db;
     color: #eaeaea;
 }
+
+table.als-table td:nth-of-type(3) {
+    text-align: left;
+}
 </style>
 @endpush
 

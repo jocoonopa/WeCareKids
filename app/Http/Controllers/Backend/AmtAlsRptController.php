@@ -57,12 +57,11 @@ class AmtAlsRptController extends Controller
             $organiztion = $report->owner->organization;
             $defaultLevel = $report->replica->getLevel();
             
-            $levelStats = $this->getLevelStats($report);// Would call AAR::getLevelByCategory
+            $levelStats = AAR::getLevelStats($report);// Would call AAR::getLevelByCategory
             $iLevel = AAR::getFeelIntegrationLevel($levelStats);
             $eLevel = AAR::getRoughActLevel($levelStats);
             $avgLevel = AAR::calculateAverageLevel($levelStats);
-            
-            $complexStats = $this->getComplexStats($levelStats, $defaultLevel);
+            $complexStats = AAR::getComplexStats($levelStats, $defaultLevel);
             $alsData = is_null($report->cxtBelongs) ? [] : $report->cxtBelongs->getSenseAlsData();
            
             $quarLevels = $this->getQuadrantSumLevels($report);
@@ -118,29 +117,6 @@ class AmtAlsRptController extends Controller
         }
 
         return $quarLevels;
-    }
-
-    /**
-     * 取得九大分類的等級統計陣列
-     * 
-     * @param  \App\Model\AmtAlsRpt $report
-     * @return array            [分類名稱: 統計等級]
-     */
-    protected function getLevelStats(AmtAlsRpt $report)
-    {
-        return AAR::getLevelStats($report);
-    }
-
-    /**
-     * 根據傳入的 levelStats 陣列和預設的小孩等級, 進行優弱勢能力陣列組成
-     * 
-     * @param  array  $levelStats 
-     * @param  integer $defaultLevel
-     * @return array [優勢: [[分類名稱1: 等級1], [分類名稱2: 等級2] ...]]
-     */
-    protected function getComplexStats(array $levelStats, $defaultLevel)
-    {
-        return AAR::getComplexStats($levelStats, $defaultLevel);
     }
 
     protected function findMapCategory($categorys, $id)

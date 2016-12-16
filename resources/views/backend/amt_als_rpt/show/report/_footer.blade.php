@@ -70,5 +70,5 @@
 </div>
 <br/>
 <h4 class="text-right">
-    <strong>报告负责人：职能治疗师 {{$report->owner->name}}</strong>
+    <strong>报告负责人： {{$report->owner->name}}</strong>
 </h4>

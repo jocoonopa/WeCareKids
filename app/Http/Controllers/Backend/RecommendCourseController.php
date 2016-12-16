@@ -12,9 +12,10 @@ class RecommendCourseController extends Controller
 {
     public function index()
     {
-        $replicas = AmtReplica::latest()->get();
+        $replicas = AmtReplica::latest()->take(20);
         
         return view('backend/recommend_course/index', [
+            'replicas' => $replicas,
             'statCategorys' => AmtCategory::findIsStat()->get(),
             'courses' => Course::all()
         ]);
