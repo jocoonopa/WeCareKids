@@ -6,12 +6,17 @@ use App\Model\AmtAlsRpt;
 use App\Model\AmtCategory;
 use App\Model\AmtReplica;
 use App\Model\WckUsageRecord;
+use App\Utility\Services\AmtAlsRpt\CourseTrait;
 use DB;
 
 // 智能運動能力等級, 粗大動作等敘述留給職治師填寫 
 class AmtAlsRptService
 {
+    use CourseTrait;
+
     const COST_PER_REPLICA = -120;
+
+    protected $defaultLevel;
 
     /**
      * # Greater 的定義: 

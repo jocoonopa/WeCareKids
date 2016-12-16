@@ -66,6 +66,7 @@ class AmtAlsRptController extends Controller
            
             $quarLevels = $this->getQuadrantSumLevels($report);
             $maxAlsCategory = is_null($report->cxtBelongs) ? '' : $report->cxtBelongs->getMaxAlsCategory();
+            $courses = AAR::getRecommendCourses($report, $levelStats);
 
             DB::commit();
 
@@ -80,7 +81,8 @@ class AmtAlsRptController extends Controller
                 'iLevel',
                 'eLevel',
                 'quarLevels',
-                'maxAlsCategory'
+                'maxAlsCategory',
+                'courses'
             ));
         } catch (\Exception $e) {
             DB::rollback();

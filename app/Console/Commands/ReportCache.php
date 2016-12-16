@@ -34,8 +34,7 @@ class ReportCache extends Command
             ->where('status', AmtReplica::STATUS_DONE_ID)
             ->chunk(static::CHUNK_SIZE, function ($replicas) {
             $replicas->each(function ($replica) {
-                AAR::getLevelStats($replica->report);
-                
+                $levelStatus = AAR::getLevelStats($replica->report);
             });
         });
     }
