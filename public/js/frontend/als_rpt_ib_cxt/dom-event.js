@@ -5,13 +5,19 @@
 //     maxDate: moment()
 // }).val($('#child_birthday').data('birthday'));
 
-$('input[name="child_birthday"]').blur(function () {
-    updateAge($(this));
-}).blur();
+// $('input[name="child_birthday"]').blur(function () {
+//     updateAge($(this));
+// }).blur();
 
-$('input[name="child_birthday"]').change(function () {
-    updateAge($(this));
-});
+document.getElementById('child_birthday').onblur = function() {
+    updateAge($('input[name="child_birthday"]'));
+}
+
+document.getElementById('child_birthday').onchange = function() {
+    updateAge($('input[name="child_birthday"]'));
+}
+
+updateAge($('input[name="child_birthday"]'));
 
 function updateAge($e) {
     $.get('/api/datetime/age?birthday=' + $($e).val(), function (res) {

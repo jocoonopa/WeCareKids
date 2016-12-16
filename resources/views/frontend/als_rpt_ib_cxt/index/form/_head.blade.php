@@ -19,7 +19,7 @@
 
 <div class="form-group">
     <label for="child_birthday">出生年月日<small id="child_age" class="lead text-center"></small></label>
-    {!! Form::date('child_birthday', $cxt->child_birthday, ['class' => 'form-control']) !!}
+    {!! Form::date('child_birthday', $cxt->child_birthday, ['id' => 'child_birthday', 'class' => 'form-control']) !!}
 </div>
 
 <div class="form-group">
