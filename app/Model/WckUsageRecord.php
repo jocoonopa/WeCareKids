@@ -32,4 +32,9 @@ class WckUsageRecord extends Model
     {
         return $this->belongsTo('App\Model\Child', 'child_id', 'id');
     }
+
+    public function getVarietyDesc()
+    {
+        return $this->variety >= 0 ? "<span class=\"label label-success\">+{$this->variety}</span>" : "<span class=\"label label-danger\">{$this->variety}</span>";
+    }
 }

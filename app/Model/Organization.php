@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Organization extends Model
 {
+    const INIT_BENEFIT = 30000;
+    
     public function users()
     {
         return $this->hasMany('App\Model\User');

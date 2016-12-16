@@ -11,6 +11,8 @@ use DB;
 // 智能運動能力等級, 粗大動作等敘述留給職治師填寫 
 class AmtAlsRptService
 {
+    const COST_PER_REPLICA = -120;
+
     /**
      * # Greater 的定義: 
      * AmtReplicaDiagGroup::getLevel() > AmtReplica::getLevel() + AmtAlsRpt::ABILITY_COMPARE_THREAD_ID
@@ -106,10 +108,12 @@ class AmtAlsRptService
         $usage->child()->associate($report->replica->child);
         $usage->organization()->associate($report->owner->organization);
         $usage->usage()->associate($report);
+        $usage->variety = static::COST_PER_REPLICA;
+        $usage->current_remain = $report->owner->organization->points + static::COST_PER_REPLICA;
 
         $usage->save();
 
-        $report->owner->organization->points = $report->owner->organization->points - 1;
+        $report->owner->organization->points = $report->owner->organization->points + static::COST_PER_REPLICA;
         $report->owner->organization->save();
 
         return $usage;

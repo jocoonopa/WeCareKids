@@ -44,6 +44,6 @@ class AmtAlsRpt extends Model
 
     public function getUsageDesc()
     {
-        return '評測';
+        return "評估({$this->replica->child->name})";
     }
 }

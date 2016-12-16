@@ -8,21 +8,32 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <td>流水號</td>
-                        <td>老師</td>
-                        <td>小朋友</td>
-                        <td>動作</td>
                         <td>時間</td>
+                        <td>日期</td>
+                        <td>動作</td>
+                        <td>變動金額</td>   
+                        <td>剩餘金額</td>
                     </tr>
                 </thead>
                 <tbody>
+                    <tr>
+                        <td>{{$organization->created_at->format('Y-m-d')}}</td>
+                        <td>{{$organization->created_at->format('H:i:s')}}</td>
+                        <td>{{ '加盟金贈送儲值金' }}</td>
+                        <td>
+                            <span class="label label-success">
+                                {{ '+' . \App\Model\Organization::INIT_BENEFIT }}
+                            </span>                            
+                        </td>
+                        <td>{{ \App\Model\Organization::INIT_BENEFIT }}</td>
+                    </tr>
                     @foreach ($organization->usages as $usage)
                     <tr>
-                        <td>{{$usage->id}}</td>
-                        <td>{{$usage->user->name}}</td>
-                        <td>{{$usage->child->name}}</td>
+                        <td>{{$usage->created_at->format('Y-m-d')}}</td>
+                        <td>{{$usage->created_at->format('H:i:s')}}</td>
                         <td>{{$usage->usage->getUsageDesc()}}</td>
-                        <td>{{$usage->created_at}}</td>
+                        <td>{!! $usage->getVarietyDesc() !!}</td>
+                        <td>{{$usage->current_remain}}</td>
                     </tr>
                     @endforeach
                 </tbody>
