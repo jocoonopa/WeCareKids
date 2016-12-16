@@ -71,9 +71,14 @@
                                 </div>
                             @endforeach
                         @endif
-
+                            
                         @if (\App\Model\AmtDiag::TYPE_SLIDER_ID === $replicaDiag->diag->type)
-                            <input type="text" class="slider" data-min="{{json_decode($replicaDiag->diag->available_value, true)['m']}}" data-max="{{json_decode($replicaDiag->diag->available_value, true)['M']}}" data-step="{{array_get(json_decode($replicaDiag->diag->available_value, true), 1)}}" name="{{$replicaDiag->id}}" value="{{ array_get($answer, $replicaDiag->id, '') }}" />
+                        <?php 
+                            $min = array_get(json_decode($replicaDiag->diag->available_value, true), 'm', 0);
+                            $max = array_get(json_decode($replicaDiag->diag->available_value, true), 'M', 0);
+                            $step = array_get(json_decode($replicaDiag->diag->available_value, true), 'i', 1);
+                        ?>
+                            <input type="text" class="slider" data-min="{{$min}}" data-max="{{$max}}" data-step="{{$step}}" name="{{$replicaDiag->id}}" value="{{ array_get($answer, $replicaDiag->id, '') }}" />
                         @endif
                     </div>
                 </div>
