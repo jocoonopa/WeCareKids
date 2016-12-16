@@ -1,9 +1,15 @@
 @foreach ($childCategory->childs as $childCategory)
     @if (true === $childCategory->isFinal())
+    <?php $actualLevel = \AmtAlsRpt::getLevelByCategory($report, $childCategory); ?>
     <tr>
         <td colspan="{{$colSpanCount}}">{{$childCategory->content}}</td>
-        <td>{{ \AmtAlsRpt::getLevelByCategory($report, $childCategory) }}</td>
-        <td>{{ $report->replica->getLevel() }}</td>
+
+        @if (empty($actualLevel))
+            <td class="active" colspan="2">不施测</td>
+        @else
+            <td>{{ $actualLevel }}</td>
+            <td>{{ $report->replica->getLevel() }}</td>
+        @endif
     </tr>
     @else
         <?php $posteritys = []; $childCategory->findPosterity($posteritys);?>

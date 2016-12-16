@@ -89,12 +89,14 @@ class AmtAlsRptService
             $groups = $report->replica->findGroupsByCategory($final);
 
             $groups->each(function ($group) use (&$level, &$count) {
-                $count ++;
-                $level += $group->getLevel();
+                if ($group->isDone()) {
+                    $count ++;
+                    $level += $group->getLevel();
+                }                
             });
         }
         
-        return 0 === $count ? 0 : floor($level/$count);
+        return 0 === $count ? '' : floor($level/$count);
     }
 
     public function genUsageRecord(AmtAlsRpt $report)
