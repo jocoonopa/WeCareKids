@@ -19,7 +19,7 @@
                 <input type="hidden" name="level" value="{{$level}}" />
 
                 @foreach ($replicaDiags as $key => $replicaDiag)
-                <div class="panel panel-primary">
+                <div class="replica panel panel-primary">
                     <div class="panel-heading">
                         <h3 class="panel-title">
                             {{ $replicaDiag->diag->description }}
@@ -85,7 +85,7 @@
                 @endforeach
 
                 <a href="/backend/amt_replica/{{$replica->id}}/prev" class="btn btn-default pull-left">上一题</a>
-                <button type="submit" class="btn btn-default pull-right">下一题</button>
+                <button type="submit" disabled class="btn btn-default pull-right">下一题</button>
             </form>
         </div>
     </div>
@@ -95,6 +95,24 @@
 @push('scripts')
 <script src="/bower_components/ion_rangeSlider/js/ion.rangeSlider.min.js"></script>
 <script>
+
+function checkRadio() {
+    var isAllPass = true;
+    $radioDiv = $('div.replica');
+
+    $radioDiv.each(function () {
+        var $div = $(this);
+        var unckeckedLength = $div.find('input[type="radio"]:not(:checked)').length;
+        var fullLength = $div.find('input[type="radio"]').length;
+
+        if (unckeckedLength === fullLength) {
+            return isAllPass = false;
+        }
+    });
+
+    return isAllPass;
+}
+
 $('.slider').each(function () {
     var $this = $(this);
 
@@ -104,6 +122,12 @@ $('.slider').each(function () {
         step: $this.data('step')
     }); 
 });
+
+$('input[type="radio"]').click(function () {
+    $('button[type="submit"]').prop('disabled', !!!checkRadio());
+});
+
+checkRadio();
 
 </script>
 
