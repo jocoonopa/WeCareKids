@@ -39,9 +39,12 @@
                     @if('弱势能力' === $key)
                         孩子的<strong>{{ implode($strDescs, ',') }}</strong>，在测验过程中表现稍落后，建议及早补强，以避免影响学习效率。
                     @endif
-
                 </td>
+                 @if (empty($complexStat))
+                    <td class="active lead" colspan="2"></td>
+                @endif
             </tr>
+           
             @foreach ($complexStat as $stats)
                 @foreach ($stats as $content => $level)
                 <tr>
