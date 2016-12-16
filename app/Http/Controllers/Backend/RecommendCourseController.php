@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Backend;
 
-use App\Http\Controllers\Controller;
 use App\Model\AmtCategory;
 use App\Model\AmtReplica;
 use App\Model\Course;

@@ -1,5 +1,5 @@
 <div class="x_panel" style="color: #424242;">                        
-    <div class="text-center">
+    <div>
         <form action="{{ "/analysis/r/i/cxt/{$cxt->id}" }}" method="post">
             {{ csrf_field() }}
             <input type="hidden" name="cxt_id" value="{{ $cxt->id }}" />

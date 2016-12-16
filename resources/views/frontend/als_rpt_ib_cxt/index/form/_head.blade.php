@@ -1,78 +1,61 @@
- <h1>
+<h1>
     <strong>優尼爾</strong>
+    <small>测评日期: {{ Carbon\Carbon::now()->format('Y-m-d') }}  </small>
 </h1>
 
-<p>感觉处理能力分析量表</p>
-<h2><strong>基本数据</strong></h2> </div>
-<!-- #######################################################################################-->
-<table class="table table-bordered table-hover">
-    <thead style="background-color: #3498db; color:#eaeaea;">
-        <tr>
-            <th class="text-center"><strong>子女姓名</strong></th>
-            <th class="text-center"><strong>性别</strong></th>
-            <th class="text-center"><strong>测评日期</strong></th>
-            <th class="text-center"><strong>出生年月日</strong></th>
-            <th class="text-center"><strong>实际年龄</strong></th>
-            <th class="text-centr"><strong>截止時間</strong></th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>
-                <input type="text" name="child_name" class="form-control" id="child_name" value="{{ $cxt->child_name}}">
-            </td>
-            <td>
-                <select id="child_sex" name="child_sex" class="form-control">
-                    @foreach (['女', '男'] as $key => $sex)
-                        <option value="{{ $key }}" @if($key == $cxt->child_sex) selected @endif>{{$sex}}</option>
-                    @endforeach
-                </select>                
-            </td>
-            <td>
-                <div class="label label-info">
-                    {{ Carbon\Carbon::now() }}  
-                </div>
-            </td>
-            <td>
-                <input type="text" name="child_birthday" data-birthday="{{ is_null($cxt->child_birthday) ? '' : $cxt->child_birthday->format('Y-m-d') }}" class="form-control" id="child_birthday" value="{{ is_null($cxt->child_birthday) ? '' : $cxt->child_birthday->format('Y-m-d') }}">
-            </td>
-            <td id="child_age" class="text-center" style="font-size: 14px;">
-            </td>
-            <td>
-                <div class="label label-danger">{{ $cxt->channel->close_at }}</div>
-            </td>
-        </tr>
-        <tr style="background-color: #3498db; color:#eaeaea;">
-            <th class="text-center"><strong>就读学校</strong></th>
-            <th class="text-center"><strong>就读年级</strong></th>
-            <th class="text-center"><strong>填写人姓名</strong></th>
-            <th class="text-center"><strong>与填写人关系</strong></th>
-            <th class="text-center"><strong>连络电话</strong></th>
-            <th class="text-center"><strong>连络信箱</strong></th>
-        </tr>
-        <tr>
-            <td>
-                <input type="text" name="school_name" class="form-control" id="school_name" value="{{ $cxt->school_name }}">
-            </td>
-            <td>
-                <input type="number" name="grade_num" class="form-control" id="grade_num" value="{{ $cxt->grade_num }}">
-            </td>
-            <td>
-                <input type="text" name="filler_name" class="form-control" id="filler_name" value="{{ $cxt->filler_name }}">
-            </td>
-            <td>
-                <input type="text" name="relation" class="form-control" id="relation" value="{{ $cxt->relation }}">
-            </td>
-            <td>
-                <input type="text" name="phone" class="form-control" id="phone" value="{{ $cxt->phone }}" readonly>
-            </td>
-            <td>
-                <input type="email" name="email" class="form-control" id="email" value="{{ $cxt->email }}">
-            </td>
-        </tr>
-    </tbody>
-</table>
-<!-- #######################################################################################-->
+<div class="form-group">
+    <label for="child_name">子女姓名</label>
+    <input type="text" id="child_name" name="child_name" class="form-control" value="{{ $cxt->child_name}}">
+</div>
+
+<div class="form-group">
+    <label for="child_sex">性别</label>
+    <select id="child_sex" name="child_sex" class="form-control">
+        @foreach (['女', '男'] as $key => $sex)
+            <option value="{{ $key }}" @if($key == $cxt->child_sex) selected @endif>{{$sex}}</option>
+        @endforeach
+    </select>       
+</div>
+
+<div class="form-group">
+    <label for="child_birthday">出生年月日<small id="child_age" class="text-center" style="font-size: 14px;""></small></label>
+    <input type="text" name="child_birthday" data-birthday="{{ is_null($cxt->child_birthday) ? '' : $cxt->child_birthday->format('Y-m-d') }}" class="form-control" id="child_birthday" value="{{ is_null($cxt->child_birthday) ? '' : $cxt->child_birthday->format('Y-m-d') }}">
+</div>
+
+<div class="form-group">
+    <label>截止時間</label>
+    <input type="text" class="form-control" readonly value="{{ $cxt->channel->close_at->format('Y-m-d') }}">
+</div>
+
+<div class="form-group">
+    <label for="school_name">就读学校</label>
+    <input type="text" name="school_name" class="form-control" id="school_name" value="{{ $cxt->school_name }}">
+</div>
+
+<div class="form-group">
+    <label for="grade_num">就读年级</label>
+    <input type="number" name="grade_num" class="form-control" id="grade_num" value="{{ $cxt->grade_num }}">
+</div>
+
+<div class="form-group">
+    <label for="filler_name">填写人姓名</label>
+    <input type="text" name="filler_name" class="form-control" id="filler_name" value="{{ $cxt->filler_name }}">
+</div>
+
+<div class="form-group">
+    <label for="relation">与填写人关系</label>
+    <input type="text" name="relation" class="form-control" id="relation" value="{{ $cxt->relation }}">
+</div>
+
+<div class="form-group">
+    <label for="phone">连络电话</label>
+    <input type="text" name="phone" class="form-control" id="phone" value="{{ $cxt->phone }}" readonly>
+</div>
+
+<div class="form-group">
+    <label for="email">连络信箱</label>
+    <input type="email" name="email" class="form-control" id="email" value="{{ $cxt->email }}">
+</div>
 <h2><strong>填表说明</strong></h2>
 <p class="lead">本量表一共60题，请根据孩子的日常表现客观勾选，并在「其他意见或观察」栏填写额外的补充、说明。</p>
                                         
