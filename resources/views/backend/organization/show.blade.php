@@ -4,7 +4,7 @@
 <div class="right_col" role="main">
     <div class="row">
         <div class="col-md-12 col-sm-12 col-xs-12"">
-            <h3>目前剩餘點數: {{ $organization->points }}</h3>
+            <h3>交易明細</h3>
             <table class="table table-striped">
                 <thead>
                     <tr>
