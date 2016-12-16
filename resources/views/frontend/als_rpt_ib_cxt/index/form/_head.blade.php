@@ -18,8 +18,8 @@
 </div>
 
 <div class="form-group">
-    <label for="child_birthday">出生年月日<small id="child_age" class="text-center" style="font-size: 14px;""></small></label>
-    <input type="text" name="child_birthday" data-birthday="{{ is_null($cxt->child_birthday) ? '' : $cxt->child_birthday->format('Y-m-d') }}" class="form-control" id="child_birthday" value="{{ is_null($cxt->child_birthday) ? '' : $cxt->child_birthday->format('Y-m-d') }}">
+    <label for="child_birthday">出生年月日<small id="child_age" class="lead text-center"></small></label>
+    {!! Form::date('child_birthday', $cxt->child_birthday, ['class' => 'form-control']) !!}
 </div>
 
 <div class="form-group">
