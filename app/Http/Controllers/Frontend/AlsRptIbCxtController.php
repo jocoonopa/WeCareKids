@@ -117,6 +117,17 @@ class AlsRptIbCxtController extends Controller
     }
 
     /**
+     * 剖析報表填寫結束頁面
+     * 
+     * @param  AlsRptIbCxt $cxt
+     * @return \Illuminate\Http\Response          
+     */
+    public function finish(AlsRptIbCxt $cxt)
+    {
+        return view('frontend/als_rpt_ib_cxt/finish', compact('cxt'));
+    }
+
+    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
@@ -124,6 +135,26 @@ class AlsRptIbCxtController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, AlsRptIbCxt $cxt)
+    {
+        return $request->ajax() ? $this->_updatAjax($request, $cxt) : $this->_update($request, $cxt);
+    }
+
+    protected function _update(Request $request, AlsRptIbCxt $cxt)
+    {
+        try {
+            $data = $request->all();
+            $data['status'] = AlsRptIbCxt::STATUS_HAS_SUBMIT;
+            $data['child_birthday'] = Carbon::instance(new \DateTime(array_get($data, 'child_birthday')));
+
+            $cxt->update($data);
+
+            return redirect("/analysis/r/i/cxt/{$cxt->id}/finish");
+        } catch (\Exception $e) {
+            return redirect("/analysis/r/i/channel/{$cxt->id}/cxt")->with('error', $e->getMessage());
+        }
+    }
+
+    protected function _updatAjax(Request $request, AlsRptIbCxt $cxt)
     {
         try {
             $data = $request->all();

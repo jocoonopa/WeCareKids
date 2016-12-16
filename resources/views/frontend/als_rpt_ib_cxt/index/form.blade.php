@@ -1,8 +1,11 @@
 <div class="x_panel" style="color: #424242;">                        
     <div class="text-center">
         <form action="{{ "/analysis/r/i/cxt/{$cxt->id}" }}" method="post">
+            {{ csrf_field() }}
             <input type="hidden" name="cxt_id" value="{{ $cxt->id }}" />
             <input type="hidden" name="private_key" value="{{ $privateKey}}" />
+            <input type="hidden" name="_method" value="put" />
+            <input type="hidden" name="content" value="" />  
 
             @include('frontend/als_rpt_ib_cxt/index/form/_button')
             @include('frontend/als_rpt_ib_cxt/index/form/_head') 
@@ -12,6 +15,10 @@
             @include('frontend/als_rpt_ib_cxt/index/form/_group04')
             @include('frontend/als_rpt_ib_cxt/index/form/_group05')
             @include('frontend/als_rpt_ib_cxt/index/form/_group06')
+
+            <div class="form-group">
+                <button id="_submit" type="submit" class="btn btn-primary">提交</button>
+            </div>
         </form>
         {{-- @include('frontend/als_rpt_ib_cxt/index/form/_result') --}}
     </div>

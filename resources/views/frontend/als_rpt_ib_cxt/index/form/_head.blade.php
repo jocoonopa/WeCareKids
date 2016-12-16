@@ -34,7 +34,7 @@
                 </div>
             </td>
             <td>
-                <input type="text" name="child_birthday" data-birthday="{{ !is_null($cxt->child_birthday) ? '' : $cxt->child_birthday->format('Y-m-d') }}" class="form-control" id="child_birthday" value="{{ !is_null($cxt->child_birthday) ? '' : $cxt->child_birthday->format('Y-m-d') }}">
+                <input type="text" name="child_birthday" data-birthday="{{ is_null($cxt->child_birthday) ? '' : $cxt->child_birthday->format('Y-m-d') }}" class="form-control" id="child_birthday" value="{{ is_null($cxt->child_birthday) ? '' : $cxt->child_birthday->format('Y-m-d') }}">
             </td>
             <td id="child_age" class="text-center" style="font-size: 14px;">
             </td>
