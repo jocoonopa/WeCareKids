@@ -97,7 +97,9 @@
 <script>
 
 function checkRadio() {
-    var isAllPass = true;
+    var isDisabled = false;
+    var total = 0;
+    
     $radioDiv = $('div.replica');
 
     $radioDiv.each(function () {
@@ -105,12 +107,18 @@ function checkRadio() {
         var unckeckedLength = $div.find('input[type="radio"]:not(:checked)').length;
         var fullLength = $div.find('input[type="radio"]').length;
 
-        if (unckeckedLength === fullLength) {
-            return isAllPass = false;
+        total += fullLength;
+
+        if (0 < fullLength && unckeckedLength === fullLength) {
+            isDisabled = true;
         }
     });
 
-    return isAllPass;
+    if (0 === total) {
+        isDisabled = false;
+    }
+
+    return isDisabled;
 }
 
 $('.slider').each(function () {
@@ -124,10 +132,12 @@ $('.slider').each(function () {
 });
 
 $('input[type="radio"]').click(function () {
-    $('button[type="submit"]').prop('disabled', !!!checkRadio());
+    var isDisabled = checkRadio();
+
+    $('button[type="submit"]').prop('disabled', isDisabled);
 });
 
-checkRadio();
+$('button[type="submit"]').prop('disabled', checkRadio());
 
 </script>
 
