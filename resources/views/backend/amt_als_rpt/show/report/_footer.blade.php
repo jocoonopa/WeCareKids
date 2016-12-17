@@ -55,9 +55,13 @@
             <tr>
                 <td class="lead">建议课程</td>
                 <td>
-                    @foreach ($courses as $course)
-                        <button class="lbtn btn-lg btn-success">{{$course->name}}</button>
-                    @endforeach 
+                    @if (empty($courses))
+                        <button class="btn btn-lg btn-warning">{{'目前無建議課程'}}</button>
+                    @else
+                        @foreach ($courses as $course)
+                            <button class="btn btn-lg btn-success">{{$course->name}}</button>
+                        @endforeach 
+                    @endif
                 </td>
             </tr>
         </tbody>

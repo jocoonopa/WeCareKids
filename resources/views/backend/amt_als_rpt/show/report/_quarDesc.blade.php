@@ -27,7 +27,7 @@
                         @if (0 === (int) $quarLevel)
                         --<br>比大多数人少很多
                         @elseif (1 === (int) $quarLevel)
-                        -<br>比大多数人
+                        -<br>比大多数人少
                         @elseif (2 === (int) $quarLevel)
                         =<br>与大多数人类似
                         @elseif (3 === (int) $quarLevel)
