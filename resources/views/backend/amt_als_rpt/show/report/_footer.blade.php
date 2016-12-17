@@ -55,7 +55,7 @@
             <tr>
                 <td class="lead">建议课程</td>
                 <td>
-                    @if (empty($courses))
+                    @if ($courses->isEmpty())
                         <button class="btn btn-lg btn-warning">{{'目前無建議課程'}}</button>
                     @else
                         @foreach ($courses as $course)

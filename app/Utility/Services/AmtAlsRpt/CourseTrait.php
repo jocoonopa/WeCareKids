@@ -31,7 +31,7 @@ trait CourseTrait
         }
 
         if (empty($container)) {
-            return NULL;
+            return collect(NULL);
         }
 
         return Course::find($container);
@@ -58,7 +58,7 @@ trait CourseTrait
         }
 
         if (empty($container)) {
-            return NULL;
+            return collect(NULL);
         }
 
         return Course::find(array_slice($container, 0, 2));
@@ -85,7 +85,7 @@ trait CourseTrait
         }
 
         if (empty($container)) {
-            return NULL;
+            return collect(NULL);
         }
 
         return Course::find(array_slice($container, 0, 2));
