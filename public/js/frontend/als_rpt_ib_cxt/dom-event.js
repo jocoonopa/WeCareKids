@@ -6,8 +6,6 @@ document.getElementById('child_birthday').onchange = function() {
     updateAge($('input[name="child_birthday"]'));
 }
 
-alert('hello');
-
 updateAge($('input[name="child_birthday"]'));
 
 function updateAge($e) {
