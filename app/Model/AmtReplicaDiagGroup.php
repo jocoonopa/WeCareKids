@@ -276,7 +276,7 @@ class AmtReplicaDiagGroup extends Model
         return false === $prev->isPass($this) ? $this->swtichToPrevCell() : false; 
     }
 
-    protected function bindCurrentCell(AmtCell $cell)
+    protected function bindCurrentCell(AmtCell $cell = NULL)
     {        
         $this->currentCell()->associate($cell);
         $this->save();
