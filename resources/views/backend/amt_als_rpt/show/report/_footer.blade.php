@@ -19,7 +19,6 @@
                                 优势能力:&nbsp;&nbsp;<strong>{{ implode($strDescs, ',') }}</strong>
                             </p>
                         @endif
-
                         @if('弱势能力' === $key and !empty($complexStat))
                             <p class="lead">
                                 弱势能力:&nbsp;&nbsp;<strong>{{ implode($strDescs, ',') }}</strong>
@@ -56,7 +55,7 @@
                 <td class="lead">建议课程</td>
                 <td>
                     @if ($courses->isEmpty())
-                        <button class="btn btn-lg btn-warning">{{'目前無建議課程'}}</button>
+                        <button class="btn btn-lg btn-warning">{{'目前无建议课程'}}</button>
                     @else
                         @foreach ($courses as $course)
                             <button class="btn btn-lg btn-success">{{$course->name}}</button>

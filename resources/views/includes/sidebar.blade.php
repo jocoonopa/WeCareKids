@@ -29,10 +29,13 @@
                 <h3>&nbsp;</h3>
                 <ul class="nav side-menu">
                     <li>
-                        <a href="/backend/analysis/r/i/channel"><i class="fa fa-file-text-o"></i>剖析</a>
+                        <a href="/backend/analysis/r/i/channel"><i class="fa fa-file-text-o"></i>问卷</a>
                     </li>
                     <li>
-                        <a href="/backend/amt_replica"><i class="fa fa-file-text-o"></i>评测</a>
+                        <a href="/backend/child"><i class="fa fa-file-text-o"></i>开始测评</a>
+                    </li>
+                    <li>
+                        <a href="/backend/amt_replica"><i class="fa fa-file-text-o"></i>测评状态</a>
                     </li>
                     <li>
                         <a href="/backend/amt_als_rpt"><i class="fa fa-file-text-o"></i>报告</a>
@@ -43,12 +46,9 @@
                             <i class="fa fa-file-text-o"></i>赶工爆肝区
                         </a>
                     </li>
-                    @endif
-                    <li>
-                        <a href="/backend/child"><i class="fa fa-file-text-o"></i>受测者</a>
-                    </li>
                     <li><a href="/backend/recommend_course"><i class="fa fa-file-text-o"></i>推薦課程</a></li>
                     <li><a href="/backend/organization/1"><i class="fa fa-file-text-o"></i>组织</a></li>
+                    @endif
                 </ul>
             </div>
         </div>
