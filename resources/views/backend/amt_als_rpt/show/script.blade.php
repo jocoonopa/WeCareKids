@@ -24,19 +24,15 @@ $(document).ready(function() {
                 label: '等级',
                 data: provideData,
                 backgroundColor: [
-                    'rgba(255, 129, 129, 0.2)',
-                    'rgba(255, 217, 97, 0.2)',
-                    'rgba(255, 255, 105, 0.2)',
-                    'rgba(199, 230, 164, 0.2)',
-                    'rgba(190, 244, 214, 0.2)',
-                    'rgba(151, 228, 255, 0.2)',
-                    'rgba(38, 188, 244, 0.2)',
-                    'rgba(207, 175, 231, 0.2)',
-                    'rgba(255, 183, 255, 0.2)',
-                    'rgba(255, 183, 0, 0.2)',
-                    'rgba(89, 183, 255, 0.2)',
-                    'rgba(255, 123, 111, 0.2)',
-                    'rgba(100, 123, 111, 0.2)'
+                    'rgba(255, 129, 129, 1)',
+                    'rgba(255, 217, 97, 1)',
+                    'rgba(255, 255, 105, 1)',
+                    'rgba(199, 230, 164, 1)',
+                    'rgba(190, 244, 214, 1)',
+                    'rgba(151, 228, 255, 1)',
+                    'rgba(38, 188, 244, 1)',
+                    'rgba(207, 175, 231, 1)',
+                    'rgba(255, 183, 255, 1)'
                 ],
                 hoverBackgroundColor: [
                     'rgba(255, 129, 129, 1)',
@@ -80,7 +76,7 @@ $(document).ready(function() {
             ctx.fillText(text02, textX02, textY02);
             ctx.font = (fontSize / 2) + "em sans-serif";
             
-            var text03 = "發展年齡約為{{\App\Model\Child::getMonthFromMap($avgLevel)}}", // 對應到的年齡
+            var text03 = "发展年龄约为{{\App\Model\Child::getMonthFromMap($avgLevel)}}", // 對應到的年齡
                 textX03 = Math.round((width - ctx.measureText(text03).width) / 2),
                 textY03 = height / 1.4; // + parseInt(ctx.font)* */
             
@@ -107,19 +103,15 @@ $(document).ready(function() {
                 label: '等级',
                 data: provideData,
                 backgroundColor: [
-                    'rgba(255, 129, 129, 0.2)',
-                    'rgba(255, 217, 97, 0.2)',
-                    'rgba(255, 255, 105, 0.2)',
-                    'rgba(199, 230, 164, 0.2)',
-                    'rgba(190, 244, 214, 0.2)',
-                    'rgba(151, 228, 255, 0.2)',
-                    'rgba(38, 188, 244, 0.2)',
-                    'rgba(207, 175, 231, 0.2)',
-                    'rgba(255, 183, 255, 0.2)',
-                    'rgba(255, 183, 0, 0.2)',
-                    'rgba(89, 183, 255, 0.2)',
-                    'rgba(255, 123, 111, 0.2)',
-                    'rgba(100, 123, 111, 0.2)'
+                    'rgba(255, 129, 129, 1)',
+                    'rgba(255, 217, 97, 1)',
+                    'rgba(255, 255, 105, 1)',
+                    'rgba(199, 230, 164, 1)',
+                    'rgba(190, 244, 214, 1)',
+                    'rgba(151, 228, 255, 1)',
+                    'rgba(38, 188, 244, 1)',
+                    'rgba(207, 175, 231, 1)',
+                    'rgba(255, 183, 255, 1)'
                 ],
                 borderColor: [
                     'rgba(255, 129, 129, 1)',
