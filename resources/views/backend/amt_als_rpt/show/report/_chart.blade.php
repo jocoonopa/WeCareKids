@@ -12,7 +12,33 @@
 </h2>
 
 <h1 class="text-center" style="color:#f0ad4e;">
-    <strong>智能运动倾向</strong>
+    @foreach ($complexStats as $key => $complexStat)
+        <tr>
+            @if($loop->first)
+                <td class="lead amt-compare-td amt-greater-td" rowspan="{{count($complexStat) + 1}}">
+            @elseif(1 === $loop->index)
+                <td class="lead amt-compare-td amt-equal-td" rowspan="{{count($complexStat) + 1}}">
+            @else
+                <td class="lead amt-compare-td amt-worse-td" rowspan="{{count($complexStat) + 1}}">
+                    @endif
+                    <strong>{{$key}}</strong>
+                </td>
+                <td class="lead" rowspan="{{count($complexStat) + 1}}">
+                    <?php $strDescs = []; ?>
+                    @foreach ($complexStat as $stats)
+                        @foreach ($stats as $content => $level)
+                            <?php $strDescs[] = $content; ?>
+                        @endforeach
+                    @endforeach
+                    @if('优势能力' === $key)
+                        <strong>{{ implode($strDescs, ',') }}</strong>
+                    @endif
+                </td>
+                @if (empty($complexStat))
+                    <td class="active lead" colspan="2"></td>
+                @endif
+        </tr>
+    @endforeach
 </h1>
 
 <p class="lead">整体来说，孩子在大脑思维优于其他能力，建议在个性化培育时，以优势带动弱势设计培育计划，若朝此方向培育，将对大脑功能、思维速度、具体抽象转换、学习能力等有效率的增长，未来在学习上将有较大的成就。</p>
