@@ -8,7 +8,7 @@
 <br/>
 <br/>
 <h2>
-    <strong>您的孩子的智能运动天赋优势是：</strong>
+    <strong>您的孩子个体内的智能运动天赋优势是：</strong>
 </h2>
 
 <h1 class="text-center" style="color:#f0ad4e;">

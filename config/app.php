@@ -164,6 +164,7 @@ return [
         Collective\Bus\BusServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
         BackupManager\Laravel\Laravel5ServiceProvider::class,
+		Barryvdh\Debugbar\ServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class
     ],
 
