@@ -1,5 +1,5 @@
 <div class="text-center">
-    <h1>{{ "{$child->name}{$child->getSex()}" }}</h1>
+    <h3>{{ "{$child->name}" }}</h3>
     <p>的天赋能力测评结果</p>
     <ul class="list-inline">
         <li>施测日期：{{ $report->replica->created_at->format('Y-m-d') }}</li>
