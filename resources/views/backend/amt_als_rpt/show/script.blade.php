@@ -49,7 +49,13 @@ $(document).ready(function() {
             }]
         },
         options: {
-            cutoutPercentage: 75
+            cutoutPercentage: 75,
+            legend: {
+                position: 'top',
+                onClick: {
+                    hidden: false
+                }
+            }
         },
     });
     //######### Insert Text In myDoughnutChart #########//
@@ -66,7 +72,7 @@ $(document).ready(function() {
             ctx.fillStyle = 'black';
             var text01 = "Level";
             var textX01 = Math.round((width - ctx.measureText(text01).width) / 2);
-            var textY01 = height / 2.3;
+            var textY01 = height / 2.1;
             ctx.fillText(text01, textX01, textY01);
             
             var text02 = "{{$avgLevel}}", // 總平均
@@ -128,10 +134,14 @@ $(document).ready(function() {
             }]
         },
         options: {
+            legend: {
+                display: false
+            },
             scales: {
                 yAxes: [{
                     ticks: {
-                        beginAtZero: true
+                        beginAtZero: true,
+                        max: 20
                     }
                 }]
             }
