@@ -70,3 +70,7 @@
 <h4 class="text-right">
     <strong>报告负责人： {{$report->owner->name}}</strong>
 </h4>
+<br/>
+<div class="text-right">
+    <a href="{{"/frontend/amt_als_rpt/{$report->id}"}}">{{"http://int.wecarekids.cn/frontend/amt_als_rpt/{$report->id}"}}</a>
+</div>
