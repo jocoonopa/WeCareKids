@@ -21,7 +21,7 @@
             @else
                 <td class="lead amt-compare-td amt-worse-td" rowspan="{{count($complexStat) + 1}}">
                     @endif
-                    <strong>{{$key}}</strong>
+                    <!--strong>{{$key}}</strong-->
                 </td>
                 <td class="lead" rowspan="{{count($complexStat) + 1}}">
                     <?php $strDescs = []; ?>
