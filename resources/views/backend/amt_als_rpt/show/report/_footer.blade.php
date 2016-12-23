@@ -70,7 +70,16 @@
 <h4 class="text-right">
     <strong>报告负责人： {{$report->owner->name}}</strong>
 </h4>
-<br/>
-<div class="text-right">
+<div class="row">
+    <div class="col-md-10 col-md-offset-1 col-sm-12">
+        <div class="text-center">
+            @include('component/qrcode', [
+                'size' => 250,
+                'string' => URL::to("/frontend/amt_als_rpt/{$report->id}")
+            ])
+        </div>
+    </div>
+</div>
+<div class="text-center">
     <a href="{{"/frontend/amt_als_rpt/{$report->id}"}}">{{"http://int.wecarekids.cn/frontend/amt_als_rpt/{$report->id}"}}</a>
 </div>
