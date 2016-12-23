@@ -44,6 +44,7 @@ Route::get('/backend/amt_replica/{amt_replica}/prev', 'Backend\AmtReplicaControl
 
 Route::resource('/backend/child', 'Backend\ChildController');
 Route::resource('/backend/amt_als_rpt', 'Backend\AmtAlsRptController');
+Route::resource('/frontend/amt_als_rpt', 'Frontend\AmtAlsRptController');
 
 Route::get('/backend/amt_diag_group/{amt_diag_group}/amt_diag', 'Backend\AmtDiagController@index');
 Route::get('/backend/amt_diag_group/{amt_diag_group}/amt_diag/create', 'Backend\AmtDiagController@create');
