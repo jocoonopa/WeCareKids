@@ -1,6 +1,5 @@
 <div class="row">
-    <div class="col-md-3 col-sm-0 col-xs-0"></div>
-    <div class="col-md-6 col-sm-12 col-xs-12">
+    <div class="col-md-offset-3 col-md-6 col-sm-offset-2 col-sm-8 col-xs-12">
         <canvas id="myDoughnutChart" width="250" height="250"></canvas>
     </div>
     <div class="col-md-3 col-sm-0 col-xs-0"></div>
