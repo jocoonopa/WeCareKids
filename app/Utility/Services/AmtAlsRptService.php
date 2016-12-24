@@ -201,15 +201,17 @@ class AmtAlsRptService
     public function getComplexStats(array $levelStats, $defaultLevel)
     {
         $complexStats = ['优势能力' => [], '符合标准' => [], '弱势能力' => []];
+
+        $sum = array_sum($levelStats);
         
         foreach ($levelStats as $content => $levelStat) {
-            if ($levelStat <= ($defaultLevel - AmtAlsRpt::ABILITY_COMPARE_THREAD_ID)) {
+            if ($this->isWeakAbility($defaultLevel, $levelStat)) {
                 $complexStats['弱势能力'][] = [$content => $levelStat]; 
 
                 continue;
             }
 
-            if ($levelStat >= ($defaultLevel + AmtAlsRpt::ABILITY_COMPARE_THREAD_ID)) {
+            if ($this->isStrongAbility($sum, $levelStat)) {
                 $complexStats['优势能力'][] = [$content => $levelStat];
 
                 continue;
@@ -219,5 +221,15 @@ class AmtAlsRptService
         }
 
         return $complexStats;
+    }
+
+    protected function isStrongAbility($sum, $level)
+    {
+        return (float) $level/$sum >= 0.13;
+    }
+
+    protected function isWeakAbility($defaultLevel, $level)
+    {
+        return $level <= ($defaultLevel - AmtAlsRpt::ABILITY_COMPARE_THREAD_ID);
     }
 }
