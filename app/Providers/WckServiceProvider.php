@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Utility\Services\AmtAlsRptService;
 use App\Utility\Services\AmtCellService;
 use App\Utility\Services\WckService;
+use App\Utility\Services\SlackService;
 use Illuminate\Support\ServiceProvider;
 
 class WckServiceProvider extends ServiceProvider
@@ -34,10 +35,22 @@ class WckServiceProvider extends ServiceProvider
         $this->app->singleton('amt_cell', function () {
             return new AmtCellService;
         });
+
+        $this->app->singleton('slack', function ($app) {
+            return new SlackService(new \Maknz\Slack\Client(env('SLACK_WEB_HOOK'), $this->getSlackSettings()));
+        });
     }
 
     public function provides()
     {
-        return ['amt_als_rpt', 'wck', 'amt_cell'];
+        return ['amt_als_rpt', 'wck', 'amt_cell', 'slack'];
+    }
+
+    protected function getSlackSettings()
+    {
+        return [
+            'username' => 'system_' . env('APP_ENV'),
+            'channel' => env('SLACK_CHANNEL')
+        ];
     }
 }

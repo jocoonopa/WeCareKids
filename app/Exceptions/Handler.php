@@ -5,6 +5,7 @@ namespace App\Exceptions;
 use Exception;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Slack;
 
 class Handler extends ExceptionHandler
 {
@@ -33,6 +34,10 @@ class Handler extends ExceptionHandler
 	public function report(Exception $exception)
 	{
 		parent::report($exception);
+
+		if (Slack::isOn()) {			
+            Slack::report($exception);
+        }
 	}
 	
 	/**

@@ -28,7 +28,8 @@
         "laravelcollective/html": "^5.3.0",
         "backup-manager/laravel": "^1.1",
         "barryvdh/laravel-dompdf": "^0.7.0",
-        "barryvdh/laravel-debugbar": "^2.3"
+        "barryvdh/laravel-debugbar": "^2.3",
+        "maknz/slack": "^1.7"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

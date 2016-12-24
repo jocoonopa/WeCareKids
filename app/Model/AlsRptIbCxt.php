@@ -237,7 +237,7 @@ class AlsRptIbCxt extends Model
         $conditions = [];
 
         foreach ($qNums as $qNum) {
-            $num += array_get($content, $qNum);
+            $num += array_get($content, $qNum) + 1;
         }
 
         switch ($symbol)
@@ -282,11 +282,14 @@ class AlsRptIbCxt extends Model
 
         foreach ($conditions as $key => $condition) {
             if ($condition[0] <= $num && $condition[1] >= $num) {
-                return $key;
+                return [
+                    'l' => $key, 
+                    'g' => $num
+                ];
             }
         }
 
-        return 0;
+        return ['l' => 0, 'g' => 0];
     }
 
     /**

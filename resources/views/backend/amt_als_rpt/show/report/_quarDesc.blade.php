@@ -24,16 +24,26 @@
                     ] as $symbol)
                     <?php $quarLevel = array_get($quarLevels, $symbol); ?>
                     <td class="lead">
-                        @if (0 === (int) $quarLevel)
-                        --<br>比大多数人少很多
-                        @elseif (1 === (int) $quarLevel)
-                        -<br>比大多数人少
-                        @elseif (2 === (int) $quarLevel)
-                        =<br>与大多数人类似
-                        @elseif (3 === (int) $quarLevel)
-                        +<br/>比大多数人多
-                        @elseif (4 === (int) $quarLevel)
-                        ++<br/>比大多数人多很多
+                        @if (0 === (int) array_get($quarLevel, 'l'))
+                        --<br>
+                        <p>{{ array_get($quarLevel, 'g') }}/75</p>
+                        <br>比大多数人少很多
+                        @elseif (1 === (int) array_get($quarLevel, 'l'))
+                        -<br>
+                        <p>{{ array_get($quarLevel, 'g') }}/75</p>
+                        比大多数人少
+                        @elseif (2 === (int) array_get($quarLevel, 'l'))
+                        =<br>
+                        <p>{{ array_get($quarLevel, 'g') }}/75</p>
+                        与大多数人类似
+                        @elseif (3 === (int) array_get($quarLevel, 'l'))
+                        +<br/>
+                        <p>{{ array_get($quarLevel, 'g') }}/75</p>
+                        比大多数人多
+                        @elseif (4 === (int) array_get($quarLevel, 'l'))
+                        ++<br/>
+                        <p>{{ array_get($quarLevel, 'g') }}/75</p>
+                        比大多数人多很多
                         @endif
                     </td>
                     @endforeach
