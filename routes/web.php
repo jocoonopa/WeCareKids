@@ -26,24 +26,24 @@ require(app_path() . '/../routes/auth/Login.php');
 | Frontend Routes
 |--------------------------------------------------------------------------
 */
-require(app_path() . '/../routes/Frontend/AlsRptIbCxt.php');
-require(app_path() . '/../routes/Frontend/AmtAlsRpt.php');
+require(app_path() . '/../routes/frontend/AlsRptIbCxt.php');
+require(app_path() . '/../routes/frontend/AmtAlsRpt.php');
 
 /*
 |--------------------------------------------------------------------------
 | Backend Routes
 |--------------------------------------------------------------------------
 */
-require(app_path() . '/../routes/Backend/AlsRptIbChannel.php');
-require(app_path() . '/../routes/Backend/AlsRptIbCxt.php');
-require(app_path() . '/../routes/Backend/AmtReplica.php');
-require(app_path() . '/../routes/Backend/Child.php');
-require(app_path() . '/../routes/Backend/AmtAlsRpt.php');
-require(app_path() . '/../routes/Backend/AmtDiag.php');
-require(app_path() . '/../routes/Backend/AmtCell.php');
-require(app_path() . '/../routes/Backend/AmtDiagStandard.php');
-require(app_path() . '/../routes/Backend/Organization.php');
-require(app_path() . '/../routes/Backend/RecommendCourse.php');
+require(app_path() . '/../routes/backend/AlsRptIbChannel.php');
+require(app_path() . '/../routes/backend/AlsRptIbCxt.php');
+require(app_path() . '/../routes/backend/AmtReplica.php');
+require(app_path() . '/../routes/backend/Child.php');
+require(app_path() . '/../routes/backend/AmtAlsRpt.php');
+require(app_path() . '/../routes/backend/AmtDiag.php');
+require(app_path() . '/../routes/backend/AmtCell.php');
+require(app_path() . '/../routes/backend/AmtDiagStandard.php');
+require(app_path() . '/../routes/backend/Organization.php');
+require(app_path() . '/../routes/backend/RecommendCourse.php');
 
 /*
 |--------------------------------------------------------------------------

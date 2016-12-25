@@ -59,7 +59,7 @@ class SlackService
     protected function genMsg($exception)
     {
         return [
-            'statusCode' => $exception->getStatusCode(),
+            'statusCode' => method_exists($exception, 'getStatusCode') ? $exception->getStatusCode() : '',
             'ip'       => Request::ip(),
             'username' => urlencode(Auth::check() ? Auth::user()->username : 'guest'),
             'from'     => env('APP_ENV'),
