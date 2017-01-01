@@ -62,12 +62,18 @@ class AmtAlsRptService
     public function calculateAverageLevel(array $levelStatus)
     {
         $sum = 0;
+        $count = 0;
 
         foreach ($levelStatus as $level) {
+            if (empty($level)) {
+                continue;
+            }
+
             $sum += $level;
+            $count ++;
         }
 
-        return floor($sum/count($levelStatus));
+        return floor($sum/$count);
     }
 
     public function getFeelIntegrationLevel(array $levelStatus)

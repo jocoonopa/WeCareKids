@@ -14,7 +14,7 @@
 <p class="lead">代表孩子的实际能力区段，如：10 个月 - 1 岁孩子的能力常态符合 Level 2 之能力标准，即以 Level 表示之。各等级符合之年龄如下表：</p>
 <!--####### Level 能力标准 ######-->
 <div class="row">
-    <div class="col-offset-md-1 col-md-5 col-sm-6 col-xs-12">
+    <div class="col-md-offset-1 col-md-5 col-sm-6 col-xs-12">
         <h2>
             <table class="table table-bordered table-hover text-center">
                 <thead style="background-color: #f0ad4e; color:#fff;">
