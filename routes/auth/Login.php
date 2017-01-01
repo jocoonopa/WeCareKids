@@ -13,4 +13,4 @@ Route::get('/', function () {
     return redirect('/auth/login');
 });
 Route::get('/login', function (){abort(404);});
-Route::get('/backend/home', 'Backend\AlsRptIbChannelController@index');
+Route::get('/backend/home', 'Backend\AlsRptIbCxtController@index');

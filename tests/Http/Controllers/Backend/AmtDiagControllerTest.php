@@ -4,8 +4,10 @@ namespace Tests\Http\Controllers\Backend;
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class AlsRptIbChannelControllerTest extends \Tests\TestCase
-{    
+class AmtDiagControllerTest extends \Tests\TestCase
+{
+    use DatabaseTransactions;
+    
     public function testApplication()
     {
         if ('travis' === env('APP_ENV')) {
@@ -15,10 +17,8 @@ class AlsRptIbChannelControllerTest extends \Tests\TestCase
         $user = \App\Model\User::find(102);
 
         $this->actingAs($user)
-            ->visit('/')
-            ->see('Welcome,')
-            ->see($user->name)
-            ->see('问卷列表')
+            ->visit('/backend/amt_diag_group/35/amt_diag')
+            ->see('大题列表')
         ;
     }
 }

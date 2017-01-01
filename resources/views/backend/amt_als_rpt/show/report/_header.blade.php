@@ -1,10 +1,10 @@
 <div class="text-center">
     <h3>{{ "{$child->name}" }}</h3>
-    <p>的天赋能力测评结果</p>
+    <p class="lead">的天赋能力测评结果</p>
     <ul class="list-inline">
-        <li>施测日期：{{ $report->replica->created_at->format('Y-m-d') }}</li>
-        <li>出生日期：{{ $child->birthday->format('Y-m-d') }}</li>
-        <li>实足年龄：{{ \App\Model\Child::getYMAge($child->birthday) }}</li>
+        <li class="lead">施测日期：{{ $report->replica->created_at->format('Y-m-d') }}</li>
+        <li class="lead">出生日期：{{ $child->birthday->format('Y-m-d') }}</li>
+        <li class="lead">实足年龄：{{ \App\Model\Child::getYMAge($child->birthday) }}</li>
     </ul>
     <br/>
     

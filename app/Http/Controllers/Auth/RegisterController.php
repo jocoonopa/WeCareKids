@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Model\User;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Validator;
+use App\Model\AlsRptIbChannel;
+use App\Model\User;
+use DB;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
 {
@@ -63,10 +65,22 @@ class RegisterController extends Controller
 	 */
 	protected function create(array $data)
 	{
-		return User::create([
-			'name' => $data['name'],
-			'email' => $data['email'],
-			'password' => bcrypt($data['password']),
-		]);
+		DB::beginTransaction();
+		try {
+			$user = User::create([
+				'name' => $data['name'],
+				'email' => $data['email'],
+				'password' => bcrypt($data['password']),
+			]);
+
+			$channel = AlsRptIbChannel::createPrototype($user);
+			$channel->save();
+
+			DB::commit();
+
+			return $user;
+		} catch (\Exception $e) {
+			DB::rollback();
+		}		
 	}
 }

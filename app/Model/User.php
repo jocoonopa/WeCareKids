@@ -53,6 +53,16 @@ class User extends Authenticatable
     {
         return $this->belongsTo('App\Model\Organization');
     }
+
+    public function cxts()
+    {
+        return $this->hasManyThrough('App\Model\AlsRptIbCxt', 'App\Model\AlsRptIbChannel', 'creater_id', 'channel_id', 'id');
+    }
+
+    public function channels()
+    {
+        return $this->hasMany('App\Model\AlsRptIbChannel', 'creater_id', 'id');
+    }
     
     /**
      * The childs that belong to the user.
@@ -70,5 +80,10 @@ class User extends Authenticatable
     public function replicas()
     {
         return $this->hasManyThrough('App\Model\AmtReplica', 'App\Model\Amt', 'creater_id', 'amt_id', 'id');
+    }
+
+    public function getOwnChannel()
+    {
+        return $this->channels()->first();
     }
 }

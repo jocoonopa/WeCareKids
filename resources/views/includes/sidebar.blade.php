@@ -29,7 +29,7 @@
                 <h3>&nbsp;</h3>
                 <ul class="nav side-menu">
                     <li>
-                        <a href="/backend/analysis/r/i/channel"><i class="fa fa-file-text-o"></i>问卷</a>
+                        <a href="/backend/analysis/r/i/cxt"><i class="fa fa-file-text-o"></i>问卷</a>
                     </li>
                     <li>
                         <a href="/backend/child"><i class="fa fa-file-text-o"></i>开始测评</a>

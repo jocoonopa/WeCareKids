@@ -7,6 +7,7 @@
     </div>
 </div>
 
+@if (is_null(Auth::user()))
 <div style="position: fixed; top: 0px; right: 0">
     <div>
         <a href="/analysis/r/i/channel/{{$cxt->channel->id}}/cxt/logout" class="btn btn-sm btn-default">
@@ -14,3 +15,4 @@
         </a>
     </div>
 </div>
+@endif
