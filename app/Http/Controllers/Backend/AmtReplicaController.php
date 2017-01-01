@@ -298,6 +298,8 @@ class AmtReplicaController extends Controller
                 'd' => array_keys($pairs), 
                 'l' => $request->get('level'), 
                 's' => $currentReplicaGroup->status,
+                'g' => $currentReplicaGroup->id,
+                'dir' => $currentReplicaGroup->dir,
                 'cc' => $currentReplicaGroup->currentCell->id,
                 'rc' => is_null($currentReplicaGroup->resultCell) ? NULL : $currentReplicaGroup->resultCell->id
             ])->save();
@@ -399,7 +401,7 @@ class AmtReplicaController extends Controller
              * 
              * @var \App\Model\AmtReplicaDiagGroup
              */
-            $replicaGroup = $replicaDiags->first()->group;
+            $replicaGroup = AmtReplicaDiagGroup::find($record->g);
 
             // ~1
             $replica->update(['current_group_id' => $replicaGroup->id]);
@@ -409,7 +411,8 @@ class AmtReplicaController extends Controller
                 'level' => $record->l,
                 'status' => $record->s,
                 'current_cell_id' => $record->cc,
-                'result_cell_id' => $record->rc
+                'result_cell_id' => $record->rc,
+                'dir' => $record->dir
             ]);
 
             /**
