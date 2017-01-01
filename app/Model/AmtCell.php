@@ -75,7 +75,7 @@ class AmtCell extends Model
 
     public function isEnd()
     {
-        return (static::MAX_LEVEL === $this->next->level) || is_null($this->prev);
+        return (static::MAX_LEVEL === $this->level) || is_null($this->prev);
     }
 
     /**

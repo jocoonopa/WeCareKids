@@ -187,9 +187,13 @@ class AmtReplicaDiagGroup extends Model
     | 4. 若有 standard, 更新 AmtReplicaDiagGroup->currentCell
     | 5. 若 standard 對應到的 AmtReplicaDiag 有尚未作答的, 回傳 true
     | 5a. 若為最末, 驗證完後必定結束
+    | 5b. 驗證失敗，終止，綁定回prev
     | 6. 若所有 AmtReplicaDiag 都已經有答案, 進行驗證
     | 7. 驗證過關, 遞迴 $this->swtichToNextCell()
     | 8. 若驗證沒過, return false
+    |--------------------------------------------------------------------------
+    | 這邊回傳之布林值是用來告訴 controller 切換cell 的動作成功或失敗，
+    | 若失敗則controller 要進行 切換 group 的動作
     */
     public function swtichToNextCell() 
     {
@@ -200,7 +204,7 @@ class AmtReplicaDiagGroup extends Model
         //2
         $next = $this->currentCell->findHighest()->next;
 
-        if (is_null($next)) {
+        if (is_null($next) || $next->id === $this->currentCell->id) {
             return false;
         }
         //3
@@ -215,9 +219,11 @@ class AmtReplicaDiagGroup extends Model
         }
         //5a
         if ($this->currentCell->isEnd()) {
-            if (!$this->currentCell->isPass($this)) {
-                $this->bindCurrentCell($this->currentCell->prev);
-            }
+            return false;
+        }
+        //5b
+        if (!$this->currentCell->isPass($this)) {
+            $this->bindCurrentCell($this->currentCell->prev);
 
             return false;
         }
@@ -236,6 +242,7 @@ class AmtReplicaDiagGroup extends Model
     | 4. 若有 standard, 更新 AmtReplicaDiagGroup->currentCell
     | 5. 若 standard 對應到的 replicaDiag 有尚未作答的, 回傳 true
     | 5a. 若為最末, 驗證完後必定結束
+    | 5b. 若驗證過關，則終止，回傳 false
     | 6. 若所有 AmtReplicaDiag 都已經有答案, 進行驗證
     | 7. 若驗證沒過關, 遞迴 $this->swtichToPrevCell()
     | 8. 若驗證過了, return false
@@ -266,12 +273,14 @@ class AmtReplicaDiagGroup extends Model
         
         //5a
         if ($this->currentCell->isEnd()) {
-            if (!$this->currentCell->isPass($this)) {
-                $this->bindCurrentCell($this->currentCell->prev);
-            }
-
             return false;
         }
+
+        //5b
+        if ($this->currentCell->isPass($this)) {
+            return false;
+        }
+
         //6
         return false === $prev->isPass($this) ? $this->swtichToPrevCell() : false; 
     }
