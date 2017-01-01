@@ -14,6 +14,10 @@ class OrganizationControllerTest extends \Tests\TestCase
     {
         parent::setUp();
 
+        if ('travis' === env('APP_ENV')) {
+            $this->markTestSkipped('travis skipped database integrate tests');
+        }
+
         $this->user = \App\Model\User::find(102);
     }
     

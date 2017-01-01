@@ -10,6 +10,10 @@ class AmtCellControllerTest extends \Tests\TestCase
     
     public function testApplication()
     {
+        if ('travis' === env('APP_ENV')) {
+            $this->markTestSkipped('travis skipped database integrate tests');
+        }
+        
         $user = \App\Model\User::find(102);
 
         $this->actingAs($user)

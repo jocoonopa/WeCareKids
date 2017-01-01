@@ -17,9 +17,10 @@
             @include('frontend/als_rpt_ib_cxt/index/form/_group06')
 
             <div class="form-group">
-                <button id="_submit" type="submit" class="btn btn-primary">提交</button>
+                @if ($cxt->isNotSubmit())
+                    <button id="_submit" type="submit" class="btn btn-primary">提交</button>
+                @endif
             </div>
         </form>
-        {{-- @include('frontend/als_rpt_ib_cxt/index/form/_result') --}}
     </div>
 </div>

@@ -13,6 +13,10 @@ class AlsRptIbCxtControllerTest extends \Tests\TestCase
      */
     public function testLoginPage()
     {
+        if ('travis' === env('APP_ENV')) {
+            $this->markTestSkipped('travis skipped database integrate tests');
+        }
+        
         $this->visit('/analysis/r/i/channel/1/cxt/login')
             ->see('电话号码')
             ->see('/analysis/r/i/channel/1/cxt')

@@ -18,11 +18,9 @@ class AlsRptIbCxtController extends Controller
      */
     public function show(AlsRptIbCxt $cxt)
     {
-        //$this->authorize('view', $cxt->channel);
-
-        $sums = $cxt->getQuadrantSums();
-
-        return view('backend/als_rpt_ib_cxt/show', compact('cxt', 'sums'));
+        $privateKey = $cxt->private_key;
+        
+        return view('frontend/als_rpt_ib_cxt/show', compact('cxt', 'privateKey'));
     }
 
     /**
@@ -30,7 +28,13 @@ class AlsRptIbCxtController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(){}
+    public function index()
+    {
+        $cxts = AlsRptIbCxt::latest()->paginate(env('PERPAGE_COUNT', 50));
+        $channel = Auth::user()->getOwnChannel();
+
+        return view('backend/als_rpt_ib_cxt/index', compact('cxts', 'channel'));
+    }
 
     /**
      * Show the form for creating a new resource.

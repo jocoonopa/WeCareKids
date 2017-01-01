@@ -15,6 +15,7 @@ class AlsRptIbCxt extends Model
 
     const STATUS_HASNOT_SUBMIT = 0;
     const STATUS_HAS_SUBMIT    = 1;
+    const STATUS_HAS_MAP       = 2;
     
     const SYMBOL_LAND          = '—';
     const SYMBOL_SENSITIVE     = '○';
@@ -156,6 +157,30 @@ class AlsRptIbCxt extends Model
             ->where('child_name', $child->name)
             ->whereDate('child_birthday', "{$child->birthday->format('Y-m-d')}")
         ;
+    }
+
+    public function isNotSubmit()
+    {
+        return static::STATUS_HASNOT_SUBMIT === $this->status;
+    }
+
+    public function getStatusDesc()
+    {
+        switch($this->status)
+        {
+            case static::STATUS_HASNOT_SUBMIT:
+                return '尚未提交';
+            break;
+            case static::STATUS_HAS_SUBMIT:
+                return '已经提交';
+            break;
+            case static::STATUS_HAS_MAP:
+                return '配对完成';
+            break;
+            default:
+                return '';
+            break;
+        }
     }
 
     /**

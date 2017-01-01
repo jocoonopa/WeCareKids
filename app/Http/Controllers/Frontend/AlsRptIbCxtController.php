@@ -36,38 +36,21 @@ class AlsRptIbCxtController extends Controller
      */
     public function index(AlsRptIbChannel $channel, Request $request)
     {
-        /* 
-        |--------------------------------------------------------------------------
-        | 家長掃描 QRCode 進入填寫問卷頁面 
-        |--------------------------------------------------------------------------
-        |  1. 首先判斷 public_key 可否找到對應 channel?
-        |    1-a. 若無:
-        |      @throw 404
-        |    
-        |==========================================================================
-        |  2. 檢查 channel 是否允許訪問?
-        |    2-a. 若否:
-        |      @throw 403
-        |
-        |==========================================================================
-        |  3. private_key(stored in cookie) 和 public_key 可否到一個 AlsRptIbCxt 實體? 
-        |    2-a. 若有:
-        |      @2-b-2
-        |         
-        |    2-b. 若無:
-        |      1. 系統產生一個新的 AlsRptIbCxt 實體
-        |      2. 產生私鑰, 儲存至 cookie
-        |      3. 輸出頁面開始填寫問券
-        |==========================================================================
-        */
         $privateKey = $request->cookie($channel->public_key);
 
+        // 若沒有私鑰, 導向登入頁準備產生私鑰
         if (is_null($privateKey)) {
             return redirect("/analysis/r/i/channel/{$channel->id}/cxt/login");
         }
 
-        $cxt = $channel->cxts()->where('private_key', $request->cookie($channel->public_key))->first();
+        /**
+         * 透過私鑰尚未提交的 AlsRptIbCxt
+         * 
+         * @var \App\Model\AlsRptIbCxt
+         */
+        $cxt = $channel->findNotSubmitCxts($request->cookie($channel->public_key))->first();
 
+        // 若沒有尚未提交的 cxt, 導向登入頁準備新增cxt
         if (is_null($cxt)) {
             return redirect("/analysis/r/i/channel/{$channel->id}/cxt/login");
         }
@@ -75,16 +58,35 @@ class AlsRptIbCxtController extends Controller
         return view('frontend/als_rpt_ib_cxt/index', compact('cxt', 'privateKey'));
     }
 
+    /**
+     * 家長 Login 頁面
+     * 
+     * @param  AlsRptIbChannel $channel
+     * @return \Illuminate\Http\Response
+     */
     public function login(AlsRptIbChannel $channel)
     {
         return view('frontend/als_rpt_ib_cxt/login', compact('channel'));
     }
 
+    /**
+     * 家長 Logout 頁面
+     * 
+     * @param  AlsRptIbChannel $channel
+     * @return \Illuminate\Http\Response
+     */
     public function logout(AlsRptIbChannel $channel)
     {
         return redirect("/analysis/r/i/channel/{$channel->id}/cxt/login")->withCookie(Cookie::forget($channel->public_key));
     }
 
+    /**
+     * 家長驗證頁面
+     * 
+     * @param  AlsRptIbChannel $channel
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
     public function auth(AlsRptIbChannel $channel, Request $request)
     {
         $validator = $this->validate($request, [
@@ -97,12 +99,14 @@ class AlsRptIbCxtController extends Controller
         
         $phone = $request->get('phone');
 
-        $cxt = $channel->cxts()
-            ->whereNotNull('phone')
-            ->where('phone', $phone)
-            ->first()
-        ;
+        /**
+         * 透過電話尋找尚未提交的 AlsRptIbCxt
+         * 
+         * @var \App\Model\AlsRptIbCxt
+         */
+        $cxt = $channel->findNotSubmitCxtsByPhone($phone)->first();
 
+        // 若cxt不存在, 產生一個新的cxt
         if (is_null($cxt)) {
             $cxt = AlsRptIbCxt::createPrototype($channel);
             $cxt->phone = $phone;

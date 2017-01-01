@@ -13,6 +13,10 @@ class AmtAlsRptControllerTest extends \Tests\TestCase
      */
     public function testView()
     {
+        if ('travis' === env('APP_ENV')) {
+            $this->markTestSkipped('travis skipped database integrate tests');
+        }
+        
         $user = \App\Model\User::find(102);
 
         $this->actingAs($user)

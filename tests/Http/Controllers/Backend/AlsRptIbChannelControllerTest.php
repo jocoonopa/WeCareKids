@@ -5,18 +5,20 @@ namespace Tests\Http\Controllers\Backend;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class AlsRptIbChannelControllerTest extends \Tests\TestCase
-{
-    use DatabaseTransactions;
-    
+{    
     public function testApplication()
     {
-        $user = factory(\App\Model\User::class)->create();
+        if ('travis' === env('APP_ENV')) {
+            $this->markTestSkipped('travis skipped database integrate tests');
+        }
+        
+        $user = \App\Model\User::find(102);
 
         $this->actingAs($user)
             ->visit('/')
             ->see('Welcome,')
             ->see($user->name)
-            ->see('您所建立的评量频道')
+            ->see('问卷列表')
         ;
     }
 }

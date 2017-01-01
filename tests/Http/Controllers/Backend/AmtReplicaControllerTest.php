@@ -12,6 +12,10 @@ class AmtReplicaControllerTest extends \Tests\TestCase
 
     public function setUp()
     {
+        if ('travis' === env('APP_ENV')) {
+            $this->markTestSkipped('travis skipped database integrate tests');
+        }
+        
         parent::setUp();
 
         $this->user = \App\Model\User::find(102);

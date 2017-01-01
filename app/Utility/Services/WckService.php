@@ -2,8 +2,12 @@
 
 namespace App\Utility\Services;
 
+use App\Utility\Services\Wck\ViewTrait;
+
 class WckService
 {
+    use ViewTrait;
+
     /**
      * 判斷輸入值是否意義上為空
      * 
