@@ -41,7 +41,11 @@ class AmtDiagStandard extends Model
 
     public function isPassWithMacthed(Collection $replicaDiags)
     {
-        $replicaDiag = $replicaDiags->first(function ($replicaDiag) { 
+        if (0 === $replicaDiags->count()) {
+            return false;
+        }
+
+        $replicaDiag = $replicaDiags->first(function ($replicaDiag) {
             return $this->diag_id === $replicaDiag->diag_id; 
         });
 
