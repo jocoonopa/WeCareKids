@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class AmtReplicaDiagGroup extends Model
 {
+    const STATUS_INIT = 0;
     const STATUS_DONE_ID = 2;
     const STATUS_SKIP_ID = 10;
 
@@ -262,6 +263,8 @@ class AmtReplicaDiagGroup extends Model
         }
         //3
         if ($prev->isEmpty()) {
+             $this->bindCurrentCell($prev);
+             
             return false;
         }
         //4

@@ -37,7 +37,7 @@
                             @elseif ($replicaGroup->isSkip())
                                 <li class="text-warning">
                             @endif
-                                {{$replicaGroup->id}}:{{$replicaGroup->group->content}}
+                                {{$replicaGroup->group->id}}:{{$replicaGroup->id}}:{{$replicaGroup->group->content}}
                                 
                                 @if ($replicaGroup->isDone() or $replicaGroup->isSkip())
                                     {{--  此 Group 得到的分數 --}}
