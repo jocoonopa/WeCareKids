@@ -77,7 +77,7 @@ class AmtReplicaDiagGroup extends Model
          */
         $chief = $this->resultCell->getChief();
 
-        $level = 0 === $chief->step ? $chief->getLevel($this->replica) : $chief->getThreadResultLevel($this);
+        $level = $chief->isThread() ? $chief->getThreadResultLevel($this) : $chief->getLevel($this->replica);
 
         return AmtCell::getRestrictLevel($level);
     }
@@ -164,7 +164,16 @@ class AmtReplicaDiagGroup extends Model
      * @return boolean
      */
     public function switchCell($isPass)
-    {
+    {   
+        // 若為閾值題，直接返回false
+        if ($this->currentCell->isThread()) {
+             $this->update(['dir' => (int) $isPass]);
+
+             $this->bindCurrentCell($this->currentCell);
+
+             return false;
+        }
+
         if ($this->isDirTerminate($isPass)) {
             $resultCell = true === $isPass ? $this->currentCell->next : $this->currentCell->prev;
 
