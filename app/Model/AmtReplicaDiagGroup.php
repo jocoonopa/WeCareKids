@@ -239,7 +239,7 @@ class AmtReplicaDiagGroup extends Model
         }
 
         //6
-        return true === $next->isPass($this) ? $this->swtichToNextCell() : false;
+        return $next->isPass($this) ? $this->swtichToNextCell() : false;
     }
 
     /*
@@ -294,7 +294,7 @@ class AmtReplicaDiagGroup extends Model
         }
 
         //6
-        return false === $prev->isPass($this) ? $this->swtichToPrevCell() : false; 
+        return !$prev->isPass($this) ? $this->swtichToPrevCell() : false; 
     }
 
     protected function bindCurrentCell(AmtCell $cell = NULL)
