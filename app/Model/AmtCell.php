@@ -73,9 +73,34 @@ class AmtCell extends Model
         return $this->hasMany('App\Model\AmtReplicaDiagGroup', 'result_cell_id', 'id');
     }
 
+    /**
+     * 判斷是否為最末 cell (高or低都算)
+     * 
+     * @return boolean
+     */
     public function isEnd()
     {
         return (static::MAX_LEVEL === $this->level) || is_null($this->prev);
+    }
+
+    /**
+     * 判斷是否為閾值題
+     * 
+     * @return boolean
+     */
+    public function isThread()
+    {
+        return 0 < $this->getChief()->step;
+    }
+
+    /**
+     * League 是否沒有包含任何 standard
+     * 
+     * @return boolean
+     */
+    public function isEmpty()
+    {
+        return 0 === $this->getChief()->standards()->count();
     }
 
     /**
@@ -185,16 +210,6 @@ class AmtCell extends Model
         }
 
         return AmtCell::where('league_id', $this->league_id)->orderBy('level', 'asc')->first();
-    }
-
-    /**
-     * League 是否沒有包含任何 standard
-     * 
-     * @return boolean
-     */
-    public function isEmpty()
-    {
-        return 0 === $this->getChief()->standards()->count();
     }
 
     /**
