@@ -35,9 +35,14 @@ class Handler extends ExceptionHandler
 	{
 		parent::report($exception);
 
-		if (Slack::isOn()) {			
+		if ($this->isSlackEnabled()) {			
             Slack::report($exception);
         }
+	}
+
+	protected function isSlackEnabled()
+	{
+		return !is_null(env('SLACK_WEB_HOOK', NULL)) && !is_null(env('SLACK_CHANNEL', NULL));
 	}
 	
 	/**
