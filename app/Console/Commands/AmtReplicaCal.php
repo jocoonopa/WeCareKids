@@ -30,8 +30,25 @@ class AmtReplicaCal extends Command
      */
     public function handle()
     {
+        if ('all' === $this->argument('amtReplicaId')) {
+            AmtReplica::where('created_at', '>=', '2016-12-20')->get()->each(function ($replica) {
+                return $this->replicaCalProc($replica);
+            });
+
+            return $this->info("\n---------------------------\n所有 AmtReplica 處理完畢!\n\n");
+        }
+
         $replica = AmtReplica::find($this->argument('amtReplicaId'));
 
+        if (is_null($replica)) {
+            return $this->info("\n AmtReplica:404 Not Found!\n\n");
+        }
+
+        return $this->replicaCalProc($replica);
+    }
+
+    protected function replicaCalProc(AmtReplica $replica)
+    {
         $this->info("\n---------------------------\nAmtReplica:{$replica->id} 開始處理...\n---------------------------\n");
 
         // 找出所有 replica groups, 分別進行處理
