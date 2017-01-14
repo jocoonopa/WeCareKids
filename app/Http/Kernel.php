@@ -53,6 +53,7 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
 		'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
         'access.rpt.channel' => \App\Http\Middleware\AlsRptIbChannel::class,
+        'view.rpt' => \App\Http\Middleware\AmtAlsRpt::class,
         'edit.rpt.cxt' => \App\Http\Middleware\AlsRptIbCxt::class
     ];
 }

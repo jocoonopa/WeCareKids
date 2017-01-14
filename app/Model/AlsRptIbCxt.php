@@ -15,6 +15,7 @@ class AlsRptIbCxt extends Model
 
     const STATUS_HASNOT_SUBMIT = 0;
     const STATUS_HAS_SUBMIT    = 1;
+    const STATUS_HAS_MAP       = 2;
     
     const SYMBOL_LAND          = '—';
     const SYMBOL_SENSITIVE     = '○';
@@ -73,9 +74,9 @@ class AlsRptIbCxt extends Model
         self::SENSE_KEY_TASTE => ['0_0','0_1','0_2','0_3','0_4','0_5','0_6','0_7'],
         self::SENSE_KEY_ACTION => ['1_0','1_1','1_2','1_3','1_4','1_5','1_6','1_7'],
         self::SENSE_KEY_VISUAL => ['2_0','2_1','2_2','2_3','2_4','2_5','2_6','2_7','2_8','2_9'],
-        self::SENSE_KEY_AUDITORY => ['3_0','3_1','3_2','3_3','3_4','3_5','3_6','3_7','3_8','3_9','3_10','3_11','3_12'],
-        self::SENSE_KEY_TOUCH => ['4_0','4_1','4_2','4_3','4_4','4_5','4_6','4_7','4_8','4_9'],
-        self::SENSE_KEY_ACTIVITY => ['5_0','5_1','5_2','5_3','5_4','5_5','5_6','5_7','5_8','5_9','5_10']
+        self::SENSE_KEY_TOUCH => ['3_0','3_1','3_2','3_3','3_4','3_5','3_6','3_7','3_8','3_9','3_10','3_11','3_12'],
+        self::SENSE_KEY_ACTIVITY => ['4_0','4_1','4_2','4_3','4_4','4_5','4_6','4_7','4_8','4_9'],
+        self::SENSE_KEY_AUDITORY => ['5_0','5_1','5_2','5_3','5_4','5_5','5_6','5_7','5_8','5_9','5_10']
     );
 
     public static $senseDesc = array(
@@ -158,6 +159,30 @@ class AlsRptIbCxt extends Model
         ;
     }
 
+    public function isNotSubmit()
+    {
+        return static::STATUS_HASNOT_SUBMIT === $this->status;
+    }
+
+    public function getStatusDesc()
+    {
+        switch($this->status)
+        {
+            case static::STATUS_HASNOT_SUBMIT:
+                return '尚未提交';
+            break;
+            case static::STATUS_HAS_SUBMIT:
+                return '已经提交';
+            break;
+            case static::STATUS_HAS_MAP:
+                return '配对完成';
+            break;
+            default:
+                return '';
+            break;
+        }
+    }
+
     /**
      * 取得感觉处理型态分析资料
      *
@@ -237,7 +262,7 @@ class AlsRptIbCxt extends Model
         $conditions = [];
 
         foreach ($qNums as $qNum) {
-            $num += array_get($content, $qNum);
+            $num += array_get($content, $qNum) + 1;
         }
 
         switch ($symbol)
@@ -282,11 +307,14 @@ class AlsRptIbCxt extends Model
 
         foreach ($conditions as $key => $condition) {
             if ($condition[0] <= $num && $condition[1] >= $num) {
-                return $key;
+                return [
+                    'l' => $key, 
+                    'g' => $num
+                ];
             }
         }
 
-        return 0;
+        return ['l' => 0, 'g' => 0];
     }
 
     /**

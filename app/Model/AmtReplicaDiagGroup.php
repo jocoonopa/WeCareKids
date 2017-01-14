@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class AmtReplicaDiagGroup extends Model
 {
+    const STATUS_INIT = 0;
     const STATUS_DONE_ID = 2;
     const STATUS_SKIP_ID = 10;
 
@@ -76,7 +77,7 @@ class AmtReplicaDiagGroup extends Model
          */
         $chief = $this->resultCell->getChief();
 
-        $level = 0 === $chief->step ? $chief->getLevel($this->replica) : $chief->getThreadResultLevel($this);
+        $level = $chief->isThread() ? $chief->getThreadResultLevel($this) : $chief->getLevel($this->replica);
 
         return AmtCell::getRestrictLevel($level);
     }
@@ -163,7 +164,16 @@ class AmtReplicaDiagGroup extends Model
      * @return boolean
      */
     public function switchCell($isPass)
-    {
+    {   
+        // 若為閾值題，直接返回false
+        if ($this->currentCell->isThread()) {
+             $this->update(['dir' => (int) $isPass]);
+
+             $this->bindCurrentCell($this->currentCell);
+
+             return false;
+        }
+
         if ($this->isDirTerminate($isPass)) {
             $resultCell = true === $isPass ? $this->currentCell->next : $this->currentCell->prev;
 
@@ -187,9 +197,13 @@ class AmtReplicaDiagGroup extends Model
     | 4. 若有 standard, 更新 AmtReplicaDiagGroup->currentCell
     | 5. 若 standard 對應到的 AmtReplicaDiag 有尚未作答的, 回傳 true
     | 5a. 若為最末, 驗證完後必定結束
+    | 5b. 驗證失敗，終止，綁定回prev
     | 6. 若所有 AmtReplicaDiag 都已經有答案, 進行驗證
     | 7. 驗證過關, 遞迴 $this->swtichToNextCell()
     | 8. 若驗證沒過, return false
+    |--------------------------------------------------------------------------
+    | 這邊回傳之布林值是用來告訴 controller 切換cell 的動作成功或失敗，
+    | 若失敗則controller 要進行 切換 group 的動作
     */
     public function swtichToNextCell() 
     {
@@ -200,7 +214,7 @@ class AmtReplicaDiagGroup extends Model
         //2
         $next = $this->currentCell->findHighest()->next;
 
-        if (is_null($next)) {
+        if (is_null($next) || $next->id === $this->currentCell->id) {
             return false;
         }
         //3
@@ -215,15 +229,17 @@ class AmtReplicaDiagGroup extends Model
         }
         //5a
         if ($this->currentCell->isEnd()) {
-            if (!$this->currentCell->isPass($this)) {
-                $this->bindCurrentCell($this->currentCell->prev);
-            }
+            return false;
+        }
+        //5b
+        if (!$this->currentCell->isPass($this)) {
+            $this->bindCurrentCell($this->currentCell->prev);
 
             return false;
         }
 
         //6
-        return true === $next->isPass($this) ? $this->swtichToNextCell() : false;
+        return $next->isPass($this) ? $this->swtichToNextCell() : false;
     }
 
     /*
@@ -236,6 +252,7 @@ class AmtReplicaDiagGroup extends Model
     | 4. 若有 standard, 更新 AmtReplicaDiagGroup->currentCell
     | 5. 若 standard 對應到的 replicaDiag 有尚未作答的, 回傳 true
     | 5a. 若為最末, 驗證完後必定結束
+    | 5b. 若驗證過關，則終止，回傳 false
     | 6. 若所有 AmtReplicaDiag 都已經有答案, 進行驗證
     | 7. 若驗證沒過關, 遞迴 $this->swtichToPrevCell()
     | 8. 若驗證過了, return false
@@ -255,6 +272,8 @@ class AmtReplicaDiagGroup extends Model
         }
         //3
         if ($prev->isEmpty()) {
+             $this->bindCurrentCell($prev);
+             
             return false;
         }
         //4
@@ -266,14 +285,16 @@ class AmtReplicaDiagGroup extends Model
         
         //5a
         if ($this->currentCell->isEnd()) {
-            if (!$this->currentCell->isPass($this)) {
-                $this->bindCurrentCell($this->currentCell->prev);
-            }
-
             return false;
         }
+
+        //5b
+        if ($this->currentCell->isPass($this)) {
+            return false;
+        }
+
         //6
-        return false === $prev->isPass($this) ? $this->swtichToPrevCell() : false; 
+        return !$prev->isPass($this) ? $this->swtichToPrevCell() : false; 
     }
 
     protected function bindCurrentCell(AmtCell $cell = NULL)

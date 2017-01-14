@@ -67,7 +67,7 @@ $(document).ready(function() {
             ctx.restore();
             var fontSize = (height / 140).toFixed(2);
 
-            ctx.font = fontSize + "em sans-serif";
+            ctx.font = (fontSize - 1) + "em sans-serif";
             ctx.textBaseline = "middle";
             ctx.fillStyle = 'black';
             var text01 = "Level";

@@ -1,43 +1,29 @@
 <div class="row">
-    <div class="col-md-3 col-sm-0 col-xs-0"></div>
-    <div class="col-md-6 col-sm-12 col-xs-12">
+    <div class="col-md-offset-3 col-md-6 col-sm-offset-2 col-sm-8 col-xs-12">
         <canvas id="myDoughnutChart" width="250" height="250"></canvas>
     </div>
     <div class="col-md-3 col-sm-0 col-xs-0"></div>
 </div>
 <br/>
 <br/>
-<h2>
-    <strong>您的孩子个体内的智能运动天赋优势是：</strong>
+<h2 class="lead" style="font-weight: bold;">
+    您的孩子个体内的智能运动天赋优势是:
 </h2>
 
 <h1 class="text-center" style="color:#f0ad4e;">
     @foreach ($complexStats as $key => $complexStat)
-        <tr>
-            @if($loop->first)
-                <td class="lead amt-compare-td amt-greater-td" rowspan="{{count($complexStat) + 1}}">
-            @elseif(1 === $loop->index)
-                <td class="lead amt-compare-td amt-equal-td" rowspan="{{count($complexStat) + 1}}">
-            @else
-                <td class="lead amt-compare-td amt-worse-td" rowspan="{{count($complexStat) + 1}}">
-                    @endif
-                    <!--strong>{{$key}}</strong-->
-                </td>
-                <td class="lead" rowspan="{{count($complexStat) + 1}}">
-                    <?php $strDescs = []; ?>
-                    @foreach ($complexStat as $stats)
-                        @foreach ($stats as $content => $level)
-                            <?php $strDescs[] = $content; ?>
-                        @endforeach
-                    @endforeach
-                    @if('优势能力' === $key)
-                        <strong>{{ implode($strDescs, ',') }}</strong>
-                    @endif
-                </td>
-                @if (empty($complexStat))
-                    <td class="active lead" colspan="2"></td>
-                @endif
-        </tr>
+        <p class="lead">
+            <?php $strDescs = []; ?>
+            @foreach ($complexStat as $stats)
+                @foreach ($stats as $content => $level)
+                    <?php $strDescs[] = $content; ?>
+                @endforeach
+            @endforeach
+            
+            @if('优势能力' === $key)
+                <strong>{{ implode($strDescs, ',') }}</strong>
+            @endif
+        </p>
     @endforeach
 </h1>
 

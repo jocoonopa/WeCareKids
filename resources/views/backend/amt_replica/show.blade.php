@@ -37,24 +37,26 @@
                             @elseif ($replicaGroup->isSkip())
                                 <li class="text-warning">
                             @endif
-                                {{$replicaGroup->id}}:{{$replicaGroup->group->content}}
+                                {{$replicaGroup->group->id}}:{{$replicaGroup->id}}:{{$replicaGroup->group->content}}
                                 
-                                @if ($replicaGroup->isDone() or $replicaGroup->isSkip())                                
+                                @if ($replicaGroup->isDone() or $replicaGroup->isSkip())
+                                    {{--  此 Group 得到的分數 --}}
                                     <span class="badge">
                                         {{ $replicaGroup->getLevel() }}
                                     </span>
                                 @endif
-
-                                <br>
                                 
                                 @if (!is_null($replicaGroup->resultCell))
-                                    <code>{{ "{$replicaGroup->resultCell->id}:{$replicaGroup->resultCell->getChief()->statement}" }}</code>
+                                    <p>
+                                        <code>{{ "Cell[{$replicaGroup->resultCell->id}]的條件:{$replicaGroup->resultCell->getChief()->statement}" }}</code>
+                                    </p>
                                 @endif
                             </li>
                             <ul>
-                                @foreach ($replicaGroup->diags as $replicaDiag)
-                                    <li @if (!is_null($replicaDiag->value)) class="text-success" @endif>
-                                        {{ "{$replicaDiag->id}:{$replicaDiag->diag->description}" }}
+                                @if (!is_null($replicaGroup->resultCell))
+                                    @foreach ($replicaGroup->resultCell->findDoneDiags($replicaGroup) as $replicaDiag)
+                                    <li @if (!is_null($replicaDiag->value)) class="text-primary" @endif>
+                                        {{ "{$replicaDiag->id}的題目:{$replicaDiag->diag->description}" }}
                                         
                                         @if (!is_null($replicaDiag->value)) 
                                             <span class="label label-danger">
@@ -62,7 +64,22 @@
                                             </span>            
                                         @endif
                                     </li>
-                                @endforeach
+                                    @endforeach
+                                @endif
+                                
+                                <ul>
+                                    @foreach ($replicaGroup->diags as $replicaDiag)                                
+                                        <li @if (!is_null($replicaDiag->value)) class="text-success" @endif>
+                                            {{ "{$replicaDiag->id}:{$replicaDiag->diag->description}" }}
+                                            
+                                            @if (!is_null($replicaDiag->value)) 
+                                                <span class="label label-danger">
+                                                    {{$replicaDiag->getUTF8value()}}
+                                                </span>            
+                                            @endif
+                                        </li>
+                                    @endforeach
+                                </ul>                                                                                              
                             </ul>
                         @endforeach
                     </ul>

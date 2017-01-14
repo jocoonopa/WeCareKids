@@ -17,7 +17,9 @@ class Kernel extends ConsoleKernel
         Commands\RepairCell::class,
         Commands\RepairDiag::class,
         Commands\CopyGroup::class,
-        Commands\CellSeed::class
+        Commands\CellSeed::class,
+        Commands\SortoutChannel::class,
+        Commands\AmtReplicaCal::class
         // Commands\Inspire::class,
     ];
 

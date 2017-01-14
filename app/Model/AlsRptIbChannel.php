@@ -2,6 +2,7 @@
 
 namespace App\Model;
 
+use App\Model\AlsRptIbCxt;
 use App\Model\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -47,7 +48,7 @@ class AlsRptIbChannel extends Model
         
         $channel->creater_id = $user->id;
         $channel->open_at = Carbon::now();
-        $channel->close_at = Carbon::now()->modify('+7 days');
+        $channel->close_at = Carbon::now()->modify('+1000 years');
         $channel->is_open = true;
         $channel->public_key = md5(time() . uniqid());
         
@@ -85,6 +86,22 @@ class AlsRptIbChannel extends Model
     public function cxts()
     {
         return $this->hasMany('App\Model\AlsRptIbCxt', 'channel_id', 'id');
+    }
+
+    public function findNotSubmitCxtsByPrivateKey($publicKey)
+    {
+        return $this->cxts()
+            ->where('private_key', $publicKey)
+            ->where('status', AlsRptIbCxt::STATUS_HASNOT_SUBMIT)
+        ;
+    }
+
+    public function findNotSubmitCxtsByPhone($phone)
+    {
+        return $this->cxts()
+            ->where('phone', $phone)
+            ->where('status', AlsRptIbCxt::STATUS_HASNOT_SUBMIT)
+        ;
     }
 
     public function scopeFindByKey($query, $privateKey)

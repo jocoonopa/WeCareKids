@@ -7,7 +7,7 @@
         \App\Model\AlsRptIbCxt::SYMBOL_DODGE => '#BBDEFB'
     ] as $symbol => $color
 )
-<?php $quarLevel = array_get($quarLevels, $symbol); ?>
+<?php $quarLevel = array_get($quarLevels, "{$symbol}.l"); ?>
 <?php $loopCursor = 0; ?>
 
 <div class="col-md-6 col-sm-0 col-xs-6" style="padding: 0;">

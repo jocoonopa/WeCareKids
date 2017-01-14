@@ -1,6 +1,11 @@
 <h1>
     <strong>優尼爾</strong>
     <small>测评日期: {{ Carbon\Carbon::now()->format('Y-m-d') }}  </small>
+    <small>
+        <span class="label {{\Wck::getCxtStatusLabel($cxt)}}">
+            {{ $cxt->getStatusDesc() }}
+        </span>
+    </small>
 </h1>
 
 <div class="form-group">

@@ -81,5 +81,5 @@
     </div>
 </div>
 <div class="text-center">
-    <a href="{{"/frontend/amt_als_rpt/{$report->id}"}}">{{"http://int.wecarekids.cn/frontend/amt_als_rpt/{$report->id}"}}</a>
+    <a href="{{"/frontend/amt_als_rpt/{$report->id}"}}">{{ url("/frontend/amt_als_rpt/{$report->id}") }}</a>
 </div>

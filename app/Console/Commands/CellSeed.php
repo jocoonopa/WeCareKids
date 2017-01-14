@@ -48,10 +48,14 @@ class CellSeed extends Command
             'group_id' => $group->id,
             'level' => $level + 1,
             'prev_id' => is_null($prev) ? NULL : $prev->id,
+
         ]);
 
-        $cell->update(['next_id' => $cell->id]);
-        $cell->prev->update(['next_id' => $cell->id]);
+        $cell->update(['next_id' => $cell->id, 'league_id' => $cell->id]);
+
+        if (!is_null($cell->prev)) {
+            $cell->prev->update(['next_id' => $cell->id]);
+        }
 
         $this->info("{$cell->id}誕生!");
 
