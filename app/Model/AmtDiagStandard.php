@@ -45,11 +45,16 @@ class AmtDiagStandard extends Model
             return false;
         }
 
-        $replicaDiag = $replicaDiags->first(function ($replicaDiag) {
-            return $this->diag_id === $replicaDiag->diag_id; 
-        });
+        $replicaDiag = $this->getMatched($replicaDiags);
 
         return $this->isPass($replicaDiag);
+    }
+
+    public function getMatched(Collection $replicaDiags)
+    {
+        return $replicaDiags->first(function ($replicaDiag) {
+            return $this->diag_id === $replicaDiag->diag_id; 
+        });
     }
 
     public function isPass(AmtReplicaDiag $replicaDiag)
@@ -107,7 +112,12 @@ class AmtDiagStandard extends Model
     public function procRadio(AmtReplicaDiag $replicaDiag)
     {
         $condition = head(json_decode($this->condition_value, true));
-        $answer = head(json_decode($replicaDiag->value, true));
+        $arr = json_decode($replicaDiag->value, true);
+        if (!is_array($arr)) {
+            return false;
+        }
+
+        $answer = head($arr);
         
         return $answer === $condition;
     }

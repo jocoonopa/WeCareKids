@@ -4,6 +4,7 @@ namespace App\Model;
 
 use App\Model\AmtCategory;
 use App\Model\AmtCell;
+use App\Model\Helper\AmtReplicaDiagGroupProxyTrait;
 use Illuminate\Database\Eloquent\Model;
 
 class AmtReplicaDiagGroup extends Model
@@ -11,6 +12,8 @@ class AmtReplicaDiagGroup extends Model
     const STATUS_INIT = 0;
     const STATUS_DONE_ID = 2;
     const STATUS_SKIP_ID = 10;
+
+    use AmtReplicaDiagGroupProxyTrait;
 
     /**
      * The attributes that aren't mass assignable.
