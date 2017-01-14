@@ -20,7 +20,7 @@ class AlsRptIbCxtController extends Controller
     {
         $privateKey = $cxt->private_key;
         
-        return view('frontend/als_rpt_ib_cxt/show', compact('cxt', 'privateKey'));
+        return view('frontend/als_rpt_ib_cxt/index', compact('cxt', 'privateKey'));
     }
 
     /**
