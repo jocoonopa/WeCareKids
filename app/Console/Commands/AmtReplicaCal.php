@@ -2,19 +2,19 @@
 
 namespace App\Console\Commands;
 
+use App\Console\Commands\BaseCommand;
 use App\Model\AmtReplica;
 use App\Model\AmtReplicaDiagGroup;
-use Illuminate\Console\Command;
 use DB;
 
-class AmtReplicaCal extends Command
+class AmtReplicaCal extends BaseCommand
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'replica:cal {amtReplicaId} {--i}';
+    protected $signature = 'replica:cal {amtReplicaId} {--i=}';
 
     /**
      * The console command description.
@@ -53,7 +53,7 @@ class AmtReplicaCal extends Command
 
         // 找出所有 replica groups, 分別進行處理
         $replica->groups->each(function ($group) use ($replica) {
-            if (!is_null($this->options('i'))) {
+            if (!is_null($this->option('i'))) {
                 if (false === $this->confirm('Continue ?', 'y')) {
                     return false;
                 }
@@ -69,6 +69,7 @@ class AmtReplicaCal extends Command
 
             $this->switchProc($replica, $isPass);
 
+            $this->line("<yellow>------------------------------------------------------\n     等級: {$group->getLevel()} \n------------------------------------------------------</yellow>");
             $this->info("------------------------------------------------------\n    AmtReplicaGroup: {$group->id} [{$group->group->content}] 跑分完畢!        \n------------------------------------------------------");
 
             $this->line("||||||||||||||||||||||||||||||||||||||||||||||||||||||");            

@@ -3,9 +3,9 @@
 namespace App\Console\Commands;
 
 use App\Model\AmtReplicaDiagGroup;
-use Illuminate\Console\Command;
+use App\Console\Commands\BaseCommand;
 
-class AmtReplicaDiagGroupCal extends Command
+class AmtReplicaDiagGroupCal extends BaseCommand
 {
     /**
      * The name and signature of the console command.
@@ -49,6 +49,7 @@ class AmtReplicaDiagGroupCal extends Command
         $group->status = AmtReplicaDiagGroup::STATUS_DONE_ID;
         $group->save();
         
+        $this->line("<yellow>------------------------------------------------------\n     等級: {$group->getLevel()} \n------------------------------------------------------</yellow>");
         $this->info("------------------------------------------------------\n|    AmtReplicaGroup: {$group->id} [{$group->group->content}] 跑分完畢!        |\n------------------------------------------------------");
     }
 
