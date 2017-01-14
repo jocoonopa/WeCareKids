@@ -12,7 +12,7 @@
             <div style="padding-top: 40px;"></div>
             {{-- @include('component/flash') --}}
             
-            <h2>{{ "Q:{$replica->currentGroup->group->content}" }} <small>level: {{$level}}</small></h2>
+            {{-- <h2>{{ "Q:{$replica->currentGroup->group->content}" }} <small>level: {{$level}}</small></h2> --}}
             
             <form action="/backend/amt_replica/{{ $replica->id }}" method="post">
                 {{ csrf_field() }}
