@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Amt extends Model
 {
+    const DEFAULT_AMT_ID = 2;
+    
     /**
      * The amt that belong to the creater.
      */

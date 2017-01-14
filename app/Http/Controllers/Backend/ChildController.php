@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Requests\StoreChild;
 use App\Model\Amt;
 use App\Model\Child;
+use App\Utility\Controllers\AmtReplicaTrait;
 use Auth;
 use DB;
 use Illuminate\Foundation\Http\FormRequest;
@@ -13,6 +14,8 @@ use Log;
 
 class ChildController extends Controller
 {
+    use AmtReplicaTrait;
+
     /**
      * Display a listing of the resource.
      *
@@ -52,23 +55,34 @@ class ChildController extends Controller
     {
         DB::beginTransaction();
         try  {
+            $user = Auth::user();
+
             $child = Child::create([
                 'name' => $storeChild->get('name'),
                 'sex' => $storeChild->get('sex'),
                 'birthday' => $storeChild->get('birthday')
             ]);
 
-            Auth::user()->childs()->attach($child);
+            $user->childs()->attach($child);
 
             DB::commit();
-
-            return redirect("/backend/child")->with('success', "{$child->name}{$child->getSex()} 建立完成!");
         } catch (\Exception $e) {
             DB::rollback();
 
             Log::error($e);
 
             return redirect("/backend/child")->with('error', "{$e->getMessage()}");
+        }
+
+        DB::beginTransaction();
+        try {
+            return $this->replicaFlow($user, $child, Amt::find(Amt::DEFAULT_AMT_ID));
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            Log::error($e);
+
+            return redirect('backend/child')->with('error', "{$e->getMessage()}");
         }
     }
 

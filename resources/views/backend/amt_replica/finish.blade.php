@@ -8,7 +8,7 @@
 
             <hr/>
 
-            <a id="link" class="btn btn-default btn-large" href="/backend/amt_replica/{{$replica->id}}">
+            <a id="link" class="btn btn-default btn-large" href="/backend/amt_als_rpt/{{$replica->report->id}}">
                 前往检视结果<small id="count"></small>
             </a>
         </div>
@@ -27,7 +27,9 @@ $(function () {
 
         return setTimeout(function () {
             if (0 === timeSeconds) {
-                return window.location.href = "/backend/amt_replica/{{$replica->id}}";
+                $('#link').text('系統導向中...');
+
+                return window.location.href = "/backend/amt_als_rpt/{{$replica->report->id}}";
             }
 
             timeSeconds --;
