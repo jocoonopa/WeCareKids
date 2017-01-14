@@ -62,10 +62,10 @@ trait AmtReplicaDiagGroupProxyTrait
             $diag = $standard->getMatched($diags);
 
             if (!is_null($diag)) {
-                echo "    [{$diag->getUTF8value()}]";
-            }
-
-            echo '=> ' . $standard->id . ':' . $standard->diag->description . ':' . $standard->getCondDesc() . "\n";        
+                $command->line("<red> [{$diag->getUTF8value()}]</red>" . ' => ' . $standard->id . ':' . $standard->diag->description . ':' . $standard->getCondDesc());
+            } else {
+                $command->line('<magenta>未對應</magenta> => ' . $standard->id . ':' . $standard->diag->description . ':' . $standard->getCondDesc());
+            }    
         }
         echo "\n";
 
@@ -139,10 +139,10 @@ trait AmtReplicaDiagGroupProxyTrait
             $diag = $standard->getMatched($diags);
 
             if (!is_null($diag)) {
-                echo " [{$diag->getUTF8value()}]";
-            }
-
-            echo '=> ' . $standard->id . ':' . $standard->diag->description . ':' . $standard->getCondDesc();
+                $command->line("<red> [{$diag->getUTF8value()}]</red>" . ' => ' . $standard->id . ':' . $standard->diag->description . ':' . $standard->getCondDesc());
+            } else {
+                $command->line('<magenta>未對應</magenta> => ' . $standard->id . ':' . $standard->diag->description . ':' . $standard->getCondDesc());
+            }    
         }
         echo "\n";
         
