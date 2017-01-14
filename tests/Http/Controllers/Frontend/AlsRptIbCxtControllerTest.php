@@ -17,12 +17,12 @@ class AlsRptIbCxtControllerTest extends \Tests\TestCase
             $this->markTestSkipped('travis skipped database integrate tests');
         }
         
-        $this->visit('/analysis/r/i/channel/1/cxt/login')
+        $this->visit('/analysis/r/i/channel/152/cxt/login')
             ->see('电话号码')
-            ->see('/analysis/r/i/channel/1/cxt')
+            ->see('/analysis/r/i/channel/152/cxt')
             ->type('0939160705', 'phone')
             ->press('确定')
-            ->seePageIs('/analysis/r/i/channel/1/cxt')
+            ->seePageIs('/analysis/r/i/channel/152/cxt')
             ->see('優尼爾')
         ;
     }
