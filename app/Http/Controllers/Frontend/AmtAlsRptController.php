@@ -42,7 +42,7 @@ class AmtAlsRptController extends Controller
 
             DB::commit();
 
-            return view('frontend/amt_als_rpt/index', $data);
+            return view('frontend/amt_als_rpt/show', $data);
         } catch (\Exception $e) {
             DB::rollback();
 
