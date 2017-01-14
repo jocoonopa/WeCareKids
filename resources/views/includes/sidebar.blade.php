@@ -3,7 +3,7 @@
         <div class="navbar nav_title" style="border: 0;">
             <a href="/backend/home" class="site_title">
                 <i class="fa fa-paw"></i> 
-                <span>培奇智能运动</span>
+                <span>优尼尔智能运动</span>
             </a>
         </div>
         
