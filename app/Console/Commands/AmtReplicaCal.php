@@ -14,7 +14,7 @@ class AmtReplicaCal extends Command
      *
      * @var string
      */
-    protected $signature = 'replica:cal {amtReplicaId}';
+    protected $signature = 'replica:cal {amtReplicaId} {--i}';
 
     /**
      * The console command description.
@@ -53,6 +53,13 @@ class AmtReplicaCal extends Command
 
         // 找出所有 replica groups, 分別進行處理
         $replica->groups->each(function ($group) use ($replica) {
+            if (!is_null($this->options('i'))) {
+                if (false === $this->confirm('Continue ?', 'y')) {
+                    return false;
+                }
+            }
+            
+            $this->info("------------------------------------------------------\n    AmtReplicaGroup: {$group->id} [{$group->group->content}] 跑分開始~        \n------------------------------------------------------\n");
             // AmtReplica.currentGroup 重新指向 
             // group 找出對應level 之 cell, update current cell
             $this->pointToTheGroup($replica, $group)->resetCurrentGroup($group);
@@ -61,8 +68,10 @@ class AmtReplicaCal extends Command
             $isPass = $group->currentCell->isPass($group);
 
             $this->switchProc($replica, $isPass);
-            
-            $this->info("AmtReplicaGroup: {$group->id} [{$group->group->content}] 處理完畢!");
+
+            $this->info("------------------------------------------------------\n    AmtReplicaGroup: {$group->id} [{$group->group->content}] 跑分完畢!        \n------------------------------------------------------");
+
+            $this->line("||||||||||||||||||||||||||||||||||||||||||||||||||||||");            
         }); 
 
         $this->info("\n---------------------------\nAmtReplica:{$replica->id} 處理完畢!\n---------------------------\n");
@@ -109,7 +118,7 @@ class AmtReplicaCal extends Command
      */
     protected function switchProc(AmtReplica $replica, $isPass)
     {
-        if (true === $replica->currentGroup->switchCell($isPass)) {
+        if (true === $replica->currentGroup->switchCellProxy($isPass, $this)) {
             return true;
         }
 

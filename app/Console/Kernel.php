@@ -19,7 +19,8 @@ class Kernel extends ConsoleKernel
         Commands\CopyGroup::class,
         Commands\CellSeed::class,
         Commands\SortoutChannel::class,
-        Commands\AmtReplicaCal::class
+        Commands\AmtReplicaCal::class,
+        Commands\AmtReplicaDiagGroupCal::class
         // Commands\Inspire::class,
     ];
 
