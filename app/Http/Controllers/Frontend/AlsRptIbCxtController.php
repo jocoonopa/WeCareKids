@@ -48,7 +48,7 @@ class AlsRptIbCxtController extends Controller
          * 
          * @var \App\Model\AlsRptIbCxt
          */
-        $cxt = $channel->findNotSubmitCxts($request->cookie($channel->public_key))->first();
+        $cxt = $channel->findNotSubmitCxtsByPrivateKey($privateKey)->first();
 
         // 若沒有尚未提交的 cxt, 導向登入頁準備新增cxt
         if (is_null($cxt)) {
