@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Backend;
 
-use AmtAlsRpt as AAR;
 use App\Http\Requests;
 use App\Model\Amt;
 use App\Model\AmtAlsRpt;
@@ -12,17 +11,19 @@ use App\Model\AmtDiagGroup;
 use App\Model\AmtReplica;
 use App\Model\AmtReplicaDiag;
 use App\Model\AmtReplicaDiagGroup;
-use App\Model\AmtReplicaLog;
 use App\Model\Child;
+use App\Utility\Controllers\AmtReplicaTrait;
 use Auth;
 use DB;
 use Illuminate\Http\Request;
 use Log;
-use Wck;
 use Symfony\Component\HttpFoundation\Response;
+use Wck;
 
 class AmtReplicaController extends Controller
 {
+    use AmtReplicaTrait;
+    
     /**
      * Display a listing of the resource.
      *
@@ -119,11 +120,11 @@ class AmtReplicaController extends Controller
         DB::beginTransaction();
 
         /**
-         * 此 AmtReplica 是否尚未结束
+         * 使用者
          * 
-         * @var boolean
+         * @var \App\Model\User
          */
-        $isNotFinish = true;
+        $user = Auth::user();
 
         /**
          * 欲绑定之 Child 
@@ -137,106 +138,14 @@ class AmtReplicaController extends Controller
          * 
          * @var \App\Model\Amt
          */
-        $amt = Amt::find($request->get('amt_id'));
+        $amt = Amt::find($request->get('amt_id', Amt::DEFAULT_AMT_ID));
 
         if (is_null($child) || is_null($amt)) {
             abort(Response::HTTP_NOT_FOUND, '受测者或评测模板为空!');
         }
 
         try {
-            /**
-             * 新增之 AmtReplica 实体, 即问卷
-             * 
-             * @var \App\Model\AmtReplica
-             */
-            $replica = new AmtReplica();
-            $replica->creater()->associate(Auth::user());
-            $replica->amt()->associate($amt);
-            $replica->child()->associate($child);
-            $replica->status = AmtReplica::STATUS_ORIGIN_ID;
-            $replica->save();
-
-            /**
-             * 新增之 AmtReplicaLog 实体, 记录作答过程, 回到上一题功能需要透过此实体实现
-             * 
-             * @var \App\Model\AmtReplicaLog
-             */
-            $log = new AmtReplicaLog();
-            $log->replica()->associate($replica);
-            $log->save();
-
-            $amt->groups()->each(function ($group) use ($replica) {
-                /**
-                 * 新增之 AmtReplicaDiagGroup 实体, 可想像为建立初始化问卷的大题/题组
-                 * 
-                 * @var \App\Model\AmtReplicaDiagGroup
-                 */
-                $replicaGroup = new AmtReplicaDiagGroup();
-                $replicaGroup->replica()->associate($replica);
-                $replicaGroup->group()->associate($group);
-                $replicaGroup->save();
-
-                /**
-                 * 新增之 AmtReplicaDiag 实体, 可想像为建立初始化大题中的题目
-                 *
-                 * @var \App\Model\AmtReplicaDiag
-                 */
-                $group->diags()->get()->each(function ($diag) use ($replicaGroup) {
-                    $replicaDiag = new AmtReplicaDiag();
-                    $replicaDiag->diag()->associate($diag);
-                    $replicaDiag->group()->associate($replicaGroup);
-                    $replicaDiag->save();
-                });
-            });
-
-            /**
-             * 取得目前应该给使用者作答之 group
-             * 
-             * @var \App\Model\AmtReplicaDiagGroup
-             */
-            $replicaCurrentDiagGroup = $replica->groups()->first();
-
-            /**
-             * 进入 AmtGroup 透过的 AmtCell
-             * 
-             * @var \App\Model\AmtCell 
-             */
-            $entryCell = $replicaCurrentDiagGroup->findEntryMapCell();
-
-            if (is_null($entryCell)) {
-                abort(Response::HTTP_FORBIDDEN, '小孩年龄过小, 目前没有评测必要');
-            }
-
-            //  绑定指向的 Cell
-            $replicaCurrentDiagGroup->currentCell()->associate($entryCell);
-            $replicaCurrentDiagGroup->save();
-
-            // 更新 replica group 指标
-            $replica->currentGroup()->associate($replicaCurrentDiagGroup);
-            $replica->save();
-
-            // 新增关联报告实体 AmtAlsRpt
-            $report = new AmtAlsRpt();
-            $report->owner()->associate(Auth::user());
-            $report->replica()->associate($replica);
-            $report->save();
-
-            // AmtReplica 同时也绑定 AmtAlsRpt, 形成 One To One replation ship
-            $replica->reportBelong()->associate($report);
-            $replica->save();
-
-            if ($replicaCurrentDiagGroup->currentCell->isEmpty()) {
-                $isNotFinish = $this->switchGroup($replica);
-            }
-
-            // 扣钱
-            AAR::genUsageRecord($report);
-
-            DB::commit();
-
-            return true === $isNotFinish 
-                ? redirect('/backend/child')->with('success', "{$replica->child->name}{$replica->child->getSex()}的评测新增啰!")
-                : redirect('/backend/child')->with('warning', "{$replica->child->name}{$replica->child->getSex()} 此问卷没有作答必要");
+            return $this->replicaFlow($user, $child, $amt);
         } catch (\Exception $e) {
             DB::rollback();
 
@@ -466,56 +375,5 @@ class AmtReplicaController extends Controller
         $replica->delete();
 
         return redirect('/backend/amt_replica')->with('success', "{$replica->id}删除完成!");
-    }
-
-    /**
-     * 有成功切换 AmtReplicaDiagGroup 的指向 Cell, return true
-     *
-     * 若没有成功切换, 表示该 AmtReplicaDiagGroup 已经完成, AmtReplicaDiagGroup 呼叫 finish(),
-     * 将该 AmtReplicaDiagGroup 状态更新为完成.
-     * 
-     * 并且让 AmtReplica $this 呼叫 switchGroup() 切换 AmtReplicaDiagGroup.
-     *
-     * 若切换 AmtReplicaGroup 失败, 表示此 AmtReplica 已经完成,
-     * AmtReplica 呼叫 finish(), 将 AmtReplica 状态更新为完成
-     *
-     * 因此, 回传 true 时, 要将使用者导向 @edit 继续作答.
-     * 若回传 false, 则将使用者导向完成页面 @finish
-     *
-     * @todo  此 function 日后应该移动至 Service 处理
-     *
-     * @param  \App\Model\AmtReplica $replica
-     * @param  bool $isPass
-     * @return bool
-     */
-    protected function _switch(AmtReplica $replica, $isPass)
-    {
-        if (true === $replica->currentGroup->switchCell($isPass)) {
-            return true;
-        }
-
-        return $this->switchGroup($replica);
-    }
-
-    /**
-     * 切换 AmtReplica 指向的 AmtReplicaDiagGroup,
-     * @todo 此 function 日后应该移动至 Service 处理
-     * 
-     * @param  \App\Model\AmtReplica $replica
-     * @return bool
-     */
-    protected function switchGroup(AmtReplica $replica)
-    {
-        if (!is_null($replica->currentGroup)) {
-            $replica->currentGroup->finish();
-        }
-
-        if (true === $replica->swtichGroup()) {            
-            return true;
-        }
-
-        $replica->finish();
-
-        return false;
     }
 }

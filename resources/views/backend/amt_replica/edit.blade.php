@@ -9,9 +9,10 @@
 <div class="right_col" role="main">
     <div class="row">
         <div class="col-md-offset-2 col-md-8 col-sm-12 col-xs-12"">
-            @include('component/flash')
+            <div style="padding-top: 40px;"></div>
+            {{-- @include('component/flash') --}}
             
-            <h2>{{ "Q:{$replica->currentGroup->group->content}" }} <small>level: {{$level}}</small></h2>
+            {{-- <h2>{{ "Q:{$replica->currentGroup->group->content}" }} <small>level: {{$level}}</small></h2> --}}
             
             <form action="/backend/amt_replica/{{ $replica->id }}" method="post">
                 {{ csrf_field() }}

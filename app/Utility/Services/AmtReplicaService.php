@@ -2,9 +2,22 @@
 
 namespace App\Utility\Services;
 
+use App\Model\Amt;
+use App\Model\AmtAlsRpt;
+use App\Model\AmtReplica;
+use App\Model\AmtReplicaDiag;
+use App\Model\AmtReplicaDiagGroup;
+use App\Model\AmtReplicaLog;
+use App\Model\Child;
+use App\Model\User;
+
 class AmtReplicaService
 {
-    public function gen()
+    protected $replica;
+    protected $entryCell;
+    protected $report;
+
+    public function gen(User $user, Child $child, Amt $amt)
     {
         /**
          * 新增之 AmtReplica 实体, 即问卷
@@ -65,10 +78,6 @@ class AmtReplicaService
          */
         $entryCell = $replicaCurrentDiagGroup->findEntryMapCell();
 
-        if (is_null($entryCell)) {
-            abort(Response::HTTP_FORBIDDEN, '小孩年龄过小, 目前没有评测必要');
-        }
-
         //  绑定指向的 Cell
         $replicaCurrentDiagGroup->currentCell()->associate($entryCell);
         $replicaCurrentDiagGroup->save();
@@ -79,7 +88,7 @@ class AmtReplicaService
 
         // 新增关联报告实体 AmtAlsRpt
         $report = new AmtAlsRpt();
-        $report->owner()->associate(Auth::user());
+        $report->owner()->associate($user);
         $report->replica()->associate($replica);
         $report->save();
 
@@ -87,6 +96,82 @@ class AmtReplicaService
         $replica->reportBelong()->associate($report);
         $replica->save();
 
-        
+        $this
+            ->setReplica($replica)
+            ->setEntryCell($entryCell)
+            ->setReport($report)
+        ;        
+    }
+
+    /**
+     * Gets the value of replica.
+     *
+     * @return mixed
+     */
+    public function getReplica()
+    {
+        return $this->replica;
+    }
+
+    /**
+     * Sets the value of replica.
+     *
+     * @param mixed $replica the replica
+     *
+     * @return self
+     */
+    protected function setReplica($replica)
+    {
+        $this->replica = $replica;
+
+        return $this;
+    }
+
+    /**
+     * Gets the value of entryCell.
+     *
+     * @return mixed
+     */
+    public function getEntryCell()
+    {
+        return $this->entryCell;
+    }
+
+    /**
+     * Sets the value of entryCell.
+     *
+     * @param mixed $entryCell the entry cell
+     *
+     * @return self
+     */
+    protected function setEntryCell($entryCell)
+    {
+        $this->entryCell = $entryCell;
+
+        return $this;
+    }
+
+    /**
+     * Gets the value of report.
+     *
+     * @return mixed
+     */
+    public function getReport()
+    {
+        return $this->report;
+    }
+
+    /**
+     * Sets the value of report.
+     *
+     * @param mixed $report the report
+     *
+     * @return self
+     */
+    protected function setReport($report)
+    {
+        $this->report = $report;
+
+        return $this;
     }
 }

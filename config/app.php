@@ -217,6 +217,7 @@ return [
         'AmtAlsRpt' => App\Utility\Facades\AmtAlsRpt::class,
         'Wck' => App\Utility\Facades\Wck::class,
         'AmtCell' => App\Utility\Facades\AmtCell::class,
+        'AmtReplica' => App\Utility\Facades\AmtReplica::class,
 
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
         'Form' => Collective\Html\FormFacade::class,
