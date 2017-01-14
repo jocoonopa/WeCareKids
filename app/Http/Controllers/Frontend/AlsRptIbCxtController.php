@@ -131,6 +131,11 @@ class AlsRptIbCxtController extends Controller
         return view('frontend/als_rpt_ib_cxt/finish', compact('cxt'));
     }
 
+    public function show(Request $request, AlsRptIbCxt $cxt)
+    {
+        return redirect("/analysis/r/i/channel/{$cxt->channel->id}/cxt/login");
+    }
+
     /**
      * Update the specified resource in storage.
      *
