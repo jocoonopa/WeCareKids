@@ -2,8 +2,6 @@
 
 namespace Tests\Http\Controllers\Backend;
 
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-
 class AlsRptIbChannelControllerTest extends \Tests\TestCase
 {    
     public function testApplication()
@@ -12,6 +10,8 @@ class AlsRptIbChannelControllerTest extends \Tests\TestCase
             $this->markTestSkipped('travis skipped database integrate tests');
         }
         
+        parent::setUp();
+
         $user = \App\Model\User::find(102);
 
         $this->actingAs($user)
