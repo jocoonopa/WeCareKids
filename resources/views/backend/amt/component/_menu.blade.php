@@ -16,7 +16,10 @@
     <ul>
         @foreach ($category->groups()->where('amt_id', $amt->id)->get() as $group)
         <li>
-            <p class="text-success">{{ $group->content }}</p>
+            <span class="text-success">{{ $group->content }}</span>
+            <a href="/backend/amt/{{ $amt->id }}/amt_diag_group/{{ $group->id }}/edit" class="btn btn-xs btn-primary">
+                <i class="glyphicon glyphicon-edit"></i>
+            </a>
         </li>
         
         <ul>                        

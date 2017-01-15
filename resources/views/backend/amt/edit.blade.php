@@ -16,8 +16,14 @@
                 <thead></thead>
                 <tbody>
                     <tr>
-                        <td>{{$group->id}}</td>
-                        <td></td>
+                        <td>
+                            <a href="">
+                                {{$group->id}}    
+                            </a>
+                        </td>
+                        <td>
+                            {{ $group->content }}
+                        </td>
                         <td></td>
                     </tr>
                 </tbody>
