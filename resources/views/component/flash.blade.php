@@ -1,18 +1,18 @@
 @if (!is_null(Session::get('success')))
 <div class="alert alert-success" role="alert">
-    {{ Session::get('success') }}
+    {!! Session::get('success') !!}
 </div>
 @endif
 
 @if (!is_null(Session::get('error')))
 <div class="alert alert-danger" role="alert">
-    {{ Session::get('error') }}
+    {!! Session::get('error') !!}
 </div>
 @endif
 
 @if (!is_null(Session::get('warning')))
 <div class="alert alert-warning" role="alert">
-    {{ Session::get('warning') }}
+    {!! Session::get('warning') !!}
 </div>
 @endif
 
@@ -20,7 +20,7 @@
     <div class="alert alert-danger">
         <ul>
             @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
+                <li>{!! $error !!}</li>
             @endforeach
         </ul>
     </div>

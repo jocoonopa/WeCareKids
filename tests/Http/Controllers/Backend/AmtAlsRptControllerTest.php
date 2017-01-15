@@ -2,8 +2,6 @@
 
 namespace Tests\Http\Controllers\Backend;
 
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-
 class AmtAlsRptControllerTest extends \Tests\TestCase
 {
     /**

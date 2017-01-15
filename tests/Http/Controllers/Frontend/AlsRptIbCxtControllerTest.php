@@ -2,8 +2,6 @@
 
 namespace Tests\Http\Controllers\Frontend;
 
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-
 class AlsRptIbCxtControllerTest extends \Tests\TestCase
 {
     /**
