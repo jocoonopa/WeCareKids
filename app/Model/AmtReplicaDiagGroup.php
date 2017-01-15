@@ -158,7 +158,7 @@ class AmtReplicaDiagGroup extends Model
     }
 
     /**
-     * 切換指向的 AmtCell
+     * 根據傳入的standard驗證結果, 切換指向的 AmtCell
      *
      * 若判斷為終止狀態, 移動完畢後回傳 false
      * 若不為終止, 進行重新指向

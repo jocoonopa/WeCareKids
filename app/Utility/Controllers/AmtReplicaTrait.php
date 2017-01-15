@@ -66,14 +66,13 @@ Trait AmtReplicaTrait
      * 因此, 回传 true 时, 要将使用者导向 @edit 继续作答.
      * 若回传 false, 则将使用者导向完成页面 @finish
      *
-     * @todo  此 function 日后应该移动至 Service 处理
-     *
      * @param  \App\Model\AmtReplica $replica
-     * @param  bool $isPass
      * @return bool
      */
-    protected function _switch(AmtReplica $replica, $isPass)
+    protected function _switch(AmtReplica $replica)
     {
+        $isPass = $replica->currentGroup->currentCell->isPass($replica->currentGroup);
+
         if (true === $replica->currentGroup->switchCell($isPass)) {
             return true;
         }

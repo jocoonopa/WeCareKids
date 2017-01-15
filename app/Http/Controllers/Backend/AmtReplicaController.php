@@ -47,7 +47,7 @@ class AmtReplicaController extends Controller
         $replicaDiags = AmtCell::findFreshDiags($replica->currentGroup);
 
         if (true === Wck::isEmpty($replicaDiags)) {
-            return true === $this->_switch($replica, false) 
+            return true === $this->_switch($replica)
                 ? redirect("/backend/amt_replica/{$replica->id}/edit") 
                 : redirect("/backend/amt_replica/{$replica->id}/finish")
             ;
@@ -219,7 +219,7 @@ class AmtReplicaController extends Controller
              * 
              * @var bool
              */
-            $hasSwitched = $this->_switch($replica, $replica->currentGroup->currentCell->isPass($replica->currentGroup));
+            $hasSwitched = $this->_switch($replica);
 
             DB::commit();
 
