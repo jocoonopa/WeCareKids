@@ -2,8 +2,9 @@
 
 namespace App\Model;
 
-use Illuminate\Notifications\Notifiable;
+use App\Model\Organization;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
@@ -85,5 +86,31 @@ class User extends Authenticatable
     public function getOwnChannel()
     {
         return $this->channels()->first();
+    }
+
+    public function createdOrgs()
+    {
+        return $this->hasMany('App\Model\Organization', 'creater_id', 'id');
+    }
+
+    public function contactedOrgs()
+    {
+        return $this->hasMany('App\Model\Organization', 'contacter_id', 'id');
+    }
+
+    public function ownedOrgs()
+    {
+        return $this->hasMany('App\Model\Organization', 'owner_id', 'id');
+    }
+
+    public function scopeFindOrgOptions($query, Organization $organization)
+    {
+        return $query->where('organization_id', '=', $organization->id)
+            ->orWhere('organization_id', '=', NULL);
+    }
+
+    public function isSuper()
+    {
+        return $this->is_super;
     }
 }

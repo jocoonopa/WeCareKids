@@ -40,7 +40,7 @@
                     <li>
                         <a href="/backend/amt_als_rpt"><i class="fa fa-file-text-o"></i>报告</a>
                     </li> 
-                    @if (Auth::user()->is_super)      
+                    @if (Auth::user()->isSuper())      
                     <li>
                         <a href="/backend/amt">
                             <i class="fa fa-file-text-o"></i>赶工爆肝区
@@ -48,6 +48,7 @@
                     </li>
                     <li><a href="/backend/recommend_course"><i class="fa fa-file-text-o"></i>推薦課程</a></li>
                     <li><a href="/backend/organization/1"><i class="fa fa-file-text-o"></i>组织</a></li>
+                    <li><a href="/backend/organization"><i class="fa fa-file-text-o"></i>组织管理</a></li>
                     @endif
                 </ul>
             </div>
