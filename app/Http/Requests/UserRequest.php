@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
 
-class OrganizationRequest extends FormRequest
+class UserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,21 +24,22 @@ class OrganizationRequest extends FormRequest
      */
     public function rules(Request $request)
     {
-        $id = is_null($this->organization) ? NULL : $this->organization->id; 
-        
-        $rule = [
-            'name' => 'required|unique:organizations,name,' . $id . '|min:3'
-        ];     
+        $id = is_null($this->user) ? null : $user->id;
 
-        return $rule;
+        return [
+            'name' => 'required|min:2',
+            'email' => 'required|email|unique:users,email,' . $id
+        ];        
     }
 
     public function messages()
     {
         return [
-            'name.required' => '組織名稱不可為空',
-            'name.unique' => '組織名稱已經存在',
-            'name.min' => '組織名稱必須超過三個字元'
+            'name.required' => '姓名欄位不可為空',
+            'name.min' => '姓名不可少於兩個字元',
+            'email.required' => 'E-Mail不可為空',
+            'email.email' => 'E-Mail格式不正確',
+            'email.unique' => '此E-Mail已被註冊'
         ];
     }
 }

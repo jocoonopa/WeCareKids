@@ -38,6 +38,7 @@ require(app_path() . '/../routes/backend/AlsRptIbChannel.php');
 require(app_path() . '/../routes/backend/AlsRptIbCxt.php');
 require(app_path() . '/../routes/backend/AmtReplica.php');
 require(app_path() . '/../routes/backend/Child.php');
+require(app_path() . '/../routes/backend/User.php');
 require(app_path() . '/../routes/backend/AmtAlsRpt.php');
 require(app_path() . '/../routes/backend/AmtDiag.php');
 require(app_path() . '/../routes/backend/AmtCell.php');

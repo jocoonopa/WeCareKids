@@ -6,7 +6,6 @@ use App\Http\Requests\OrganizationRequest;
 use App\Model\Organization;
 use App\Model\User;
 use Auth;
-use Illuminate\Http\Request;
 
 class OrganizationController extends Controller
 {
@@ -16,7 +15,8 @@ class OrganizationController extends Controller
     }
 
     /**
-     *
+     * Display a listing of the resource.
+     * 
      * @return \Illuminate\Http\Response
      */
     public function index()
@@ -38,6 +38,8 @@ class OrganizationController extends Controller
     }
 
     /**
+     * Show the form for editing the specified resource.
+     * 
      * @param  App\Model\Organization $organization
      * @return \Illuminate\Http\Response
      */
@@ -49,6 +51,8 @@ class OrganizationController extends Controller
     }
 
     /**
+     * Update the specified resource in storage.
+     * 
      * @param  OrganizationRequest
      * @param  App\Model\Organization $organization
      * 
@@ -69,6 +73,8 @@ class OrganizationController extends Controller
     }
 
     /**
+     * Show the form for creating a new resource.
+     * 
      * @return \Illuminate\Http\Response
      */
     public function create()

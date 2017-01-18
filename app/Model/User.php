@@ -5,11 +5,12 @@ namespace App\Model;
 use App\Model\Organization;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable
 {
-	use Notifiable;
-	
+    use Notifiable, SoftDeletes;
+    
     /**
      * The attributes that are mass assignable.
      *
@@ -35,7 +36,20 @@ class User extends Authenticatable
      */
     protected $casts = [
         'is_super' => 'boolean',
+        'created_at' => 'date'
     ];
+
+    protected $dates = ['deleted_at'];
+
+    public static function _create(array $data)
+    {
+        return User::create([
+            'name' => array_get($data, 'name'),
+            'email' => array_get($data, 'email'),
+            'password' => bcrypt(str_random(10)),
+            'remember_token' => str_random(10)
+        ]);
+    }
 
     /**
      * The childs that belong to the user.
@@ -103,14 +117,61 @@ class User extends Authenticatable
         return $this->hasMany('App\Model\Organization', 'owner_id', 'id');
     }
 
+    /**
+     * 尋找可以用來作為傳入之 Organization 之擁有者或聯絡人的 User
+     * (屬於此 Organization 或是 尚未歸屬任何 Organization)
+     * 
+     * @param  $query
+     * @param  Organization $organization
+     * @return $query
+     */
     public function scopeFindOrgOptions($query, Organization $organization)
     {
-        return $query->where('organization_id', '=', $organization->id)
-            ->orWhere('organization_id', '=', NULL);
+        return $query
+            ->where('organization_id', '=', $organization->id)
+            ->orWhere('organization_id', '=', NULL)
+        ;
     }
 
+    /**
+     * 是否為系統管理員
+     * 
+     * @return boolean
+     */
     public function isSuper()
     {
         return $this->is_super;
+    }
+
+    /**
+     * 是否為組織擁有者
+     * 
+     * @return boolean
+     */
+    public function isOwner()
+    {
+        if (is_null($this->organization)) {
+            return false;
+        }
+
+        if (is_null($this->organization->owner)) {
+            return false;
+        }
+
+        return $this->organization->owner->id === $this->id;
+    }
+
+    /**
+     * 取得權限名稱
+     * 
+     * @return string
+     */
+    public function getJobTitle()
+    {
+        if ($this->isSuper()) {
+            return '系统管理员';
+        }
+
+        return $this->isOwner() ? '拥有人' : '教师';
     }
 }

@@ -25,12 +25,12 @@ class OrganizationObserver
         $owner = $organization->owner;
         $contacter = $organization->contacter;
 
-        if (is_null($owner->organization)) {
+        if (!is_null($owner) && is_null($owner->organization)) {
             $owner->organization()->associate($organization);
             $owner->save();
         }
 
-        if ($contacter->id !== $owner->id && is_null($contacter->organization)) {
+        if (!is_null($contacter) && $contacter->id !== (is_null($owner) ? null : $owner->id) && is_null($contacter->organization)) {
             $contacter->organization()->associate($organization);
             $contacter->save();
         }

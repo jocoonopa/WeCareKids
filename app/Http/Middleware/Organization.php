@@ -19,15 +19,17 @@ class Organization
      */
     public function handle($request, Closure $next)
     {
-        if (!$this->isAllowed(Auth::user(), $request->organization)) {
+        $user = Auth::user();
+
+        if (!$this->isAllowed($user)) {
             abort(Response::HTTP_FORBIDDEN);
         }
 
         return $next($request);
     }
 
-    protected function isAllowed(User $user, Org $org)
+    protected function isAllowed(User $user)
     {
-        return !(!$user->isSuper() && !$org->isOwner($user));
+        return !(!$user->isSuper() && !$user->isOwner());
     }
 }
