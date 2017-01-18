@@ -90,8 +90,6 @@ class OrganizationController extends Controller
         try {
             $creater = Auth::user();
             $owner = User::find($request->get('owner'));
-            $contacter = User::find($request->get('contacter'));
-
             $organization = Organization::_create($owner, $contacter, $creater, $request->get('name'));
 
             return redirect('backend/organization')->with('success', "{$organization->name} 新增完成!");
