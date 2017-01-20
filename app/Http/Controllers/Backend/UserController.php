@@ -2,13 +2,18 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Http\Requests\PasswordRequest;
 use App\Http\Requests\UserRequest;
 use App\Model\User;
+use Auth;
+use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
     public function __construct()
     {
+        parent::__construct();
+
         $this->middleware('user')->only(['edit', 'update', 'create', 'store', 'destroy']);    
     }
 
@@ -19,7 +24,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::withTrashed()->latest()->paginate(env('PERPAGE_COUNT', 50));
+        $users = User::fetchUsersInValidScope(Auth::user())->paginate(env('PERPAGE_COUNT', 50));
 
         return view('backend.user.index', compact('users'));
     }
@@ -127,6 +132,23 @@ class UserController extends Controller
             return redirect()->back()->with('success', "{$user->name} 已經成功啟用!");    
         } catch (\Exception $e) {
             return redirect()->back()->with('error', "{$e->getMessage()}");
+        }
+    }
+
+    public function showResetForm(User $user)
+    {
+        return view('backend/user/reset', compact('user'));
+    }
+
+    public function reset(PasswordRequest $request, User $user)
+    {
+        try {
+            $user->password = bcrypt($request->get('password'));
+            $user->save();
+
+            return redirect()->back()->with('success', "{$user->name} 密碼修改完成!");
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', "{$e->getMessage()}");   
         }
     }
 }

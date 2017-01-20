@@ -60,6 +60,12 @@
                 <i class="fa fa-edit"></i>
                 编辑
             </a>
+
+
+            <a href="/backend/user/{{$user->id}}/reset" class="btn btn-default">
+                <i class="fa fa-edit"></i>
+                修改密码
+            </a>
         </div>
     </div>
 </div>

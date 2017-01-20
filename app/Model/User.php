@@ -133,6 +133,21 @@ class User extends Authenticatable
         ;
     }
 
+    public function scopeFetchUsersInValidScope($query, User $user)
+    {
+        $organizationId = is_null($user->organization) ? NULL : $user->organization->id;
+        
+        if ($user->isSuper()) {
+            return $query->withTrashed()->latest();
+        }
+
+        if ($user->isOwner()) {
+            return $query->where('organization_id', $organizationId)->withTrashed()->latest();
+        }
+
+        return $query->where('organization_id', $organizationId)->latest();
+    }
+
     /**
      * 是否為系統管理員
      * 
