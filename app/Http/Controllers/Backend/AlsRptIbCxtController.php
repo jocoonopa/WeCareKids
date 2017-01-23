@@ -30,7 +30,7 @@ class AlsRptIbCxtController extends Controller
      */
     public function index()
     {
-        $cxts = AlsRptIbCxt::latest()->paginate(env('PERPAGE_COUNT', 50));
+        $cxts = AlsRptIbCxt::where('status', '<>', AlsRptIbCxt::STATUS_HASNOT_SUBMIT)->latest()->paginate(env('PERPAGE_COUNT', 50));
         $channel = Auth::user()->getOwnChannel();
 
         return view('backend/als_rpt_ib_cxt/index', compact('cxts', 'channel'));

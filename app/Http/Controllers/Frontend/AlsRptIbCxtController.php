@@ -99,19 +99,9 @@ class AlsRptIbCxtController extends Controller
         
         $phone = $request->get('phone');
 
-        /**
-         * 透過電話尋找尚未提交的 AlsRptIbCxt
-         * 
-         * @var \App\Model\AlsRptIbCxt
-         */
-        $cxt = $channel->findNotSubmitCxtsByPhone($phone)->first();
-
-        // 若cxt不存在, 產生一個新的cxt
-        if (is_null($cxt)) {
-            $cxt = AlsRptIbCxt::createPrototype($channel);
-            $cxt->phone = $phone;
-            $cxt->save();
-        }
+        $cxt = AlsRptIbCxt::createPrototype($channel);
+        $cxt->phone = $phone;
+        $cxt->save();
 
         $privateKey = $cxt->private_key;
 
@@ -157,7 +147,7 @@ class AlsRptIbCxtController extends Controller
 
             $cxt->update($data);
 
-            return redirect("/analysis/r/i/cxt/{$cxt->id}/finish");
+            return redirect("/analysis/r/i/cxt/{$cxt->id}/finish")->withCookie(Cookie::forget($channel->public_key));
         } catch (\Exception $e) {
             return redirect("/analysis/r/i/channel/{$cxt->id}/cxt")->with('error', $e->getMessage());
         }

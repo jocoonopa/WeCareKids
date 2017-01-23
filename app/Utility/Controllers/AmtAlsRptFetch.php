@@ -168,6 +168,7 @@ trait AmtAlsRptFetch
         $report->save();
 
         $cxt->report()->associate($report);
+        $cxt->status = AlsRptIbCxt::STATUS_HAS_MAP;
         $cxt->save();                                
 
         return true;
