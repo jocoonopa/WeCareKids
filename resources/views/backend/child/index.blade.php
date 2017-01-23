@@ -24,6 +24,11 @@
                         <th>id</th>
                         <th>姓名</th>
                         <th>生日</th>
+                        <th>年齡</th>
+                        <th>家長姓名</th>
+                        <th>電話</th>
+                        <th>Email</th>
+                        <th>教師</th>                        
                         <th>操作</th>
                     </tr>
                 </thead>
@@ -35,9 +40,39 @@
                                 {{$child->id}}
                             </a>                            
                         </td>
-                        <td>{{$child->name}}</td>
-                        <td>{{$child->birthday->format('Y-m-d')}}</td>
+                        <td>{{ $child->name }}</td>
+                        <td>{{ $child->birthday->format('Y-m-d') }}</td>
+                        <td>{{ \App\Model\Child::getYMAge($child->birthday) }}</td>
+
+                        @if(0 === $child->guardians->count())
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        @else
+                            <td>
+                                @foreach ($child->guardians as $guardian)
+                                    {{ $guardian->name }}
+                                @endforeach
+                            </td>
+                            <td>
+                                @foreach ($child->guardians as $guardian)
+                                    {{ $guardian->mobile }}
+                                @endforeach
+                            </td>
+                            <td>
+                                @foreach ($child->guardians as $guardian)
+                                    {{ $guardian->email }}
+                                @endforeach
+                            </td>
+                        @endif
+
                         <td>
+                            {{ $child->users()->first()->name }}
+                        </td>
+                        <td>
+                            <a href="">報告</a>
+                            <a href="">刪除</a>
+                            <a href="">問卷</a>
                             <a href="{{"/backend/child/{$child->id}/edit"}}" class="pull-right btn btn-default">
                                 <i class="fa fa-edit"></i>
                                 编辑

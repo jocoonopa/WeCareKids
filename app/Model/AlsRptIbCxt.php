@@ -149,14 +149,40 @@ class AlsRptIbCxt extends Model
         return $this->belongsTo('App\Model\AmtAlsRpt', 'report_id', 'id');
     }
 
+    /**
+     * 取得需要對應的問卷
+     * (
+     *  - 尚未對應到
+     *  - 狀態為已提交
+     *  - 生日和傳入的小朋友生日相同
+     *  - 未超過兩週以上的問卷
+     * )
+     * 
+     * @param  \Illuminate\Database\Eloquent\Builder $query
+     * @param  \App\Model\Child  $child
+     * @return \Illuminate\Database\Eloquent\Builder $query
+     */
     public function scopeFindOrphanByChild($query, Child $child)
     {
-        return $query
+        $query
             ->whereNull('report_id')
             ->where('status', static::STATUS_HAS_SUBMIT)
             ->where('child_name', $child->name)
             ->whereDate('child_birthday', "{$child->birthday->format('Y-m-d')}")
         ;
+
+        return $this->scopeFindInValidDate($query);
+    }
+
+    /**
+     * 取得兩週內的問卷
+     * 
+     * @param  \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder $query
+     */
+    public function scopeFindInValidDate($query)
+    {
+        return $query->where('created_at', '>=', \Carbon\Carbon::now()->modify('-14 days'));
     }
 
     public function isNotSubmit()

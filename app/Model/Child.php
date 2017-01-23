@@ -57,6 +57,11 @@ class Child extends Model
         return $this->belongsToMany('App\Model\User');
     }
 
+    public function guardians()
+    {
+        return $this->belongsToMany('App\Model\Guardian');
+    }
+
     public function replicas()
     {
         return $this->hasMany('App\Model\AmtReplica', 'child_id', 'id');

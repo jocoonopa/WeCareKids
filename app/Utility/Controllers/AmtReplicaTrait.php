@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 Trait AmtReplicaTrait 
 {
-    protected function replicaFlow($user, $child, $amt)
+    protected function replicaFlow(\App\Model\User $user, \App\Model\Child $child, \App\Model\Amt $amt)
     {
         ARA::gen($user, $child, $amt);
 

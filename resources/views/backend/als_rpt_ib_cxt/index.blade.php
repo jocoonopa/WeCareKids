@@ -26,6 +26,7 @@
                         <th>流水号</th>
                         <th>小孩姓名</th>
                         <th>家长</th>
+                        <th>手機</th>
                         <th>建立时间</th>
                         <th>最后更新时间</th>
                         <th>状态</th>
@@ -38,6 +39,11 @@
                         <td>{{ $cxt->id }}</td>
                         <td>{{ $cxt->child_name }}</td>
                         <td>{{ $cxt->filler_name }}</td>
+                        <td>
+                            <a href="#" class="text-primary">
+                                {{ $cxt->phone }}
+                            </a>
+                        </td>   
                         <td>{{ $cxt->created_at }}</td>
                         <td>{{ $cxt->updated_at }}</td>
                         <td>

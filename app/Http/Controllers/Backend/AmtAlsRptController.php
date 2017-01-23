@@ -50,7 +50,9 @@ class AmtAlsRptController extends Controller
             |--------------------------------------------------------------------------
             |
             */
-            $this->bindCxtIfNeedTo($report, $request);
+            if ($this->bindCxtIfNeedTo($report)) {
+                $request->session()->flash('success', "已成功绑定连结{$report->replica->child->name}的剖析量表!");
+            }
 
             $data = $this->fetchData($report);
 

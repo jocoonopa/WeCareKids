@@ -23,7 +23,7 @@ class ChildController extends Controller
      */
     public function index()
     {
-        $childs = Child::latest()->paginate(env('PERPAGE_COUNT', 50));
+        $childs = Child::with('guardians')->latest()->paginate(env('PERPAGE_COUNT', 50));
 
         $amts = Amt::all();
 
@@ -57,11 +57,7 @@ class ChildController extends Controller
         try  {
             $user = Auth::user();
 
-            $child = Child::create([
-                'name' => $storeChild->get('name'),
-                'sex' => $storeChild->get('sex'),
-                'birthday' => $storeChild->get('birthday')
-            ]);
+            $child = Child::create($storeChild->all());
 
             $user->childs()->attach($child);
 
@@ -117,11 +113,7 @@ class ChildController extends Controller
      */
     public function update(StoreChild $storeChild, Child $child)
     {
-        $child->update([
-            'name' => $storeChild->get('name'),
-            'sex' => $storeChild->get('sex'),
-            'birthday' => $storeChild->get('birthday')
-        ]);
+        $child->update($storeChild->all());
         
         return redirect("/backend/child")->with('success', "{$child->name}{$child->getSex()} 更新完成!");
     }

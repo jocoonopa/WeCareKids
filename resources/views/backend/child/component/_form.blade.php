@@ -9,6 +9,16 @@
 </div>
 
 <div class="form-group">
+    {!! Form::label('school_name', '学校名称') !!}
+    {!! Form::text('school_name', $child->school_name, ['class' => 'form-control']) !!}
+</div>
+
+<div class="form-group">
+    {!! Form::label('grade', '学校年级') !!}
+    {!! Form::text('grade', $child->grade, ['class' => 'form-control']) !!}
+</div>
+
+<div class="form-group">
     {!! Form::label('sex', '性别') !!}
     <div>
         {!! Form::label('sex', '女') !!}
@@ -21,5 +31,7 @@
 </div>
 
 <div class="form-group">
-    <button type="submit" class="btn btn-default">确认</button>
+    <button type="submit" class="btn btn-primary">确认</button>
+
+    <a href="/backend/child" class="btn btn-default">取消</a>
 </div>

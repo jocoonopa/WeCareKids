@@ -3,8 +3,9 @@
 namespace App\Utility\Controllers;
 
 use AmtAlsRpt as AAR;
-use App\Model\AmtAlsRpt;
 use App\Model\AlsRptIbCxt;
+use App\Model\AmtAlsRpt;
+use App\Model\Guardian;
 use Illuminate\Http\Request;
 
 trait AmtAlsRptFetch
@@ -86,24 +87,89 @@ trait AmtAlsRptFetch
      * Display the specified resource.
      *
      * @param  \App\Model\AmtAlsRpt $report
-     * @param  \Illuminate\Http\Request $request
+     * @return boolean
      */
-    protected function bindCxtIfNeedTo(AmtAlsRpt $report, Request $request)
+    protected function bindCxtIfNeedTo(AmtAlsRpt $report)
     {
-        $child = $report->replica->child;
-
-        if (is_null($report->cxt)) {
-            $cxt = AlsRptIbCxt::findOrphanByChild($child)->first(); 
-
-            if (!is_null($cxt)) {
-                $report->update(['cxt_id' => $cxt->id]);
-                $cxt->update(['report_id' => $report->id]);
-                $child->update(['identifier' => $cxt->child_identifier]);
-
-                $request->session()->flash('success', "已成功绑定连结{$child->name}的剖析量表!");
-            }               
+        /*
+        |--------------------------------------------------------------------------
+        | 家長，小孩，報告，剖析量表綁定
+        |--------------------------------------------------------------------------
+        | 1. 判斷報告有無綁定剖析量表，若有則終止處理
+        | 2. 取得剖析量表，若沒有剖析量表則終止
+        | 3. 判斷剖析量表內的家長資料是否已經有根據手機號碼對應到的 Guardian 實體，若無則新增，有則更新
+        | 4. 將 Child 和 Guardian 做綁定, 
+        | 5. Cxt 帶來的 Child 資料更新至 Child
+        | 6. 報告和剖析量表綁定
+        */
+        // ~1
+        if (!is_null($report->cxt)) {
+            return false;    
         }
 
-        return $this;
+        /**
+         * 報告關聯的小朋友
+         * 
+         * @var \App\Model\Child
+         */
+        $child = $report->replica->child;
+
+        // ~2
+        /**
+         * 尚未被 Mapping 的剖析問卷
+         * 
+         * @var \App\Model\AlsRptIbCxt | NULL
+         */
+        $cxt = AlsRptIbCxt::findOrphanByChild($child)->first(); 
+        if (is_null($cxt)) {
+            return false;
+        }
+
+        // ~3.
+        /**
+         * 透過電話號碼對應到的家長
+         * 
+         * @var \App\Model\Guardian | NULL
+         */
+        $guardian = Guardian::where('mobile', trim($cxt->phone))->first();                
+
+        // Guardian 新增和更新欄位補上
+        if (is_null($guardian)) {
+            $guardian = Guardian::_create($cxt->filler_name, $cxt->phone, $cxt->filler_sex, $cxt->email);
+        } else {
+            $guardian->update([
+                'name' => $cxt->filler_name,
+                'mobile' => $cxt->phone,
+                'sex' => $cxt->filler_sex,                        
+                'email' => $cxt->email
+            ]);
+        }
+
+        // 關聯家長和小朋友
+        $guardian->childs()->syncWithoutDetaching([$child->id]);
+
+        // 更新家長和小朋友 pivot 的 relation 欄位
+        $guardian->childs()->updateExistingPivot($child->id, ['relation' => $cxt->relation]);
+
+        // ~4
+        $child->guardians()->syncWithoutDetaching([$guardian->id]);
+
+        // ~5
+        $child->update([
+            'identifier' => $cxt->child_identifier,
+            'school_name' => $cxt->school_name,
+            'grade' => $cxt->grade,
+            'sex' => $cxt->child_sex,
+            'birthday' => $cxt->child_birthday
+        ]);
+
+        // ~6
+        $report->cxtBelongs()->associate($cxt);
+        $report->save();
+
+        $cxt->report()->associate($report);
+        $cxt->save();                                
+
+        return true;
     }
 }
