@@ -23,6 +23,15 @@ use Wck;
 class AmtReplicaController extends Controller
 {
     use AmtReplicaTrait;
+
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->middleware('can:view,amt_replica')->only('show', 'edit');
+        $this->middleware('can:update,amt_replica')->only('edit', 'update');
+        $this->middleware('can:delete,amt_replica')->only('destroy');
+    }
     
     /**
      * Display a listing of the resource.

@@ -19,6 +19,10 @@ class AmtAlsRptController extends Controller
         parent::__construct();
         
         $this->middleware('view.rpt')->only('show');
+
+        $this->middleware('can:view,amt_als_rpt')->only('show', 'edit');
+        $this->middleware('can:update,amt_als_rpt')->only('edit', 'update');
+        $this->middleware('can:delete,amt_als_rpt')->only('destroy');
     }
 
     /**

@@ -96,15 +96,21 @@ trait AmtAlsRptFetch
         | 家長，小孩，報告，剖析量表綁定
         |--------------------------------------------------------------------------
         | 1. 判斷報告有無綁定剖析量表，若有則終止處理
-        | 2. 取得剖析量表，若沒有剖析量表則終止
-        | 3. 判斷剖析量表內的家長資料是否已經有根據手機號碼對應到的 Guardian 實體，若無則新增，有則更新
-        | 4. 將 Child 和 Guardian 做綁定, 
-        | 5. Cxt 帶來的 Child 資料更新至 Child
-        | 6. 報告和剖析量表綁定
+        | 2. 判斷報告時間是否超過兩週，超過則終止處理
+        | 3. 取得剖析量表，若沒有剖析量表則終止
+        | 4. 判斷剖析量表內的家長資料是否已經有根據手機號碼對應到的 Guardian 實體，若無則新增，有則更新
+        | 5. 將 Child 和 Guardian 做綁定, 
+        | 6. Cxt 帶來的 Child 資料更新至 Child
+        | 7. 報告和剖析量表綁定
         */
         // ~1
         if (!is_null($report->cxt)) {
-            return false;    
+            return false;
+        }
+
+        // ~2
+        if (\Carbon\Carbon::now()->modify(AlsRptIbCxt::BEFORE_DAYS . ' days')->gt($report->created_at)) {
+            return false;
         }
 
         /**
@@ -114,7 +120,7 @@ trait AmtAlsRptFetch
          */
         $child = $report->replica->child;
 
-        // ~2
+        // ~3
         /**
          * 尚未被 Mapping 的剖析問卷
          * 
@@ -125,7 +131,7 @@ trait AmtAlsRptFetch
             return false;
         }
 
-        // ~3.
+        // ~4.
         /**
          * 透過電話號碼對應到的家長
          * 
@@ -151,10 +157,10 @@ trait AmtAlsRptFetch
         // 更新家長和小朋友 pivot 的 relation 欄位
         $guardian->childs()->updateExistingPivot($child->id, ['relation' => $cxt->relation]);
 
-        // ~4
+        // ~5
         $child->guardians()->syncWithoutDetaching([$guardian->id]);
 
-        // ~5
+        // ~6
         $child->update([
             'identifier' => $cxt->child_identifier,
             'school_name' => $cxt->school_name,
@@ -163,7 +169,7 @@ trait AmtAlsRptFetch
             'birthday' => $cxt->child_birthday
         ]);
 
-        // ~6
+        // ~7
         $report->cxtBelongs()->associate($cxt);
         $report->save();
 

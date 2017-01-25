@@ -2,10 +2,6 @@
 
 namespace App\Providers;
 
-use App\Model\AlsRptIbChannel;
-use App\Model\AlsRptIbCxt;
-use App\Policies\AlsRptIbChannelPolicy;
-use App\Policies\AlsRptIbCxtPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 
@@ -17,7 +13,11 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        AlsRptIbChannel::class => AlsRptIbChannelPolicy::class
+        \App\Model\AlsRptIbChannel::class => \App\Policies\AlsRptIbChannelPolicy::class,
+        \App\Model\AlsRptIbCxt::class => \App\Policies\AlsRptIbCxtPolicy::class,
+        \App\Model\AmtAlsRpt::class => \App\Policies\AmtAlsRptPolicy::class,
+        \App\Model\AmtReplica::class => \App\Policies\AmtReplicaPolicy::class,
+        \App\Model\Child::class => \App\Policies\ChildPolicy::class,
     ];
 
     /**

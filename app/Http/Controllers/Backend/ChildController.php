@@ -16,6 +16,15 @@ class ChildController extends Controller
 {
     use AmtReplicaTrait;
 
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->middleware('can:view,child')->only('show', 'edit');
+        $this->middleware('can:update,child')->only('edit', 'update');
+        $this->middleware('can:delete,child')->only('destroy');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -23,7 +32,7 @@ class ChildController extends Controller
      */
     public function index()
     {
-        $childs = Child::with('guardians')->latest()->paginate(env('PERPAGE_COUNT', 50));
+        $childs = Child::findChildByOrganizationWithRelated(Auth::user())->latest()->paginate(env('PERPAGE_COUNT', 50));
 
         $amts = Amt::all();
 
@@ -121,11 +130,13 @@ class ChildController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Model\Child $child 
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Child $child)
     {
-        //
+        $child->delete();
+
+        return redirect("/backend/child")->with('success', "{$child->name}{$child->getSex()} 移除完成!"); 
     }
 }

@@ -15,6 +15,7 @@
         <div class="col-md-12 col-sm-12 col-xs-12"">
             @include('component/flash')
             <a href="/backend/child/create" class="btn btn-default pull-right">
+                <i class="fa fa-plus"></i>
                 新增
             </a>
 
@@ -24,79 +25,19 @@
                         <th>id</th>
                         <th>姓名</th>
                         <th>生日</th>
-                        <th>年齡</th>
-                        <th>家長姓名</th>
-                        <th>電話</th>
+                        <th>年龄</th>
+                        <th>家长姓名</th>
+                        <th>电话</th>
                         <th>Email</th>
-                        <th>教師</th>                        
+                        <th>问卷</th>
+                        <th>评测</th>
+                        <th>教师</th>               
+                        <th>問卷&評測</th>           
                         <th>操作</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($childs as $child)
-                    <tr>
-                        <td>
-                            <a href="/backend/child/{{$child->id}}" target="_blank">
-                                {{$child->id}}
-                            </a>                            
-                        </td>
-                        <td>{{ $child->name }}</td>
-                        <td>{{ $child->birthday->format('Y-m-d') }}</td>
-                        <td>{{ \App\Model\Child::getYMAge($child->birthday) }}</td>
-
-                        @if(0 === $child->guardians->count())
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        @else
-                            <td>
-                                @foreach ($child->guardians as $guardian)
-                                    {{ $guardian->name }}
-                                @endforeach
-                            </td>
-                            <td>
-                                @foreach ($child->guardians as $guardian)
-                                    {{ $guardian->mobile }}
-                                @endforeach
-                            </td>
-                            <td>
-                                @foreach ($child->guardians as $guardian)
-                                    {{ $guardian->email }}
-                                @endforeach
-                            </td>
-                        @endif
-
-                        <td>
-                            {{ $child->users()->first()->name }}
-                        </td>
-                        <td>
-                            <a href="">報告</a>
-                            <a href="">刪除</a>
-                            <a href="">問卷</a>
-                            <a href="{{"/backend/child/{$child->id}/edit"}}" class="pull-right btn btn-default">
-                                <i class="fa fa-edit"></i>
-                                编辑
-                            </a>
-                            @if (0 === $child->replicas()->where('status', \App\Model\AmtReplica::STATUS_ORIGIN_ID)->count())
-                            <form class="form-inline" action="/backend/amt_replica" method="post">
-                                {{ csrf_field() }}
-                                <input type="hidden" name="child_id" value="{{$child->id}}" />
-                                
-                                <div class="form-group">
-                                    <select class="form-control" name="amt_id" id="amt_id">
-                                        @foreach ($amts as $amt)
-                                            <option value="{{$amt->id}}">v{{$amt->id}}</option>
-                                        @endforeach
-                                    </select>       
-                                    <button type="submit" class="btn btn-default">新增评测</button>                                                             
-                                </div>                                
-                            </form>
-                            @else
-                            <a href="/backend/amt_replica/{{$child->replicas()->where('status', \App\Model\AmtReplica::STATUS_ORIGIN_ID)->first()->id}}/edit" class="pull-right btn btn-info" target="_blank">继续评测</a>
-                            @endif
-                        </td>
-                    </tr>
-                    @endforeach
+                    @each('backend.child.index.component._tr', $childs, 'child')                    
                 </tbody>
             </table>
 

@@ -77,6 +77,14 @@ class Child extends Model
         return $this->belongsTo('App\Model\Organization');
     }
 
+    public function scopeFindChildByOrganizationWithRelated($query, \App\Model\User $user)
+    {
+        return $user->isSuper() ? 
+            $query->with('guardians', 'users', 'replicas', 'replicas.report.cxt') :
+            $query->with('guardians', 'users', 'replicas', 'replicas.report.cxt')->where('organization_id', $user->organization->id)
+        ;
+    }
+
     /**
      * Get the user's date of birth for forms.
      *

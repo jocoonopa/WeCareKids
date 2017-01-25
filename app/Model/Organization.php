@@ -2,6 +2,7 @@
 
 namespace App\Model;
 
+use App\Model\Child;
 use App\Model\User;
 use Illuminate\Database\Eloquent\Model;
 
@@ -28,6 +29,22 @@ class Organization extends Model
         $organization->save();
 
         return $organization;
+    }
+
+    /**
+     * 判斷使用者和小孩是否屬於同一個組織
+     * 
+     * @param  \App\Model\User||\App\Model\Child   $user1  教師或是組織擁有者或是小孩
+     * @param  \App\Model\User||\App\Model\Child   $user2  教師或是組織擁有者或是小孩
+     * @return boolean       
+     */
+    public static function isSameOrganization($user1, $user2)
+    {
+        if (is_null($user2->organization) || is_null($user1->organization)) {
+            return false;
+        }
+
+        return $user1->organization->id === $user2->organization->id;
     }
     
     public function users()

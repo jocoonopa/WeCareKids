@@ -10,6 +10,15 @@ use Auth;
 
 class AlsRptIbCxtController extends Controller
 {
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->middleware('can:view,als_rpt_ib_cxt')->only('show', 'edit');
+        $this->middleware('can:update,als_rpt_ib_cxt')->only('edit', 'update');
+        $this->middleware('can:delete,als_rpt_ib_cxt')->only('destroy');
+    }
+
     /**
      * Display the specified resource.
      *

@@ -13,6 +13,8 @@ class AlsRptIbCxt extends Model
 {
     protected $table = 'als_rpt_ib_cxts';
 
+    const BEFORE_DAYS = -14;
+
     const STATUS_HASNOT_SUBMIT = 0;
     const STATUS_HAS_SUBMIT    = 1;
     const STATUS_HAS_MAP       = 2;
@@ -182,7 +184,7 @@ class AlsRptIbCxt extends Model
      */
     public function scopeFindInValidDate($query)
     {
-        return $query->where('created_at', '>=', \Carbon\Carbon::now()->modify('-14 days'));
+        return $query->where('created_at', '>=', \Carbon\Carbon::now()->modify(static::BEFORE_DAYS . ' days'));
     }
 
     public function isNotSubmit()

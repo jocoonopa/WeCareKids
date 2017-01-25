@@ -2,6 +2,7 @@
 
 namespace App\Model;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Log;
 
@@ -16,6 +17,32 @@ class AmtReplica extends Model
      * @var array
      */
     protected $guarded = [];
+
+    /**
+     * 從傳入的 Collection 取得最新未過期的 AmtReplica
+     * 
+     * @param  \Illuminate\Database\Eloquent\Collection $replicas
+     * @return \Illuminate\Database\Eloquent\Collection           
+     */
+    public static function fetchWithoutExpiredFromCollection(Collection $replicas)
+    {
+        return $replicas->filter(function ($replica) {
+            return !$replica->isExpired();
+        });
+    }
+
+    /**
+     * 從傳入的 Collection 取得擁有對應 Cxt 的 AmtReplica
+     * 
+     * @param  \Illuminate\Database\Eloquent\Collection $replicas
+     * @return \Illuminate\Database\Eloquent\Collection           
+     */
+    public static function fetchWithCxtFromCollection(Collection $replicas)
+    {
+        return $replicas->filter(function ($replica) {
+            return !is_null($replica->report->cxt);
+        });
+    }
 
     public function amt()
     {
@@ -132,6 +159,16 @@ class AmtReplica extends Model
     }
 
     /**
+     * 此 AmtReplica 是否已經過期
+     * 
+     * @return boolean
+     */
+    public function isExpired()
+    {
+        return is_null($this->report->cxt) && \Carbon\Carbon::now()->modify(AlsRptIbCxt::BEFORE_DAYS . ' days')->gt($this->created_at);
+    }
+
+    /**
      * Alias of AmtChild::getLevel
      * 
      * @return integer
@@ -139,5 +176,10 @@ class AmtReplica extends Model
     public function getLevel()
     {
         return $this->child->getLevel($this->created_at);
+    }
+
+    public function getExpiredCountdown()
+    {
+        return \Carbon\Carbon::now()->modify(AlsRptIbCxt::BEFORE_DAYS . ' days')->diffInDays($this->created_at);
     }
 }

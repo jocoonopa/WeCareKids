@@ -14,7 +14,18 @@
                         <span class=" fa fa-angle-down"></span>
                     </a>
                     <ul class="dropdown-menu dropdown-usermenu pull-right">
-                        <li><a href="{{ url('/auth/logout') }}"><i class="fa fa-sign-out pull-right"></i>登出</a></li>
+                        <li>
+                            <a href="{{ url('/auth/logout') }}" onclick="return confirm('確定要登出嗎?')">
+                                <i class="fa fa-sign-out pull-right"></i>登出
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="{{Auth::user()->getChannelUrl()}}"> 
+                                <i class="fa fa-qrcode pull-right"></i>
+                                QRCode
+                            </a>
+                        </li>
                     </ul>
                 </li>
             </ul>
