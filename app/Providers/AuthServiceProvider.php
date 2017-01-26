@@ -18,6 +18,7 @@ class AuthServiceProvider extends ServiceProvider
         \App\Model\AmtAlsRpt::class => \App\Policies\AmtAlsRptPolicy::class,
         \App\Model\AmtReplica::class => \App\Policies\AmtReplicaPolicy::class,
         \App\Model\Child::class => \App\Policies\ChildPolicy::class,
+        \App\Model\Organization::class => \App\Policies\OrganizationPolicy::class,
     ];
 
     /**
@@ -28,7 +29,5 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
-
-        //
     }
 }

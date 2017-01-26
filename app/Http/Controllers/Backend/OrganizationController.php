@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Requests\OrganizationRequest;
 use App\Model\Organization;
 use App\Model\User;
+use App\Model\WckUsageRecord;
 use Auth;
 
 class OrganizationController extends Controller
@@ -13,7 +14,9 @@ class OrganizationController extends Controller
     {
         parent::__construct();
         
-        $this->middleware('organization')->only(['show', 'edit', 'update']);
+        $this->middleware('can:view,organization')->only('show');
+        $this->middleware('can:create,' . \App\Model\Organization::class)->only('index', 'create', 'store');
+        $this->middleware('can:update,organization')->only('edit', 'update');
     }
 
     /**
@@ -23,7 +26,7 @@ class OrganizationController extends Controller
      */
     public function index()
     {
-        $organizations = Auth::user()->createdOrgs()->get();
+        $organizations = Organization::latest()->get();
 
         return view('backend.organization.index', compact('organizations'));
     }
@@ -36,7 +39,9 @@ class OrganizationController extends Controller
      */
     public function show(Organization $organization)
     {
-        return view('backend/organization/show', compact('organization'));
+        $usages = $organization->usages()->latest()->paginate(env('PERPAGE_COUNT', 50));
+
+        return view('backend/organization/show', compact('organization', 'usages'));
     }
 
     /**
@@ -96,9 +101,12 @@ class OrganizationController extends Controller
     public function store(OrganizationRequest $request)
     {
         try {
-            $creater = Auth::user();
-            $owner = User::find($request->get('owner'));
-            $organization = Organization::_create($owner, $contacter, $creater, $request->get('name'));
+            $organization = Organization::_create(
+                User::find($request->get('owner')), 
+                $contacter, 
+                Auth::user(), 
+                $request->get('name')
+            );
 
             return redirect('backend/organization')->with('success', "{$organization->name} 新增完成!");
         } catch (\Exception $e) {

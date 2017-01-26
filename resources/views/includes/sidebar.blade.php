@@ -46,6 +46,12 @@
                             <i class="fa fa-file-text-o"></i>赶工爆肝区
                         </a>
                     </li>
+                    <li>
+                        <a href="/backend/organization">
+                            <i class="fa fa-line-chart"></i>
+                            金流顯示
+                        </a>
+                    </li>
                     <li><a href="/backend/recommend_course"><i class="fa fa-file-text-o"></i>推薦課程</a></li>
                     <li><a href="/backend/user"><i class="fa fa-file-text-o"></i>使用者管理</a></li>
                     <li><a href="/backend/organization/1"><i class="fa fa-file-text-o"></i>组织</a></li>

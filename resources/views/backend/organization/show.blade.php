@@ -32,7 +32,9 @@
                     <li>
                         <label>拥有人:</label>
                         @if ($organization->owner)
-                            {{ $organization->owner->name }}
+                            <a href="/backend/user/{{$organization->owner->id}}">
+                                {{ $organization->owner->name }}
+                            </a>                            
                         @else
                             <span class="label label-default">尚未指定拥有者</span>
                         @endif
@@ -41,7 +43,9 @@
                     <li>
                         <label>联络人:</label>
                         @if ($organization->contacter)
-                            {{ $organization->contacter->name }}
+                            <a href="/backend/user/{{ $organization->contacter->id }}">
+                                {{ $organization->contacter->name }}
+                            </a>                            
                         @else
                             <span class="label label-default">尚未指定联络人</span>
                         @endif
@@ -59,35 +63,12 @@
                         <td>剩余金额</td>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>{{$organization->created_at->format('Y-m-d')}}</td>
-                        <td>{{$organization->created_at->format('H:i:s')}}</td>
-                        <td>{{ '加盟金赠送储值金' }}</td>
-                        <td>
-                            <span class="label label-success">
-                                {{ '+' . \App\Model\Organization::INIT_BENEFIT }}
-                            </span>                            
-                        </td>
-                        <td>{{ \App\Model\Organization::INIT_BENEFIT }}</td>
-                    </tr>
-                    @foreach ($organization->usages as $usage)
-                    <tr>
-                        <td>{{$usage->created_at->format('Y-m-d')}}</td>
-                        <td>{{$usage->created_at->format('H:i:s')}}</td>
-                        <td>
-                            @if(is_null($usage->usage))
-                                {{'已删除'}}
-                            @else
-                                {{$usage->usage->getUsageDesc()}}
-                            @endif
-                        </td>
-                        <td>{!! $usage->getVarietyDesc() !!}</td>
-                        <td>{{$usage->current_remain}}</td>
-                    </tr>
-                    @endforeach
+                <tbody>                                 
+                    @each('backend.organization.show._tr', $usages, 'usage')
                 </tbody>
             </table>
+
+            {{ $usages->links() }}
         </div>
     </div>
 </div>

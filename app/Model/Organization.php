@@ -17,7 +17,7 @@ class Organization extends Model
      */
     protected $guarded = [];
 
-    public static function _create($owner, $contacter, $creater, $name)
+    public static function _create(User $owner = NULL, User $contacter = NULL, User $creater, $name)
     {
         $organization = new Organization;
 
@@ -77,6 +77,12 @@ class Organization extends Model
         return $this->belongsTo('App\Model\User', 'owner_id', 'id');
     }
 
+    /**
+     * 判斷使用者是否為該 Organization 的擁有者
+     * 
+     * @param  \App\Model\User    $user 
+     * @return boolean      
+     */
     public function isOwner(User $user)
     {
         if (is_null($this->owner)) {
@@ -86,6 +92,12 @@ class Organization extends Model
         return $user->id === $this->owner->id;
     }
 
+    /**
+     * 判斷該使用者是否為 Organization 的聯絡人
+     * 
+     * @param  \App\Model\User    $user
+     * @return boolean      
+     */
     public function isContacter(User $user)
     {
         if (is_null($this->contacter)) {
@@ -95,6 +107,24 @@ class Organization extends Model
         return $user->id === $this->contacter->id;
     }
 
+    /**
+     * 判斷使用者是否可以訪問該 Organization
+     * 
+     * @param  \App\Model\User    $user
+     * @return boolean     
+     */
+    public function isAllowedAccess(User $user)
+    {
+        return !(!$user->isSuper() && !$this->isOwner($user));
+    }
+
+    /**
+     * 新增建立 Organization 後，根據 id 產生 account.
+     *
+     * 此方法會在 Organization 的 Observer 被呼叫
+     * 
+     * @return string
+     */
     public function genAccount()
     {
         return 'W' . str_pad(6, 0, $this->id, STR_PAD_LEFT);

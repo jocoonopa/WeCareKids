@@ -56,7 +56,6 @@ class Kernel extends HttpKernel
         'view.rpt' => \App\Http\Middleware\AmtAlsRpt::class,
         'edit.rpt.cxt' => \App\Http\Middleware\AlsRptIbCxt::class,
         'amt.diag.group' => \App\Http\Middleware\AmtDiagGroup::class,
-        'organization' => \App\Http\Middleware\Organization::class,
         'user' => \App\Http\Middleware\User::class,
     ];
 }
