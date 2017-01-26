@@ -158,6 +158,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\BroadcastServiceProvider::class,
         App\Providers\WckServiceProvider::class,
+        App\Providers\ComposerServiceProvider::class,
 	
 		Thomaswelton\LaravelGravatar\LaravelGravatarServiceProvider::class,
         SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,

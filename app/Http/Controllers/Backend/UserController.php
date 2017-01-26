@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Requests\PasswordRequest;
 use App\Http\Requests\UserRequest;
+use App\Model\Organization;
 use App\Model\User;
 use Auth;
 use Illuminate\Http\Request;
@@ -14,7 +15,9 @@ class UserController extends Controller
     {
         parent::__construct();
 
-        $this->middleware('user')->only(['edit', 'update', 'create', 'store', 'destroy']);    
+        $this->middleware('can: view,user')->only('show');
+        $this->middleware('can: update,user')->only('edit', 'update');
+        $this->middleware('can: create,' . \App\Model\User::class)->only('create', 'store');
     }
 
     /**
@@ -24,7 +27,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::fetchUsersInValidScope(Auth::user())->paginate(env('PERPAGE_COUNT', 50));
+        $users = User::with('cxts', 'replicas', 'organization')->fetchUsersInValidScope(Auth::user())->paginate(env('PERPAGE_COUNT', 50));
 
         return view('backend.user.index', compact('users'));
     }
@@ -37,6 +40,10 @@ class UserController extends Controller
     public function create()
     {
         $user = new User;
+
+        $user->name = old('name');
+        $user->email = old('email');
+        $user->phone = old('phone');
 
         return view('backend/user/create', compact('user'));
     }
@@ -92,7 +99,8 @@ class UserController extends Controller
         try {             
             $user->update([
                 'name' => $request->get('name'),
-                'email' => $request->get('email')
+                'email' => $request->get('email'),
+                'phone' => $request->get('phone'),
             ]);
 
             return redirect("/backend/user")->with('success', "{$user->name} 更新完成!");  

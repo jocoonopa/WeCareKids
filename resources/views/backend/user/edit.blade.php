@@ -15,10 +15,23 @@
                     </a>
                 </small>
             </h1>
+
+            @include('component/flash')
             
             {!! Form::model($user, ['url' => "/backend/user/{$user->id}", 'method' => 'put']) !!}
                 @include('backend.user.component._form', compact('user'))
             {!! Form::close() !!}
+
+            <form action="/backend/analysis/r/i/channel/{{$user->channels()->first()->id}}/is_open" method="post" class="pull-right">   
+                {{ csrf_field() }}
+                <input type="hidden" name="_method" value="put" />
+
+                @if($user->channels()->first()->isOpen())
+                    <button type="submit" class="btn btn-success pull-right">關閉Channel</button>
+                @else
+                    <button type="submit" class="btn btn-danger pull-right">打開Channel</button>
+                @endif
+            </form>
         </div>
     </div>
 </div>

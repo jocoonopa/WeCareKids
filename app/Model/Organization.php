@@ -57,6 +57,14 @@ class Organization extends Model
         return $this->hasMany('App\Model\Child');
     }
 
+    public function reports()
+    {
+        return $this->hasManyThrough(
+            'App\Model\AmtAlsRpt', 'App\Model\User',
+            'organization_id', 'owner_id', 'id'
+        );
+    }
+
     public function usages()
     {
         return $this->hasMany('App\Model\WckUsageRecord', 'organization_id', 'id');

@@ -23,7 +23,7 @@
                 <div class="col-md-9 col-sm-12">
                     <form action="/backend/child" method="get">
                         <div class="input-group">
-                            <input type="text" name="name" class="form-control" value="{{old('name')}}">
+                            <input type="text" name="name" class="form-control" value="{{Request::get('name')}}">
                             <span class="input-group-btn">
                                 <button type="submit" class="btn btn-primary">
                                     <i class="fa fa-search"></i>

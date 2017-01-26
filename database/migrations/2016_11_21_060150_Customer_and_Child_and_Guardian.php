@@ -13,15 +13,6 @@ class CustomerAndChildAndGuardian extends Migration
      */
     public function up()
     {
-        Schema::create('customers', function (Blueprint $table){
-            $table->increments('id');
-            $table->integer('sex')->nullable()->comment('0: 男生, 1:女生');
-            $table->string('name');
-            $table->dateTime('birthday')->nullable();
-
-            $table->timestamps();
-        });
-
         Schema::create('childs', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('customer_id')->unsigned()->index();
@@ -75,6 +66,5 @@ class CustomerAndChildAndGuardian extends Migration
         Schema::drop('child_guardian');
         Schema::drop('childs');
         Schema::drop('guardians');
-        Schema::drop('customers');
     }
 }

@@ -16,7 +16,27 @@
             </div>
             <div class="profile_info">
                 <span>Welcome,</span>
-                <h2>{{ Auth::user()->name }}</h2>
+                @if (Auth::user()->isOwner())
+                    <div>
+                        <span class="label label-success white">剩餘: {{ array_get($counts, 'points') . '點' }}</span>
+                    </div>
+                @endif    
+                <h2>
+                    {{ Auth::user()->name }}
+
+                    @if(Auth::user()->isSuper())
+                        <span class="label label-default white">系統管理員</span>
+                    @elseif(Auth::user()->isOwner())
+                        <span class="label label-warning white">擁有者</span>
+                    @else
+                        <span class="label label-danger white">教師</span>
+                    @endif
+                </h2>        
+            </div>
+            <div>
+                <span class="label label-default">問卷: {{ array_get($counts, 'rpt') . '筆' }}</span>
+                <span class="label label-default">評測: {{ array_get($counts, 'cxt') . '筆' }}</span>   
+                <span class="label label-default">孩童: {{ array_get($counts, 'child'). '位' }}</span> 
             </div>
         </div>
         <!-- /menu profile quick info -->

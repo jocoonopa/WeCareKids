@@ -126,10 +126,18 @@ class AlsRptIbChannelController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Update the specified channel is_open 
      *
-     * @param  int  $id
+     * @param  \App\Model\AlsRptIbChannel  $channel
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id){}
+    public function toggleOpen(AlsRptIbChannel $channel)
+    {
+        $channel->is_open = !$channel->is_open;
+        $channel->save();
+
+        $message = $channel->is_open ? '頻道已開啟' : '頻道已關閉';
+
+        return redirect("/backend/user/{$channel->creater->id}/edit")->with('success', $message); 
+    }
 }

@@ -44,3 +44,7 @@ table.als-table th:nth-of-type(3) {
 .padding-20 {
     padding: 20px !important;
 }
+
+.white {
+    color: #ffffff !important;
+}
