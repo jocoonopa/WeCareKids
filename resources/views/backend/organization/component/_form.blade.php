@@ -1,6 +1,11 @@
 <div class="form-group">
     <label class="col-md-2 control-label" for="name">组织名称</label>
-    <input id="name" name="name" class="form-control" value="{{ $organization->name }}" required/>
+    <input id="name" name="name" class="form-control" value="{{ $organization->name }}" placeholder="ex: 長沙國小" required/>
+</div>
+
+<div class="form-group">
+    <label class="col-md-2 control-label" for="region">地區</label>
+    <input id="region" name="region" class="form-control" value="{{ $organization->region }}" placeholder="ex: 長沙"/>
 </div>
 
 <div class="form-group">
@@ -33,4 +38,8 @@
     <button class="btn btn-primary">
         确认
     </button>
+
+    <a href="/backend/organization" class="btn btn-default">
+        取消
+    </a>
 </div>

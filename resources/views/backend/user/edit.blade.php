@@ -22,7 +22,7 @@
                 @include('backend.user.component._form', compact('user'))
             {!! Form::close() !!}
 
-            <form action="/backend/analysis/r/i/channel/{{$user->channels()->first()->id}}/is_open" method="post" class="pull-right">   
+            <form action="/backend/analysis/r/i/channel/{{$user->channels()->first()->id}}/is_open" method="post" class="pull-right" style="margin-top: -48px;">   
                 {{ csrf_field() }}
                 <input type="hidden" name="_method" value="put" />
 

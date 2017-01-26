@@ -7,6 +7,7 @@ use App\Model\Organization;
 use App\Model\User;
 use App\Model\WckUsageRecord;
 use Auth;
+use Illuminate\Http\Request;
 
 class OrganizationController extends Controller
 {
@@ -17,6 +18,7 @@ class OrganizationController extends Controller
         $this->middleware('can:view,organization')->only('show');
         $this->middleware('can:create,' . \App\Model\Organization::class)->only('index', 'create', 'store');
         $this->middleware('can:update,organization')->only('edit', 'update');
+        $this->middleware('can:delete,organization')->only('destroy');
     }
 
     /**
@@ -69,6 +71,7 @@ class OrganizationController extends Controller
     {
         try {
             $organization->name = $request->get('name');
+            $organization->region = $request->get('region');
             $organization->owner()->associate(User::find($request->get('owner')));
             $organization->contacter()->associate(User::find($request->get('contacter')));
             $organization->save();
@@ -84,9 +87,11 @@ class OrganizationController extends Controller
      * 
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
         $organization = new Organization;
+        $organization->name = old('name');
+        $organization->region = old('region');
 
         $users = User::findOrgOptions($organization)->get();
 
@@ -103,14 +108,32 @@ class OrganizationController extends Controller
         try {
             $organization = Organization::_create(
                 User::find($request->get('owner')), 
-                $contacter, 
+                User::find($request->get('contacter')), 
                 Auth::user(), 
-                $request->get('name')
+                $request->get('name'),
+                $request->get('region')
             );
 
-            return redirect('backend/organization')->with('success', "{$organization->name} 新增完成!");
+            return redirect('backend/organization')->with('success', "{$organization->name} 新增完成!")->withInput();
         } catch (\Exception $e) {
             return redirect('backend/organization')->with('error', "{$e->getMessage()}");
         }        
+    }
+
+    /**
+     * Delete the specified resource.
+     * 
+     * @param  \App\Model\Organization  $organization
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Organization $organization)
+    {
+        if (0 < $organization->reports()->count()) {
+            return redirect('backend/organization')->with('error', "{$organization->name} 已經有問卷資料，不可刪除!"); 
+        }
+
+        $organization->delete();
+
+        return redirect('backend/organization')->with('success', "{$organization->name} 刪除完成!");
     }
 }

@@ -23,11 +23,18 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::with('cxts', 'replicas', 'organization')->fetchUsersInValidScope(Auth::user())->paginate(env('PERPAGE_COUNT', 50));
+        $query = User::with('cxts', 'replicas', 'organization')->fetchUsersInValidScope(Auth::user());
+        
+        if (0 !== (int) $request->get('organization_id', 0) && Auth::user()->isSuper()) {
+            $query->where('organization_id', $request->get('organization_id'));
+        }
+
+        $users = $query->paginate(env('PERPAGE_COUNT', 50));
 
         return view('backend.user.index', compact('users'));
     }

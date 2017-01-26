@@ -11,6 +11,6 @@
     <input type="number" name="phone" id="phone" class="form-control" value="{{$user->phone}}" required />
 </div>
 <div class="form-group">
-    <button type="submit" class="btn btn-success">确认</button>
-    <a href="/backend/user" class="btn btn-primary">取消</a>
+    <button type="submit" class="btn btn-primary">确认</button>
+    <a href="/backend/user" class="btn btn-default">取消</a>
 </div>

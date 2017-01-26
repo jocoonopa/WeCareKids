@@ -5,7 +5,14 @@
     <div class="page-title">
         <div class="title_left">
             <h3>
-                使用者列表                
+                使用者列表   
+                
+                <small>
+                    <a href="/backend/user/create" class="btn btn-default">
+                        <i class="fa fa-plus-circle"></i>
+                        新增
+                    </a>  
+                </small>                                           
             </h3>
         </div>
         <div class="clearfix"></div>
@@ -15,9 +22,29 @@
         <div class="col-md-12 col-sm-12 col-xs-12"">
             @include('component/flash')
             
-            <a href="/backend/user/create" class="btn btn-default pull-right">
-                新增
-            </a>
+            
+                
+            @if (Auth::user()->isSuper())
+            <form action="/backend/user" class="form-horizontal form-label-left" method="get">
+                <div class="input-group">
+                    <select name="organization_id" id="organization_id" class="form-control">
+                        <option value="0">--</option>
+
+                        @foreach (\App\Model\Organization::all() as $organization)
+                            <option value="{{ $organization->id }}" @if ($organization->id == Request::get('organization_id')) selected @endif>
+                                {{ $organization->name }}
+                            </option>
+                        @endforeach
+                    </select>
+
+                    <div class="input-group-btn">
+                        <button type="submib" class="btn btn-primary">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+                </div>                
+            </form>
+            @endif
 
             <table class="table table-striped">
                 <thead>
@@ -116,7 +143,7 @@
                 </tbody>
             </table>
 
-            {{ $users->links() }}
+            {{ $users->appends(['organization_id' => Request::get('organization_id')])->links() }}
         </div>
     </div>
 </div>

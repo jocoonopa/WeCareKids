@@ -57,7 +57,7 @@
                 </tbody>
             </table>
 
-            {{ $childs->links() }}
+            {{ $childs->appends(['name' => Request::get('name')])->links() }}
         </div>
     </div>
 </div>

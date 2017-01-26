@@ -4,6 +4,7 @@
             {{ $organization->name }}
         </a>
     </td>
+    <td>{{ $organization->region }}</td>
     <td>{{ $organization->account }}</td>
     <td>
         @if (0 < $organization->points)
@@ -35,6 +36,11 @@
         @endif
     </td>
     <td>
+        <a href="/backend/user?organization_id={{$organization->id}}">
+            {{ $organization->users()->count() }}
+        </a>
+    </td>
+    <td>
         <a href="/backend/organization/{{$organization->id}}" class="btn btn-info btn-xs">
             <i class="fa fa-eye"></i>
             检视
@@ -43,5 +49,13 @@
             <i class="fa fa-edit"></i>
             编辑
         </a>
+        
+        <form action="/backend/organization/{{$organization->id}}" method="post" onsubmit="return confirm('確定要刪除嗎?');">
+            {{ csrf_field() }}
+            <input type="hidden" name="_method" value="delete">
+            
+            <button type="submit" class="btn btn-danger btn-xs">刪除</button>
+        </form>
+        
     </td>
 </tr>  

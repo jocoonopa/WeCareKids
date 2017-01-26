@@ -31,7 +31,19 @@
                     </tr>            
                     <tr>
                         <td>Email:</td>
-                        <td>{{$user->email}}</td>                                        
+                        <td>
+                            <a href="mailto: {{$user->email}}">
+                                {{$user->email}}
+                            </a>
+                        </td>  
+                    </tr>
+                    <tr>
+                        <td>電話:</td>
+                        <td>
+                            <a href="tel: {{$user->phone}}">
+                                {{$user->phone}}
+                            </a>
+                        </td>
                     </tr>
                     <tr>
                         <td>权限:</td>

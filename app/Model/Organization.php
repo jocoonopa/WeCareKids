@@ -17,11 +17,12 @@ class Organization extends Model
      */
     protected $guarded = [];
 
-    public static function _create(User $owner = NULL, User $contacter = NULL, User $creater, $name)
+    public static function _create(User $owner = NULL, User $contacter = NULL, User $creater, $name, $region)
     {
         $organization = new Organization;
 
         $organization->name = $name;
+        $organization->region = $region;
         $organization->points = static::INIT_BENEFIT;
         $organization->owner()->associate($owner);
         $organization->contacter()->associate($contacter);
