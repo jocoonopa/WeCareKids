@@ -39,21 +39,29 @@
                             <span class="label label-info">V{{$replica->amt_id}}</span> 
                         </td>
                         <td>
-                            {{ $replica->child->name }}
+                            <a href="/backend/child/{{$replica->child->id}}">
+                                {{ $replica->child->name }}
+                            </a>                            
                         </td>
                         <td>
                             {{ $replica->created_at->format('Y-m-d H:i:s') }}
                         </td>
-                        <td>
-                            <form action="/backend/amt_replica/{{$replica->id}}" method="post" onsubmit="return confirm('确定删除吗?');">
+                        <td>                            
+                            <form action="/backend/amt_replica/{{$replica->id}}" class="pull-right" method="post" onsubmit="return confirm('确定删除吗?');">
                                 {{csrf_field()}}
                                 
                                 <input type="hidden" name="_method" value="delete">
                                 
                                 <button class="btn btn-danger btn-sm pull-right" >
+                                    <i class="fa fa-remove"></i>
                                     删除
                                 </button>
                             </form>
+
+                            <a href="/backend/amt_replica/{{$replica->id}}" class="btn btn-primary btn-sm pull-right" target="_blank">
+                                <i class="fa fa-eye"></i>
+                                前往
+                            </a>
                         </td>
                     </tr>
                     @endforeach

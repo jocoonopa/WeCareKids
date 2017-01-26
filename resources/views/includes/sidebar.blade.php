@@ -48,35 +48,14 @@
             <div class="menu_section">
                 <h3>&nbsp;</h3>
                 <ul class="nav side-menu">
+                    @foreach ($menus as $menu)
                     <li>
-                        <a href="/backend/analysis/r/i/cxt"><i class="fa fa-file-text-o"></i>问卷</a>
-                    </li>
-                    <li>
-                        <a href="/backend/child"><i class="fa fa-file-text-o"></i>开始测评</a>
-                    </li>
-                    <li>
-                        <a href="/backend/amt_replica"><i class="fa fa-file-text-o"></i>测评状态</a>
-                    </li>
-                    <li>
-                        <a href="/backend/amt_als_rpt"><i class="fa fa-file-text-o"></i>报告</a>
-                    </li> 
-                    @if (Auth::user()->isSuper())      
-                    <li>
-                        <a href="/backend/amt">
-                            <i class="fa fa-file-text-o"></i>赶工爆肝区
+                        <a href="{{ $menu['url'] }}">
+                        <i class="fa fa-chevron-right"></i>
+                        {{ $menu['name'] }}
                         </a>
                     </li>
-                    <li>
-                        <a href="/backend/organization">
-                            <i class="fa fa-line-chart"></i>
-                            金流顯示
-                        </a>
-                    </li>
-                    <li><a href="/backend/recommend_course"><i class="fa fa-file-text-o"></i>推薦課程</a></li>
-                    <li><a href="/backend/user"><i class="fa fa-file-text-o"></i>使用者管理</a></li>
-                    <li><a href="/backend/organization/1"><i class="fa fa-file-text-o"></i>组织</a></li>
-                    <li><a href="/backend/organization"><i class="fa fa-file-text-o"></i>组织管理</a></li>
-                    @endif
+                    @endforeach
                 </ul>
             </div>
         </div>

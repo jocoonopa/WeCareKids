@@ -23,6 +23,74 @@ class ViewSidebarComposer
     public function compose(View $view)
     {
         $view->with('counts', $this->fetchCounts());
+        $view->with('menus', $this->getMenus());
+    }
+
+    protected function getMenus()
+    {
+        if ($this->user->isSuper()) {
+            return $this->getSuperMenus();
+        }
+
+        if ($this->user->isOwner()) {
+            return $this->getOwnerMenus();
+        }
+
+        return $this->getTutorMenus();
+    }
+
+    protected function getSuperMenus()
+    {
+        return [
+            [
+                'name' => '加盟商管理',
+                'url' => '/backend/organization',
+            ],
+            [
+                'name' => '測評內容管理',
+                'url' => '/backend/amt_replica',
+            ],
+            [
+                'name' => '孩童管理',
+                'url' => '/backend/child',
+            ],
+        ];
+    }
+
+    protected function getTutorMenus()
+    {
+        return [
+            [
+                'name' => '問卷',
+                'url' => '/backend/analysis/r/i/cxt',
+            ],
+            [
+                'name' => '測評',
+                'url' => '/backend/amt_replica',
+            ],
+            [
+                'name' => '孩童管理',
+                'url' => '/backend/child',
+            ],
+        ];
+    }
+
+    protected function getOwnerMenus()
+    {
+        return [
+            [
+                'name' => '金流顯示',
+                'url' => "/backend/organization/{$this->user->organization->id}",
+            ],
+            [
+                'name' => '教師控管',
+                'url' => '/backend/user',
+            ],
+            [
+                'name' => '孩童管理',
+                'url' => '/backend/child',
+            ],
+        ];
     }
 
     protected function fetchCounts()
