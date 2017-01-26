@@ -19,7 +19,7 @@ class AmtAlsRptPolicy
     }
 
     /**
-     * Determine whether the report can view the report.
+     * Determine whether the user can view the report.
      *
      * @param  \App\Model\User  $user
      * @param  \App\Model\AmtAlsRpt  $report
@@ -31,7 +31,7 @@ class AmtAlsRptPolicy
     }
 
     /**
-     * Determine whether the report can update the report.
+     * Determine whether the user can update the report.
      *
      * @param  \App\Model\User  $user
      * @param  \App\Model\AmtAlsRpt  $report
@@ -43,7 +43,7 @@ class AmtAlsRptPolicy
     }
 
     /**
-     * Determine whether the report can create users.
+     * Determine whether the user can create users.
      *
      * @param  \App\Model\User  $user
      * @return mixed
@@ -51,7 +51,7 @@ class AmtAlsRptPolicy
     public function create(User $user){}
 
     /**
-     * Determine whether the report can delete the report.
+     * Determine whether the user can delete the report.
      *
      * @param  \App\Model\User  $user
      * @param  \App\Model\AmtAlsRpt  $report

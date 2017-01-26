@@ -2,7 +2,6 @@
 
 namespace App\Utility\Controllers;
 
-use AmtAlsRpt as AAR;
 use AmtReplica as ARA;
 use App\Model\AmtReplica;
 use DB;
@@ -40,9 +39,6 @@ Trait AmtReplicaTrait
         if ($replicaCurrentDiagGroup->currentCell->isEmpty()) {
             $isNotFinish = $this->switchGroup($replica);
         }
-        
-        // 扣钱
-        AAR::genUsageRecord(ARA::getReport());
         
         DB::commit();
 

@@ -19,7 +19,7 @@ class AmtReplicaPolicy
     }
 
     /**
-     * Determine whether the replica can view the replica.
+     * Determine whether the user can view the replica.
      *
      * @param  \App\Model\User  $user
      * @param  \App\Model\AmtReplica  $replica
@@ -31,7 +31,7 @@ class AmtReplicaPolicy
     }
 
     /**
-     * Determine whether the replica can update the replica.
+     * Determine whether the user can update the replica.
      *
      * @param  \App\Model\User  $user
      * @param  \App\Model\AmtReplica  $replica
@@ -43,15 +43,20 @@ class AmtReplicaPolicy
     }
 
     /**
-     * Determine whether the replica can create users.
+     * Determine whether the user can create users.
      *
+     * 組織剩餘點數不足 - WckUsageRecord::COST_PER_REPLICA 時不可新增評測
+     * 
      * @param  \App\Model\User  $user
      * @return mixed
      */
-    public function create(User $user){}
+    public function create(User $user)
+    {
+        return -(WckUsageRecord::COST_PER_REPLICA) <= $user->organization->point;
+    }
 
     /**
-     * Determine whether the replica can delete the replica.
+     * Determine whether the user can delete the replica.
      *
      * @param  \App\Model\User  $user
      * @param  \App\Model\AmtReplica  $replica

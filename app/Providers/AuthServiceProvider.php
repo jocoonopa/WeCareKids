@@ -19,6 +19,7 @@ class AuthServiceProvider extends ServiceProvider
         \App\Model\AmtReplica::class => \App\Policies\AmtReplicaPolicy::class,
         \App\Model\Child::class => \App\Policies\ChildPolicy::class,
         \App\Model\Organization::class => \App\Policies\OrganizationPolicy::class,
+        \App\Model\WckUsageRecord::class => \App\Policies\WckUsageRecordPolicy::class,
     ];
 
     /**

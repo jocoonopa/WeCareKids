@@ -19,7 +19,7 @@ class AlsRptIbCxtPolicy
     }
 
     /**
-     * Determine whether the cxt can view the cxt.
+     * Determine whether the user can view the cxt.
      *
      * @param  \App\Model\User  $user
      * @param  \App\Model\AlsRptIbCxt  $cxt
@@ -31,7 +31,7 @@ class AlsRptIbCxtPolicy
     }
 
     /**
-     * Determine whether the cxt can update the cxt.
+     * Determine whether the user can update the cxt.
      *
      * @param  \App\Model\User  $user
      * @param  \App\Model\AlsRptIbCxt  $cxt
@@ -43,7 +43,7 @@ class AlsRptIbCxtPolicy
     }
 
     /**
-     * Determine whether the cxt can create users.
+     * Determine whether the user can create users.
      *
      * @param  \App\Model\User  $user
      * @return mixed
@@ -51,7 +51,7 @@ class AlsRptIbCxtPolicy
     public function create(User $user){}
 
     /**
-     * Determine whether the cxt can delete the cxt.
+     * Determine whether the user can delete the cxt.
      *
      * @param  \App\Model\User  $user
      * @param  \App\Model\AlsRptIbCxt  $cxt

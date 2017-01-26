@@ -46,6 +46,7 @@ require(app_path() . '/../routes/backend/AmtDiagGroup.php');
 require(app_path() . '/../routes/backend/AmtDiagStandard.php');
 require(app_path() . '/../routes/backend/Organization.php');
 require(app_path() . '/../routes/backend/RecommendCourse.php');
+require(app_path() . '/../routes/backend/WckUsageRecord.php');
 
 /*
 |--------------------------------------------------------------------------

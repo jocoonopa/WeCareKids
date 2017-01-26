@@ -18,7 +18,7 @@ class OrganizationPolicy
     }
 
     /**
-     * Determine whether the replica can view the replica.
+     * Determine whether the user can view the organization.
      *
      * @param  \App\Model\User  $user
      * @param  \App\Model\Organization  $organization
@@ -30,7 +30,7 @@ class OrganizationPolicy
     }
 
     /**
-     * Determine whether the replica can update the replica.
+     * Determine whether the user can update the organization.
      *
      * @param  \App\Model\User  $user
      * @param  \App\Model\Organization  $organization
@@ -42,7 +42,7 @@ class OrganizationPolicy
     }
 
     /**
-     * Determine whether the replica can create users.
+     * Determine whether the user can create users.
      *
      * @param  \App\Model\User  $user
      * @return mixed
@@ -53,7 +53,7 @@ class OrganizationPolicy
     }
 
     /**
-     * Determine whether the replica can delete the replica.
+     * Determine whether the user can delete the organization.
      *
      * @param  \App\Model\User  $user
      * @param  \App\Model\Organization  $organization

@@ -30,6 +30,7 @@ class AmtReplicaController extends Controller
 
         $this->middleware('can:view,amt_replica')->only('show', 'edit');
         $this->middleware('can:update,amt_replica')->only('edit', 'update');
+        $this->middleware('can:create,' . \App\Model\AmtReplica::class)->only('create', 'store');
         $this->middleware('can:delete,amt_replica')->only('destroy');
     }
     

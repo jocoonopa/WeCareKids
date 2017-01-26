@@ -8,6 +8,13 @@
 
             <h3>
                 <strong>交易明细</strong>
+
+                <small>
+                    <a href="/backend/organization/{{$organization->id}}/wck_usage_record/create" class="btn btn-sm btn-default pull-right">
+                        <i class="fa fa-plus-circle"></i>
+                        新增交易
+                    </a>    
+                </small>   
                 
                 <small>
                     <a href="/backend/organization" class="btn btn-sm btn-info pull-right">
