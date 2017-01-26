@@ -19,6 +19,22 @@
                 新增
             </a>
 
+            <div class="row">
+                <div class="col-md-9 col-sm-12">
+                    <form action="/backend/child" method="get">
+                        <div class="input-group">
+                            <input type="text" name="name" class="form-control" value="{{old('name')}}">
+                            <span class="input-group-btn">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </span>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-md-3 col-sm-0"></div>
+            </div>        
+
             <table class="table table-striped">
                 <thead>
                     <tr>

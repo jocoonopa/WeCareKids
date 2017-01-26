@@ -4,6 +4,8 @@
 <div class="right_col" role="main">
     <div class="row">
         <div class="col-md-12 col-sm-12 col-xs-12"">
+            @include('component/flash')
+            
             <h1>
                 <small>新增使用者</small>
 

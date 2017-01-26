@@ -11,6 +11,7 @@ use App\Model\AmtDiagGroup;
 use App\Model\AmtReplica;
 use App\Model\AmtReplicaDiag;
 use App\Model\AmtReplicaDiagGroup;
+use App\Model\AmtReplicaLog;
 use App\Model\Child;
 use App\Utility\Controllers\AmtReplicaTrait;
 use Auth;
@@ -129,32 +130,32 @@ class AmtReplicaController extends Controller
         */
         DB::beginTransaction();
 
-        /**
-         * 使用者
-         * 
-         * @var \App\Model\User
-         */
-        $user = Auth::user();
-
-        /**
-         * 欲绑定之 Child 
-         * 
-         * @var \App\Model\Child
-         */
-        $child = Child::find($request->get('child_id'));
-
-        /**
-         * 欲用来复制的评测模板
-         * 
-         * @var \App\Model\Amt
-         */
-        $amt = Amt::find($request->get('amt_id', Amt::DEFAULT_AMT_ID));
-
-        if (is_null($child) || is_null($amt)) {
-            abort(Response::HTTP_NOT_FOUND, '受测者或评测模板为空!');
-        }
-
         try {
+            /**
+             * 使用者
+             * 
+             * @var \App\Model\User
+             */
+            $user = Auth::user();
+
+            /**
+             * 欲绑定之 Child 
+             * 
+             * @var \App\Model\Child
+             */
+            $child = Child::find($request->get('child_id'));
+
+            /**
+             * 欲用来复制的评测模板
+             * 
+             * @var \App\Model\Amt
+             */
+            $amt = Amt::find($request->get('amt_id', Amt::DEFAULT_AMT_ID));
+
+            if (is_null($child) || is_null($amt)) {
+                abort(Response::HTTP_NOT_FOUND, '受测者或评测模板为空!');
+            }
+            
             return $this->replicaFlow($user, $child, $amt);
         } catch (\Exception $e) {
             DB::rollback();
@@ -187,41 +188,26 @@ class AmtReplicaController extends Controller
         |
         | 4. switchCell or switchGroup or finish
         */
-        
-        /**
-         * 取得目前应该给使用者作答之 group
-         * 
-         * @var \App\Model\AmtReplicaDiagGroup
-         */
-        $currentReplicaGroup = $replica->currentGroup;
-
         DB::beginTransaction();
 
-        /**
-         * The passed diagId:value pairs
-         * 
-         * @var array
-         */
-        $pairs = array_filter($request->all(), function ($k) {
-            return is_numeric($k);
-        }, ARRAY_FILTER_USE_KEY);
-
         try {   
+            /**
+             * The passed diagId:value pairs
+             * 
+             * @var array
+             */
+            $pairs = array_filter($request->all(), function ($k) {
+                return is_numeric($k);
+            }, ARRAY_FILTER_USE_KEY);
+
             // 更新 AmtReplicaDiag 之值
             foreach ($pairs as $diagId => $value) {
                 AmtReplicaDiag::find($diagId)->update(['value' => json_encode($value)]);
             }  
 
             // 将动作添加至 AmtReplicaLog
-            $replica->log->add([
-                'd' => array_keys($pairs), 
-                'l' => $request->get('level'), 
-                's' => $currentReplicaGroup->status,
-                'g' => $currentReplicaGroup->id,
-                'dir' => $currentReplicaGroup->dir,
-                'cc' => $currentReplicaGroup->currentCell->id,
-                'rc' => is_null($currentReplicaGroup->resultCell) ? NULL : $currentReplicaGroup->resultCell->id
-            ])->save();
+            $appendLog = AmtReplicaLog::genAppendLog($pairs, $request->get('level'), $replica->currentGroup);
+            $replica->log->add($appendLog)->save();
 
             /**
              * 是否有成功切换 Cell 或是 Group, 如果没有表示该 AmtReplica 已经作答完毕,

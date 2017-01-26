@@ -28,11 +28,19 @@ class ChildController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $childs = Child::findChildByOrganizationWithRelated(Auth::user())->latest()->paginate(env('PERPAGE_COUNT', 50));
+        $query = Child::findChildByOrganizationWithRelated(Auth::user());
+
+        $name = trim($request->get('name'));
+        if (!empty($name)) {
+            $query->where('name', 'like', "%{$name}%");
+        }
+
+        $childs = $query->latest()->paginate(env('PERPAGE_COUNT', 50));
 
         $amts = Amt::all();
 
@@ -63,6 +71,7 @@ class ChildController extends Controller
     public function store(StoreChild $storeChild)
     {
         DB::beginTransaction();
+
         try  {
             $user = Auth::user();
 
@@ -80,6 +89,7 @@ class ChildController extends Controller
         }
 
         DB::beginTransaction();
+        
         try {
             return $this->replicaFlow($user, $child, Amt::find(Amt::DEFAULT_AMT_ID));
         } catch (\Exception $e) {
