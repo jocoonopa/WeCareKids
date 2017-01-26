@@ -14,7 +14,7 @@ class AlsRptIbCxtController extends Controller
     {
         parent::__construct();
 
-        $this->middleware('can:view,als_rpt_ib_cxt')->only('show');
+        $this->middleware('can:view,cxt')->only('show');
     }
 
     /**

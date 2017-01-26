@@ -47,34 +47,4 @@ class AmtDiagGroupController extends Controller
 
         return redirect("/backend/amt/{$amt->id}")->with('success', "<strong class=\"label label-info\">[{$group->category->content }]: {$group->content}</strong>   修改完成!");
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create(){}
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request){}
-
-    /**
-     * Display the specified resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Amt $amt, AmtDiagGroup $group){}
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Amt $amt, AmtDiagGroup $group){}
 }

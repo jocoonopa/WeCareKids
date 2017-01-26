@@ -21,7 +21,6 @@ class AlsRptIbChannelController extends Controller
     public function index()
     {
         $channels = AlsRptIbChannel::simplePaginate(10);
-        //$channels = AlsRptIbChannel::findByCreater(Auth::user())->get();
 
         return view('backend/als_rpt_ib_channel/index', compact('channels'));
     }
@@ -110,8 +109,6 @@ class AlsRptIbChannelController extends Controller
      */
     public function update(Request $request, AlsRptIbChannel $channel)
     {
-        //$this->authorize('update', $channel);
-
         try {
             $channel->update([
                 'is_open' => (bool) $request->get('is_open', false),
