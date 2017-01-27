@@ -25,7 +25,7 @@ class OrganizationControllerTest extends \Tests\TestCase
     {
         $this->actingAs($this->user)
             ->visit('/backend/organization/1')
-            ->see('交易明細')
+            ->see('交易明细')
         ;
     }
 }

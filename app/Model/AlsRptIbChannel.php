@@ -78,6 +78,11 @@ class AlsRptIbChannel extends Model
         ;
     }
 
+    public function isOpen()
+    {
+        return $this->is_open;
+    }
+
     public function isPublicKeyValid($publicKey)
     {
         return $this->public_key === $publicKey;
@@ -86,6 +91,11 @@ class AlsRptIbChannel extends Model
     public function cxts()
     {
         return $this->hasMany('App\Model\AlsRptIbCxt', 'channel_id', 'id');
+    }
+
+    public function creater()
+    {
+        return $this->belongsTo('App\Model\User', 'creater_id', 'id');
     }
 
     public function findNotSubmitCxtsByPrivateKey($publicKey)

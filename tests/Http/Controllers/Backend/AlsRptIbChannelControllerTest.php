@@ -16,9 +16,8 @@ class AlsRptIbChannelControllerTest extends \Tests\TestCase
 
         $this->actingAs($user)
             ->visit('/')
-            ->see('Welcome,')
+            ->see('WELCOME 優尼爾')
             ->see($user->name)
-            ->see('问卷列表')
         ;
     }
 }

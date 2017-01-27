@@ -5,7 +5,7 @@
     <div class="page-title">
         <div class="title_left">
             <h3>
-                受测者列表
+                孩童列表
             </h3>
         </div>
         <div class="clearfix"></div>
@@ -14,9 +14,26 @@
     <div class="row">
         <div class="col-md-12 col-sm-12 col-xs-12"">
             @include('component/flash')
-            <a href="/backend/child/create" class="btn btn-default pull-right">
+            <a href="/backend/child/create" class="btn btn-success btn-sm pull-right">
+                <i class="fa fa-plus"></i>
                 新增
             </a>
+
+            <div class="row">
+                <div class="col-md-9 col-sm-12">
+                    <form action="/backend/child" method="get">
+                        <div class="input-group">
+                            <input type="text" name="name" class="form-control" value="{{Request::get('name')}}">
+                            <span class="input-group-btn">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </span>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-md-3 col-sm-0"></div>
+            </div>        
 
             <table class="table table-striped">
                 <thead>
@@ -24,48 +41,23 @@
                         <th>id</th>
                         <th>姓名</th>
                         <th>生日</th>
+                        <th>年龄</th>
+                        <th>家长姓名</th>
+                        <th>电话</th>
+                        <th>Email</th>
+                        <th>问卷</th>
+                        <th>评测</th>
+                        <th>教师</th>               
+                        <th>问卷&评测</th>           
                         <th>操作</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($childs as $child)
-                    <tr>
-                        <td>
-                            <a href="/backend/child/{{$child->id}}" target="_blank">
-                                {{$child->id}}
-                            </a>                            
-                        </td>
-                        <td>{{$child->name}}</td>
-                        <td>{{$child->birthday->format('Y-m-d')}}</td>
-                        <td>
-                            <a href="{{"/backend/child/{$child->id}/edit"}}" class="pull-right btn btn-default">
-                                <i class="fa fa-edit"></i>
-                                编辑
-                            </a>
-                            @if (0 === $child->replicas()->where('status', \App\Model\AmtReplica::STATUS_ORIGIN_ID)->count())
-                            <form class="form-inline" action="/backend/amt_replica" method="post">
-                                {{ csrf_field() }}
-                                <input type="hidden" name="child_id" value="{{$child->id}}" />
-                                
-                                <div class="form-group">
-                                    <select class="form-control" name="amt_id" id="amt_id">
-                                        @foreach ($amts as $amt)
-                                            <option value="{{$amt->id}}">v{{$amt->id}}</option>
-                                        @endforeach
-                                    </select>       
-                                    <button type="submit" class="btn btn-default">新增评测</button>                                                             
-                                </div>                                
-                            </form>
-                            @else
-                            <a href="/backend/amt_replica/{{$child->replicas()->where('status', \App\Model\AmtReplica::STATUS_ORIGIN_ID)->first()->id}}/edit" class="pull-right btn btn-info" target="_blank">继续评测</a>
-                            @endif
-                        </td>
-                    </tr>
-                    @endforeach
+                    @each('backend/child/index/component/_tr', $childs, 'child')                    
                 </tbody>
             </table>
 
-            {{ $childs->links() }}
+            {{ $childs->appends(['name' => Request::get('name')])->links() }}
         </div>
     </div>
 </div>

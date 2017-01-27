@@ -17,6 +17,16 @@ class AmtAlsRpt extends Model
         'owner_id'
     ];
 
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = [
+        'created_at',
+        'updated_at'
+    ];
+
     public function owner()
     {
         return $this->belongsTo('App\Model\User', 'owner_id', 'id');

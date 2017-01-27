@@ -16,7 +16,27 @@
             </div>
             <div class="profile_info">
                 <span>Welcome,</span>
-                <h2>{{ Auth::user()->name }}</h2>
+                @if (Auth::user()->isOwner() && !Auth::user()->isSuper())
+                    <div>
+                        <span class="label label-success white">剩餘: {{ array_get($counts, 'points') . '點' }}</span>
+                    </div>
+                @endif    
+                <h2>
+                    {{ Auth::user()->name }}
+
+                    @if(Auth::user()->isSuper())
+                        <span class="label label-default white">系統管理員</span>
+                    @elseif(Auth::user()->isOwner())
+                        <span class="label label-warning white">擁有者</span>
+                    @else
+                        <span class="label label-danger white">教師</span>
+                    @endif
+                </h2>        
+            </div>
+            <div>
+                <span class="label label-default">問卷: {{ array_get($counts, 'rpt') . '筆' }}</span>
+                <span class="label label-default">評測: {{ array_get($counts, 'cxt') . '筆' }}</span>   
+                <span class="label label-default">孩童: {{ array_get($counts, 'child'). '位' }}</span> 
             </div>
         </div>
         <!-- /menu profile quick info -->
@@ -28,27 +48,14 @@
             <div class="menu_section">
                 <h3>&nbsp;</h3>
                 <ul class="nav side-menu">
+                    @foreach ($menus as $menu)
                     <li>
-                        <a href="/backend/analysis/r/i/cxt"><i class="fa fa-file-text-o"></i>问卷</a>
-                    </li>
-                    <li>
-                        <a href="/backend/child"><i class="fa fa-file-text-o"></i>开始测评</a>
-                    </li>
-                    <li>
-                        <a href="/backend/amt_replica"><i class="fa fa-file-text-o"></i>测评状态</a>
-                    </li>
-                    <li>
-                        <a href="/backend/amt_als_rpt"><i class="fa fa-file-text-o"></i>报告</a>
-                    </li> 
-                    @if (Auth::user()->is_super)      
-                    <li>
-                        <a href="/backend/amt">
-                            <i class="fa fa-file-text-o"></i>赶工爆肝区
+                        <a href="{{ $menu['url'] }}">
+                        <i class="fa fa-chevron-right"></i>
+                        {{ $menu['name'] }}
                         </a>
                     </li>
-                    <li><a href="/backend/recommend_course"><i class="fa fa-file-text-o"></i>推薦課程</a></li>
-                    <li><a href="/backend/organization/1"><i class="fa fa-file-text-o"></i>组织</a></li>
-                    @endif
+                    @endforeach
                 </ul>
             </div>
         </div>

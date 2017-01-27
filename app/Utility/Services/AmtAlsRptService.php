@@ -15,8 +15,6 @@ class AmtAlsRptService
 {
     use CourseTrait, SuggestionTrait;
 
-    const COST_PER_REPLICA = -120;
-
     protected $defaultLevel;
 
     /**
@@ -156,24 +154,23 @@ class AmtAlsRptService
 
     /**
      * 產生使用紀錄
+     *
+     * WckUsageRecordObserver::created() 會被觸發, 更新 Organization 的剩餘金額
      * 
-     * @param  AmtAlsRpt $report
+     * @param  \App\Model\AmtAlsRpt $report
      * @return \App\Model\WckUsageRecord       
      */
     public function genUsageRecord(AmtAlsRpt $report)
     {
         $usage = new WckUsageRecord;
-        $usage->user()->associate($report->owner);
+        $usage->user()->associate($report->replica->creater);
         $usage->child()->associate($report->replica->child);
-        $usage->organization()->associate($report->owner->organization);
+        $usage->organization()->associate($report->replica->creater->organization);
         $usage->usage()->associate($report);
-        $usage->variety = static::COST_PER_REPLICA;
-        $usage->current_remain = $report->owner->organization->points + static::COST_PER_REPLICA;
+        $usage->variety = WckUsageRecord::COST_PER_REPLICA;
+        $usage->brief = "<a href=\"/backend/amt_als_rpt/{$report->id}\" target=\"_blank\">產生{$report->replica->child->name}的評測報告</a>";
 
         $usage->save();
-
-        $report->owner->organization->points = $report->owner->organization->points + static::COST_PER_REPLICA;
-        $report->owner->organization->save();
 
         return $usage;
     }

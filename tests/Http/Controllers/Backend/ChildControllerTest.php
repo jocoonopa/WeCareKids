@@ -25,7 +25,7 @@ class ChildControllerTest extends \Tests\TestCase
     {
         $this->actingAs($this->user)
             ->visit('/backend/child')
-            ->see('受测者列表')
+            ->see('孩童列表')
         ;
     }
 }

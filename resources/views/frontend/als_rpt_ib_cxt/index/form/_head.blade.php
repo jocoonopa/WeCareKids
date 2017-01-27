@@ -1,5 +1,5 @@
 <h1>
-    <strong>優尼爾</strong>
+    <strong>优尼尔</strong>
     <small>测评日期: {{ Carbon\Carbon::now()->format('Y-m-d') }}  </small>
     <small>
         <span class="label {{\Wck::getCxtStatusLabel($cxt)}}">
@@ -14,7 +14,7 @@
 </div>
 
 <div class="form-group">
-    <label for="child_sex">性别</label>
+    <label for="child_sex">子女性别</label>
     <select id="child_sex" name="child_sex" class="form-control">
         @foreach (['女', '男'] as $key => $sex)
             <option value="{{ $key }}" @if($key == $cxt->child_sex) selected @endif>{{$sex}}</option>
@@ -23,28 +23,37 @@
 </div>
 
 <div class="form-group">
-    <label for="child_birthday">出生年月日<small id="child_age" class="lead text-center"></small></label>
+    <label for="child_birthday">子女出生年月日<small id="child_age" class="lead text-center"></small></label>
     {!! Form::date('child_birthday', $cxt->child_birthday, ['id' => 'child_birthday', 'class' => 'form-control']) !!}
 </div>
 
 <div class="form-group">
-    <label>截止時間</label>
+    <label>截止时间</label>
     <input type="text" class="form-control" readonly value="{{ $cxt->channel->close_at->format('Y-m-d') }}">
 </div>
 
 <div class="form-group">
-    <label for="school_name">就读学校</label>
+    <label for="school_name">子女就读学校</label>
     <input type="text" name="school_name" class="form-control" id="school_name" value="{{ $cxt->school_name }}">
 </div>
 
 <div class="form-group">
-    <label for="grade_num">就读年级</label>
+    <label for="grade_num">子女就读年级</label>
     <input type="number" name="grade_num" class="form-control" id="grade_num" value="{{ $cxt->grade_num }}">
 </div>
 
 <div class="form-group">
     <label for="filler_name">填写人姓名</label>
     <input type="text" name="filler_name" class="form-control" id="filler_name" value="{{ $cxt->filler_name }}">
+</div>
+
+<div class="form-group">
+    <label for="filler_sex">填写人性别</label>
+    <select id="filler_sex" name="filler_sex" class="form-control">
+        @foreach (['女', '男'] as $key => $sex)
+            <option value="{{ $key }}" @if($key == $cxt->filler_sex) selected @endif>{{$sex}}</option>
+        @endforeach
+    </select>   
 </div>
 
 <div class="form-group">
@@ -68,8 +77,8 @@
 <table class="table table-bordered table-hover">
     <thead>
         <tr>
-            <th class="text-center"><strong>項目</strong></th>
-            <th class="text-center"><strong>說明</strong></th>
+            <th class="text-center"><strong>项目</strong></th>
+            <th class="text-center"><strong>说明</strong></th>
         </tr>
     </thead>
     <tbody>

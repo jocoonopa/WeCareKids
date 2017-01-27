@@ -37,6 +37,7 @@ class RouteServiceProvider extends ServiceProvider
         Route::model('organization', 'App\Model\Organization');
         Route::model('child', 'App\Model\Child');
         Route::model('user', 'App\Model\User');
+        Route::model('wck_usage_record', 'App\Model\WckUsageRecord');
     }
 
     /**

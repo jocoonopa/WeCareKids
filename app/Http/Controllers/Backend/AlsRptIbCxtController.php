@@ -10,6 +10,27 @@ use Auth;
 
 class AlsRptIbCxtController extends Controller
 {
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->middleware('can:view,cxt')->only('show');
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        $channel = Auth::user()->getOwnChannel();
+
+        $cxts = $channel->cxts()->latest()->paginate(env('PERPAGE_COUNT', 50));
+    
+        return view('backend/als_rpt_ib_cxt/index', compact('cxts', 'channel'));
+    }
+
     /**
      * Display the specified resource.
      *
@@ -22,57 +43,4 @@ class AlsRptIbCxtController extends Controller
         
         return view('frontend/als_rpt_ib_cxt/index', compact('cxt', 'privateKey'));
     }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        $cxts = AlsRptIbCxt::latest()->paginate(env('PERPAGE_COUNT', 50));
-        $channel = Auth::user()->getOwnChannel();
-
-        return view('backend/als_rpt_ib_cxt/index', compact('cxts', 'channel'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create(){}
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request){}
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id){}
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id){}
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id){}
 }

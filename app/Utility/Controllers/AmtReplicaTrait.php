@@ -2,7 +2,6 @@
 
 namespace App\Utility\Controllers;
 
-use AmtAlsRpt as AAR;
 use AmtReplica as ARA;
 use App\Model\AmtReplica;
 use DB;
@@ -10,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 Trait AmtReplicaTrait 
 {
-    protected function replicaFlow($user, $child, $amt)
+    protected function replicaFlow(\App\Model\User $user, \App\Model\Child $child, \App\Model\Amt $amt)
     {
         ARA::gen($user, $child, $amt);
 
@@ -40,9 +39,6 @@ Trait AmtReplicaTrait
         if ($replicaCurrentDiagGroup->currentCell->isEmpty()) {
             $isNotFinish = $this->switchGroup($replica);
         }
-        
-        // 扣钱
-        AAR::genUsageRecord(ARA::getReport());
         
         DB::commit();
 

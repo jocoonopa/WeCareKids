@@ -8,7 +8,6 @@ use App\Utility\Controllers\AmtAlsRptFetch;
 use DB;
 use Illuminate\Http\Request;
 use Log;
-use Symfony\Component\HttpFoundation\Response;
 
 class AmtAlsRptController extends Controller
 {
@@ -16,7 +15,10 @@ class AmtAlsRptController extends Controller
     
     public function __construct()
     {
+        parent::__construct();
+        
         $this->middleware('view.rpt')->only('show');
+        $this->middleware('can:view,amt_als_rpt')->only('show');
     }
 
     /**
@@ -48,7 +50,9 @@ class AmtAlsRptController extends Controller
             |--------------------------------------------------------------------------
             |
             */
-            $this->bindCxtIfNeedTo($report, $request);
+            if ($this->bindCxtIfNeedTo($report)) {
+                $request->session()->flash('success', "已成功绑定连结{$report->replica->child->name}的剖析量表!");
+            }
 
             $data = $this->fetchData($report);
 

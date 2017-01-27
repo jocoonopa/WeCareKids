@@ -77,26 +77,4 @@ class AmtDiagStandardController extends Controller
 
         return redirect("/backend/amt_diag_group/{$group->id}/amt_diag_standard")->with('success', "{$standard->id}新增完成");
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

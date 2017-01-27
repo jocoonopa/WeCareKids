@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-cn">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <!-- Meta, title, CSS, favicons, etc. -->
@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <title>Gentellela Alela! | </title>
+    <title>{{ trans('wck.company_name') }}</title>
     
     <!-- Bootstrap -->
     <link href="{{ asset("css/bootstrap.min.css") }}" rel="stylesheet">
@@ -34,7 +34,7 @@
                     </div>
                 @endif
                 <form class="form-horizontal" role="form" method="POST" action="{{ url('/password/reset') }}">
-                    <h1>Reset Password</h1>
+                    <h1>重设密码</h1>
                     {{ csrf_field() }}
                     
                     <input type="hidden" name="token" value="{{ $token }}">
@@ -72,22 +72,17 @@
                     <div class="form-group">
                         <div class="col-md-12">
                             <button type="submit" class="btn btn-default btn-block">
-                                Reset my password
+                                重设密码
                             </button>
                         </div>
                     </div>
                     <div class="separator">
-                        <p class="change_link">You have a password ?
-                            <a href="{{ url('/login') }}" class="to_register"> Log in </a>
+                        <p class="change_link">若还记得密码，请按下方登入
+                            <a href="{{ url('/login') }}" class="to_register"> 登入 </a>
                         </p>
                         
                         <div class="clearfix"></div>
-                        <br />
-                        
-                        <div>
-                            <h1><i class="fa fa-paw"></i> Gentelella Alela!</h1>
-                            <p>©2016 All Rights Reserved. Gentelella Alela! is a Bootstrap 3 template. Privacy and Terms</p>
-                        </div>
+                        <br />                        
                     </div>
                 </form>
             </section>

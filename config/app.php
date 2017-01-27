@@ -158,6 +158,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\BroadcastServiceProvider::class,
         App\Providers\WckServiceProvider::class,
+        App\Providers\ComposerServiceProvider::class,
 	
 		Thomaswelton\LaravelGravatar\LaravelGravatarServiceProvider::class,
         SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
@@ -214,16 +215,17 @@ return [
 
 		'Gravatar' => Thomaswelton\LaravelGravatar\Facades\Gravatar::class,
         'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
+        
         'AmtAlsRpt' => App\Utility\Facades\AmtAlsRpt::class,
         'Wck' => App\Utility\Facades\Wck::class,
         'AmtCell' => App\Utility\Facades\AmtCell::class,
         'AmtReplica' => App\Utility\Facades\AmtReplica::class,
+        'Slack' => App\Utility\Facades\Slack::class,
 
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
-        'PDF' => Barryvdh\DomPDF\Facade::class,
-        'Slack' => App\Utility\Facades\Slack::class
+        'PDF' => Barryvdh\DomPDF\Facade::class,        
     ],
 
 ];

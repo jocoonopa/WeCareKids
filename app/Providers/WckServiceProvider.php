@@ -2,11 +2,6 @@
 
 namespace App\Providers;
 
-use App\Utility\Services\AmtAlsRptService;
-use App\Utility\Services\AmtCellService;
-use App\Utility\Services\AmtReplicaService;
-use App\Utility\Services\SlackService;
-use App\Utility\Services\WckService;
 use Illuminate\Support\ServiceProvider;
 
 class WckServiceProvider extends ServiceProvider
@@ -26,29 +21,35 @@ class WckServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind('amt_als_rpt', function ($app) {
-            return new AmtAlsRptService($app->make('App\Utility\Repositorys\AmtAlsRptRepo'));
+            return new \App\Utility\Services\AmtAlsRptService($app->make('App\Utility\Repositorys\AmtAlsRptRepo'));
         });
 
         $this->app->singleton('wck', function () {
-            return new WckService;
+            return new \App\Utility\Services\WckService;
         });
 
         $this->app->singleton('amt_cell', function () {
-            return new AmtCellService;
+            return new \App\Utility\Services\AmtCellService;
         });
 
         $this->app->singleton('amt_replica', function () {
-            return new AmtReplicaService;
+            return new \App\Utility\Services\AmtReplicaService;
         });
 
         $this->app->singleton('slack', function ($app) {
-            return new SlackService(new \Maknz\Slack\Client(env('SLACK_WEB_HOOK'), $this->getSlackSettings()));
+            return new \App\Utility\Services\SlackService(new \Maknz\Slack\Client(env('SLACK_WEB_HOOK'), $this->getSlackSettings()));
         });
     }
 
     public function provides()
     {
-        return ['amt_als_rpt', 'wck', 'amt_cell', 'amt_replica', 'slack'];
+        return [
+            'amt_als_rpt', 
+            'wck', 
+            'amt_cell', 
+            'amt_replica', 
+            'slack'
+        ];
     }
 
     protected function getSlackSettings()

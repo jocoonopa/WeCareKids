@@ -2,14 +2,11 @@
 
 namespace App\Utility\Services;
 
-use App\Model\Amt;
 use App\Model\AmtAlsRpt;
 use App\Model\AmtReplica;
 use App\Model\AmtReplicaDiag;
 use App\Model\AmtReplicaDiagGroup;
 use App\Model\AmtReplicaLog;
-use App\Model\Child;
-use App\Model\User;
 
 class AmtReplicaService
 {
@@ -17,7 +14,7 @@ class AmtReplicaService
     protected $entryCell;
     protected $report;
 
-    public function gen(User $user, Child $child, Amt $amt)
+    public function gen(\App\Model\User $user, \App\Model\Child $child, \App\Model\Amt $amt)
     {
         /**
          * 新增之 AmtReplica 实体, 即问卷
