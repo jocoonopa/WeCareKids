@@ -38,6 +38,7 @@ require(app_path() . '/../routes/backend/AlsRptIbChannel.php');
 require(app_path() . '/../routes/backend/AlsRptIbCxt.php');
 require(app_path() . '/../routes/backend/AmtReplica.php');
 require(app_path() . '/../routes/backend/Child.php');
+require(app_path() . '/../routes/backend/User.php');
 require(app_path() . '/../routes/backend/AmtAlsRpt.php');
 require(app_path() . '/../routes/backend/AmtDiag.php');
 require(app_path() . '/../routes/backend/AmtCell.php');
@@ -45,6 +46,7 @@ require(app_path() . '/../routes/backend/AmtDiagGroup.php');
 require(app_path() . '/../routes/backend/AmtDiagStandard.php');
 require(app_path() . '/../routes/backend/Organization.php');
 require(app_path() . '/../routes/backend/RecommendCourse.php');
+require(app_path() . '/../routes/backend/WckUsageRecord.php');
 
 /*
 |--------------------------------------------------------------------------

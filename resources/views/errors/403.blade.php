@@ -25,9 +25,9 @@
             <div class="col-middle">
                 <div class="text-center text-center">
                     <h1 class="error-number">403</h1>
+                    @include('component/flash')
                     <h2>非常抱歉，您没有访问此页面的权限</h2>
-                    <p>{{ $exception->getMessage() }}
-                    </p>
+                    <p>{{ $exception->getMessage() }}</p>
                 </div>
             </div>
         </div>

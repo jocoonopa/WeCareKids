@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class WckUsageRecord extends Model
 {
+    const COST_PER_REPLICA = -120;
+
     /**
      * The attributes that aren't mass assignable.
      *

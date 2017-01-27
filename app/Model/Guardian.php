@@ -11,9 +11,25 @@ class Guardian extends Model
      *
      * @var array
      */
-    protected $dates = [
-        'child_birthday',
+    protected $dates = [    
         'created_at',
         'updated_at'
     ];
+
+    protected $guarded = [];
+
+    public function childs()
+    {
+        return $this->belongsToMany('App\Model\Child');
+    }
+
+    public static function _create($name, $mobile, $sex, $email)
+    {
+       return Guardian::create([
+            'name' => $name,
+            'mobile' => $mobile,
+            'sex' => $sex,
+            'email' => $email
+        ]);
+    }
 }

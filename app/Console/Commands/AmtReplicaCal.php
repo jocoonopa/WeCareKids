@@ -14,7 +14,7 @@ class AmtReplicaCal extends BaseCommand
      *
      * @var string
      */
-    protected $signature = 'replica:cal {amtReplicaId} {--i=}';
+    protected $signature = 'replica:cal {--i|interactive=null} {amtReplicaId}';
 
     /**
      * The console command description.
@@ -53,7 +53,7 @@ class AmtReplicaCal extends BaseCommand
 
         // 找出所有 replica groups, 分別進行處理
         $replica->groups->each(function ($group) use ($replica) {
-            if (!is_null($this->option('i'))) {
+            if (!is_null($this->option('interactive'))) {
                 if (false === $this->confirm('Continue ?', 'y')) {
                     return false;
                 }

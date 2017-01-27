@@ -11,18 +11,6 @@ class AlsRptIbChannelPolicy
     use HandlesAuthorization;
 
     /**
-     * Determine whether the user can view the alsRptIbChannel.
-     *
-     * @param  \App\User  $user
-     * @param  \App\AlsRptIbChannel  $alsRptIbChannel
-     * @return mixed
-     */
-    public function view(User $user, AlsRptIbChannel $alsRptIbChannel)
-    {
-        return $user->id === $alsRptIbChannel->creater_id;
-    }
-
-    /**
      * Determine whether the user can update the alsRptIbChannel.
      *
      * @param  \App\User  $user
@@ -31,23 +19,6 @@ class AlsRptIbChannelPolicy
      */
     public function update(User $user, AlsRptIbChannel $alsRptIbChannel)
     {
-        return $user->id === $alsRptIbChannel->creater_id;
+        return $user->isSuper() || $user->isOwner() || $user->id === $alsRptIbChannel->creater_id;
     }
-
-    /**
-     * Determine whether the user can create alsRptIbChannels.
-     *
-     * @param  \App\User  $user
-     * @return mixed
-     */
-    public function create(User $user){}
-
-    /**
-     * Determine whether the user can delete the alsRptIbChannel.
-     *
-     * @param  \App\User  $user
-     * @param  \App\AlsRptIbChannel  $alsRptIbChannel
-     * @return mixed
-     */
-    public function delete(User $user, AlsRptIbChannel $alsRptIbChannel){}
 }

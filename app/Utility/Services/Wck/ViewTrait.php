@@ -14,7 +14,7 @@ trait ViewTrait
                 return 'label-warning';
             break;
             case AlsRptIbCxt::STATUS_HAS_SUBMIT:
-                return 'label-primary';
+                return 'label-info';
             break;
             case AlsRptIbCxt::STATUS_HAS_MAP:
                 return 'label-success';

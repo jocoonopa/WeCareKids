@@ -16,15 +16,18 @@
                 <div class="panel-body">
                     <h4 class="text-center">
                         <a href="/backend/amt_replica" class="pull-left btn btn-default btn-sm">
+                            <i class="fa fa-list"></i>
                             列表
                         </a>
                         受测者预设等级:{{ $replica->child->getLevel($replica->created_at) }}
                         @if (\App\Model\AmtReplica::STATUS_DONE_ID !== $replica->status)
                         <a href="/backend/amt_replica/{{$replica->id}}/edit" class="pull-right btn btn-default btn-sm">
+                            <i class="fa fa-edit"></i>
                             作答
                         </a>
                         @else
                         <a href="/backend/amt_als_rpt/{{$replica->report->id}}" class="pull-right btn btn-primary btn-sm">
+                            <i class="fa fa-file-text"></i>
                             报表
                         </a>
                         @endif

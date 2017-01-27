@@ -57,6 +57,11 @@ class Child extends Model
         return $this->belongsToMany('App\Model\User');
     }
 
+    public function guardians()
+    {
+        return $this->belongsToMany('App\Model\Guardian');
+    }
+
     public function replicas()
     {
         return $this->hasMany('App\Model\AmtReplica', 'child_id', 'id');
@@ -70,6 +75,14 @@ class Child extends Model
     public function organization()
     {
         return $this->belongsTo('App\Model\Organization');
+    }
+
+    public function scopeFindChildByOrganizationWithRelated($query, \App\Model\User $user)
+    {
+        return $user->isSuper() ? 
+            $query->with('guardians', 'users', 'replicas', 'replicas.report.cxt') :
+            $query->with('guardians', 'users', 'replicas', 'replicas.report.cxt')->where('organization_id', $user->organization->id)
+        ;
     }
 
     /**

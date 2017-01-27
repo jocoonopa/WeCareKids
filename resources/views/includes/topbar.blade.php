@@ -14,7 +14,39 @@
                         <span class=" fa fa-angle-down"></span>
                     </a>
                     <ul class="dropdown-menu dropdown-usermenu pull-right">
-                        <li><a href="{{ url('/auth/logout') }}"><i class="fa fa-sign-out pull-right"></i>登出</a></li>
+                        <li>
+                            <a href="{{ url('/auth/logout') }}" onclick="return confirm('確定要登出嗎?')">
+                                <i class="fa fa-sign-out pull-right"></i>登出
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="{{Auth::user()->getChannelUrl()}}"> 
+                                <i class="fa fa-qrcode pull-right"></i>
+                                QRCode
+                            </a>
+                        </li>
+
+                        <li>
+                            <form action="/backend/analysis/r/i/channel/{{Auth::user()->channels()->first()->id}}/is_open" method="post" style="padding-left: 10px;">   
+                                {{ csrf_field() }}
+                                <input type="hidden" name="_method" value="put" />
+                                
+                                <div class="form-group">
+                                     @if(Auth::user()->channels()->first()->isOpen())
+                                        <button type="submit" class="btn btn-default btn-xs">
+                                            關閉頻道 
+                                        </button>
+                                        <span class="label label-success pull-right">目前開啟</span>
+                                    @else
+                                        <button type="submit" class="btn btn-default btn-xs">
+                                            打開頻道 
+                                        </button>
+                                        <span class="label label-warning pull-right">目前關閉</span>
+                                    @endif
+                                </div>                               
+                            </form>
+                        </li>    
                     </ul>
                 </li>
             </ul>
