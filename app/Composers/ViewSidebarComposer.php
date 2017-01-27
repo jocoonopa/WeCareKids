@@ -51,12 +51,12 @@ class ViewSidebarComposer
                 'url' => '/backend/user',
             ],
             [
-                'name' => '測評內容管理',
-                'url' => '/backend/amt_replica',
-            ],
-            [
                 'name' => '孩童管理',
                 'url' => '/backend/child',
+            ],
+            [
+                'name' => '測評管理',
+                'url' => '/backend/amt_replica',
             ],
         ];
     }
@@ -65,16 +65,16 @@ class ViewSidebarComposer
     {
         return [
             [
-                'name' => '問卷',
-                'url' => '/backend/analysis/r/i/cxt',
-            ],
+                'name' => '孩童管理',
+                'url' => '/backend/child',
+            ],            
             [
-                'name' => '測評',
+                'name' => '測評管理',
                 'url' => '/backend/amt_replica',
             ],
             [
-                'name' => '孩童管理',
-                'url' => '/backend/child',
+                'name' => '問卷管理',
+                'url' => '/backend/analysis/r/i/cxt',
             ],
         ];
     }

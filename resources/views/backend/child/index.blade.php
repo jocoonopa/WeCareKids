@@ -12,7 +12,7 @@
     </div>
 
     <div class="row">
-        <div class="col-md-12 col-sm-12 col-xs-12"">
+        <div class="col-md-12 col-sm-12 col-xs-12">
             @include('component/flash')
             <a href="/backend/child/create" class="btn btn-success btn-sm pull-right">
                 <i class="fa fa-plus"></i>
@@ -34,28 +34,31 @@
                 </div>
                 <div class="col-md-3 col-sm-0"></div>
             </div>        
-
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>id</th>
-                        <th>姓名</th>
-                        <th>生日</th>
-                        <th>年龄</th>
-                        <th>家长姓名</th>
-                        <th>电话</th>
-                        <th>Email</th>
-                        <th>问卷</th>
-                        <th>评测</th>
-                        <th>教师</th>               
-                        <th>问卷&评测</th>           
-                        <th>操作</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @each('backend/child/index/component/_tr', $childs, 'child')                    
-                </tbody>
-            </table>
+            
+            <div class="table-responsive">
+                <table id="childs-table" class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>id</th>
+                            <th>姓名</th>
+                            <th>生日</th>
+                            <th>年龄</th>
+                            <th>家长姓名</th>
+                            <th>电话</th>
+                            <th>Email</th>
+                            <th>问卷</th>
+                            <th>评测</th>
+                            <th>教师</th>               
+                            <th>问卷&评测</th>           
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @each('backend/child/index/component/_tr', $childs, 'child')                    
+                    </tbody>
+                </table>
+            </div>
+            
 
             {{ $childs->appends(['name' => Request::get('name')])->links() }}
         </div>
