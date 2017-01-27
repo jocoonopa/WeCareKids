@@ -5,13 +5,18 @@
     <div class="page-title">
         <div class="title_left">
             <h3>
+                <i class="fa fa-th-list"></i>
                 问卷列表
+
                 <small>
-                    <a class="btn btn-info" href="{{ "/backend/analysis/r/i/channel/{$channel->id}/qrcode" }}">
+                    <a class="btn btn-info btn-sm" href="{{ "/backend/analysis/r/i/channel/{$channel->id}/qrcode" }}">
                         <i class="fa fa-eye"></i>
-                        QRcode
+                        QRCode
                     </a>
-                    <a href="{{URL::to("/analysis/r/i/channel/{$channel->id}/cxt") . "?public_key={$channel->public_key}"}}">连结</a>
+                    <a class="btn btn-default btn-sm" href="{{URL::to("/analysis/r/i/channel/{$channel->id}/cxt") . "?public_key={$channel->public_key}"}}">
+                        <i class="fa fa-external-link"></i>
+                        問卷连结
+                        </a>
                 </small>
             </h3>
         </div>

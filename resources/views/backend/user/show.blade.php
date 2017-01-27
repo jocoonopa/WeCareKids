@@ -68,7 +68,7 @@
                 </tbody>                
             </table>
             
-            @if (Auth::user()->isSuper())
+            @can('update', $user)
                 <a href="/backend/user/{{$user->id}}/edit" class="btn btn-primary btn-sm">
                     <i class="fa fa-edit"></i>
                     编辑
@@ -78,7 +78,7 @@
                     <i class="fa fa-edit"></i>
                     修改密码
                 </a>
-            @endif
+            @endcan
         </div>
     </div>
 </div>

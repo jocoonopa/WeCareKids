@@ -5,6 +5,7 @@
     <div class="page-title">
         <div class="title_left">
             <h3>
+                <i class="fa fa-th-list"></i>
                 孩童列表
             </h3>
         </div>

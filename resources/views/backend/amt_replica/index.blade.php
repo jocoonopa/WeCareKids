@@ -4,7 +4,10 @@
 <div class="right_col" role="main">
     <div class="page-title">
         <div class="title_left">
-            <h3>评测列表</h3>
+            <h3>
+                <i class="fa fa-th-list"></i>
+                评测列表
+            </h3>
         </div>
         <div class="clearfix"></div>
     </div>
