@@ -2,20 +2,23 @@
 
 @section('main_container')
 <div class="right_col" role="main">
-    <div class="page-title">
-        <div>
+    <div class="row">
+        <div class="col-md-12">
             <h3>
+                <i class="fa fa-th-list"></i>
                 教师列表   
                 
-                <small>
-                    <a href="/backend/user/create" class="btn btn-success btn-sm pull-right">
-                        <i class="fa fa-plus-circle"></i>
-                        新增
-                    </a>  
-                </small>                                           
+                @can('create', \App\Model\User::class)
+                    <small>
+                        <a href="/backend/user/create" class="btn btn-success btn-sm pull-right">
+                            <i class="fa fa-plus-circle"></i>
+                            新增
+                        </a>  
+                    </small> 
+                @endcan                                          
             </h3>
+            <div class="clearfix"></div>
         </div>
-        <div class="clearfix"></div>
     </div>
 
     <div class="row">

@@ -47,7 +47,7 @@ class ViewSidebarComposer
                 'url' => '/backend/organization',
             ],
             [
-                'name' => '教師控管',
+                'name' => '教师控管',
                 'url' => '/backend/user',
             ],
             [
@@ -55,7 +55,7 @@ class ViewSidebarComposer
                 'url' => '/backend/child',
             ],
             [
-                'name' => '測評管理',
+                'name' => '测评管理',
                 'url' => '/backend/amt_replica',
             ],
         ];
@@ -65,15 +65,19 @@ class ViewSidebarComposer
     {
         return [
             [
+                'name' => '教师列表',
+                'url' => '/backend/user',
+            ],
+            [
                 'name' => '孩童管理',
                 'url' => '/backend/child',
             ],            
             [
-                'name' => '測評管理',
+                'name' => '测评管理',
                 'url' => '/backend/amt_replica',
             ],
             [
-                'name' => '問卷管理',
+                'name' => '问卷管理',
                 'url' => '/backend/analysis/r/i/cxt',
             ],
         ];
@@ -83,11 +87,11 @@ class ViewSidebarComposer
     {
         return [
             [
-                'name' => '金流顯示',
+                'name' => '金流显示',
                 'url' => "/backend/organization/{$this->user->organization->id}",
             ],
             [
-                'name' => '教師控管',
+                'name' => '教师控管',
                 'url' => '/backend/user',
             ],
             [

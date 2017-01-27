@@ -149,13 +149,23 @@ class AmtReplica extends Model
     }
 
     /**
+     * 此 AmtReplica 是否為初始狀態(尚未完成)
+     * 
+     * @return boolean
+     */
+    public function isOrigin()
+    {
+        return AmtReplica::STATUS_ORIGIN_ID === $this->status;
+    }
+
+    /**
      * 此 AmtReplica 是否已經完成
      * 
      * @return boolean
      */
     public function isDone()
     {
-        return $this->status === AmtReplica::STATUS_DONE_ID;
+        return AmtReplica::STATUS_DONE_ID === $this->status;
     }
 
     /**
