@@ -7,18 +7,18 @@
             @include('component/flash')
             
             <h1>
-                <small>新增使用者</small>
+                <small>新增教师</small>
 
                 <small>
-                    <a href="/backend/user" class="btn btn-primary btn-sm pull-right">
-                        <i class="fa fa-arrow-circle-left"></i>
-                        回到列表
+                    <a href="/backend/user" class="btn btn-info btn-sm pull-right">
+                        <i class="fa fa-list"></i>
+                        教师列表
                     </a>
                 </small>
             </h1>
             
             {!! Form::model($user, ['url' => "/backend/user/{$user->id}", 'method' => 'post']) !!}
-                @include('backend.user.component._form', compact('user'))
+                @include('backend/user/component/_form', compact('user'))
             {!! Form::close() !!}
         </div>
     </div>

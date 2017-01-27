@@ -16,7 +16,7 @@
             </div>
             <div class="profile_info">
                 <span>Welcome,</span>
-                @if (Auth::user()->isOwner())
+                @if (Auth::user()->isOwner() && !Auth::user()->isSuper())
                     <div>
                         <span class="label label-success white">剩餘: {{ array_get($counts, 'points') . '點' }}</span>
                     </div>

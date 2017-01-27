@@ -26,6 +26,27 @@
                                 QRCode
                             </a>
                         </li>
+
+                        <li>
+                            <form action="/backend/analysis/r/i/channel/{{Auth::user()->channels()->first()->id}}/is_open" method="post" style="padding-left: 10px;">   
+                                {{ csrf_field() }}
+                                <input type="hidden" name="_method" value="put" />
+                                
+                                <div class="form-group">
+                                     @if(Auth::user()->channels()->first()->isOpen())
+                                        <button type="submit" class="btn btn-default btn-xs">
+                                            關閉頻道 
+                                        </button>
+                                        <span class="label label-success pull-right">目前開啟</span>
+                                    @else
+                                        <button type="submit" class="btn btn-default btn-xs">
+                                            打開頻道 
+                                        </button>
+                                        <span class="label label-warning pull-right">目前關閉</span>
+                                    @endif
+                                </div>                               
+                            </form>
+                        </li>    
                     </ul>
                 </li>
             </ul>

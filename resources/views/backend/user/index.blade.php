@@ -3,12 +3,12 @@
 @section('main_container')
 <div class="right_col" role="main">
     <div class="page-title">
-        <div class="title_left">
+        <div>
             <h3>
-                使用者列表   
+                教师列表   
                 
                 <small>
-                    <a href="/backend/user/create" class="btn btn-default">
+                    <a href="/backend/user/create" class="btn btn-success btn-sm pull-right">
                         <i class="fa fa-plus-circle"></i>
                         新增
                     </a>  
@@ -21,8 +21,6 @@
     <div class="row">
         <div class="col-md-12 col-sm-12 col-xs-12"">
             @include('component/flash')
-            
-            
                 
             @if (Auth::user()->isSuper())
             <form action="/backend/user" class="form-horizontal form-label-left" method="get">
@@ -52,18 +50,22 @@
                         <th>姓名</th>
                         <th>组织</th>
                         <th>Email</th>
-                        <th>電話</th>
-                        <th>問卷</th>
-                        <th>評測</th>
+                        <th>电话</th>
+                        <th>问卷</th>
+                        <th>评测</th>
                         <th>状态</th>
-                        <th>操作</th>
+                        @if (Auth::user()->isSuper())
+                            <th>操作</th>
+                        @endif
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($users as $user)
                     <tr>                        
                         <td>
-                            {{$user->name}}
+                            <a href="/backend/user/{{$user->id}}">
+                                {{$user->name}}
+                            </a>
 
                             <span class="badge">
                                 {{$user->getJobTitle()}}
@@ -87,10 +89,10 @@
                             </a>
                         </td>
                         <td>
-                            {{ "{$user->cxts->count()}筆" }}
+                            {{ "{$user->cxts->count()}笔" }}
                         </td>
                         <td>
-                            {{ "{$user->replicas->count()}筆" }}
+                            {{ "{$user->replicas->count()}笔" }}
                         </td>             
                         <td>
                             @if($user->trashed())
@@ -103,41 +105,42 @@
                                 </span>
                             @endif
                         </td>
+                        @if (Auth::user()->isSuper())
                         <td>
+                             <a href="/backend/user/{{$user->id}}/reset" class="btn btn-default btn-sm pull-left">
+                                <i class="fa fa-edit"></i>
+                                修改密码
+                            </a>
+
+                            <a href="/backend/user/{{$user->id}}/edit" class="btn btn-primary btn-sm pull-left">
+                                <i class="fa fa-edit"></i>
+                                编辑
+                            </a>       
                             @if ($user->trashed())                                
                                 {!! Form::model($user, [
                                     'url' => "/backend/user/{$user->id}/restore", 
                                     'method' => 'put', 
-                                    'class' => 'pull-right',
+                                    'class' => 'pull-left',
                                 ]) !!}
-                                    <button type="submit" class="btn btn-default btn-sm pull-right" onclick="return confirm('確定啟用{{$user->name}}嗎?')">
+                                    <button type="submit" class="btn btn-default btn-sm pull-left" onclick="return confirm('确定启用{{$user->name}}吗?')">
                                         <i class="fa fa-check-circle-o"></i>
-                                        啟用
+                                        启用
                                     </button>
                                 {!! Form::close() !!}
                             @else
                                 {!! Form::model($user, [
                                     'url' => "/backend/user/{$user->id}",
                                     'method' => 'delete',
-                                    'class' => 'pull-right',
+                                    'class' => 'pull-left',
                                 ]) !!}
-                                    <button type="submit" class="btn btn-danger btn-sm pull-right" onclick="return confirm('確定停用{{$user->name}}嗎?')">
+                                    <button type="submit" class="btn btn-danger btn-sm pull-left" onclick="return confirm('确定停用{{$user->name}}吗?')">
                                         <i class="fa fa-remove"></i>
                                         停用
                                     </button>
                                 {!! Form::close() !!}
-                            @endif 
-
-                            <a href="/backend/user/{{$user->id}}/reset" class="btn btn-default btn-sm pull-right">
-                                <i class="fa fa-edit"></i>
-                                修改密码
-                            </a>
-
-                            <a href="/backend/user/{{$user->id}}/edit" class="btn btn-primary btn-sm pull-right">
-                                <i class="fa fa-edit"></i>
-                                编辑
-                            </a>                              
+                            @endif                                                 
                         </td>
+                        @endif
                     </tr>
                     @endforeach
                 </tbody>

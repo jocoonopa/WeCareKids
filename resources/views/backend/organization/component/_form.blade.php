@@ -35,11 +35,13 @@
 </div>
 
 <div class="form-group">
-    <button class="btn btn-primary">
+    <button class="btn btn-success btn-sm">
+        <i class="fa fa-check-circle-o"></i>
         确认
     </button>
 
-    <a href="/backend/organization" class="btn btn-default">
+    <a href="/backend/organization" class="btn btn-default btn-sm">
+        <i class="fa fa-circle-o"></i>
         取消
     </a>
 </div>

@@ -14,7 +14,7 @@
     <div class="row">
         <div class="col-md-12 col-sm-12 col-xs-12"">
             @include('component/flash')
-            <a href="/backend/child/create" class="btn btn-default pull-right">
+            <a href="/backend/child/create" class="btn btn-success btn-sm pull-right">
                 <i class="fa fa-plus"></i>
                 新增
             </a>

@@ -15,9 +15,10 @@ class UserController extends Controller
     {
         parent::__construct();
 
-        $this->middleware('can: view,user')->only('show');
-        $this->middleware('can: update,user')->only('edit', 'update');
-        $this->middleware('can: create,' . \App\Model\User::class)->only('create', 'store');
+        $this->middleware('can:view,user')->only('show');
+        $this->middleware('can:update,user')->only('edit', 'update', 'reset', 'showResetForm');
+        $this->middleware('can:create,' . \App\Model\User::class)->only('create', 'store');
+        $this->middleware('can:delete,user')->only('destroy');
     }
 
     /**
@@ -40,6 +41,17 @@ class UserController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     *
+     * @param  App\Model\User $user
+     * @return \Illuminate\Http\Response
+     */
+    public function show(User $user)
+    {
+        return view('backend/user/show', compact('user'));
+    }
+
+    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
@@ -51,6 +63,7 @@ class UserController extends Controller
         $user->name = old('name');
         $user->email = old('email');
         $user->phone = old('phone');
+        $user->organization_id = old('organization_id');
 
         return view('backend/user/create', compact('user'));
     }
@@ -70,17 +83,6 @@ class UserController extends Controller
         } catch (\Exception $e) {
             return redirect('/backend/user/create')->with('error', "{$e->getMessage()}")->withInput();
         }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  App\Model\User $user
-     * @return \Illuminate\Http\Response
-     */
-    public function show(User $user)
-    {
-        return view('backend/user/show', compact('user'));
     }
 
     /**
@@ -104,11 +106,11 @@ class UserController extends Controller
     public function update(UserRequest $request, User $user)
     {
         try {             
-            $user->update([
-                'name' => $request->get('name'),
-                'email' => $request->get('email'),
-                'phone' => $request->get('phone'),
-            ]);
+            $user->name = $request->get('name');
+            $user->email = $request->get('email');
+            $user->phone = $request->get('phone');
+            $user->organization()->associate(Organization::find($request->get('organization_id')));
+            $user->save();
 
             return redirect("/backend/user")->with('success', "{$user->name} 更新完成!");  
         } catch (\Exception $e) {

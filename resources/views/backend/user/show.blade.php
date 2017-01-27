@@ -8,9 +8,9 @@
                 {{$user->name}}
 
                 <small>
-                    <a href="/backend/user" class="btn btn-primary btn-sm pull-right">
-                        <i class="fa fa-arrow-circle-left"></i>
-                        回到列表
+                    <a href="/backend/user" class="btn btn-info btn-sm pull-right">
+                        <i class="fa fa-list"></i>
+                        教师列表
                     </a>
                 </small>
             </h1>
@@ -38,7 +38,7 @@
                         </td>  
                     </tr>
                     <tr>
-                        <td>電話:</td>
+                        <td>电话:</td>
                         <td>
                             <a href="tel: {{$user->phone}}">
                                 {{$user->phone}}
@@ -67,16 +67,18 @@
                     </tr>    
                 </tbody>                
             </table>
+            
+            @if (Auth::user()->isSuper())
+                <a href="/backend/user/{{$user->id}}/edit" class="btn btn-primary btn-sm">
+                    <i class="fa fa-edit"></i>
+                    编辑
+                </a>
 
-            <a href="/backend/user/{{$user->id}}/edit" class="btn btn-primary btm-lg">
-                <i class="fa fa-edit"></i>
-                编辑
-            </a>
-
-            <a href="/backend/user/{{$user->id}}/reset" class="btn btn-default">
-                <i class="fa fa-edit"></i>
-                修改密码
-            </a>
+                <a href="/backend/user/{{$user->id}}/reset" class="btn btn-default btn-sm">
+                    <i class="fa fa-edit"></i>
+                    修改密码
+                </a>
+            @endif
         </div>
     </div>
 </div>

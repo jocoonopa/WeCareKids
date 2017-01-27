@@ -2,7 +2,7 @@
 
 namespace App\Policies;
 
-use App\User;
+use App\Model\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class UserPolicy
@@ -37,7 +37,7 @@ class UserPolicy
      */
     public function update(User $user, User $srcUser)
     {
-        return $this->isAllowedToEdit($user, $srcUser);
+        return $user->isSuper();
     }
 
     /**
@@ -66,10 +66,5 @@ class UserPolicy
     protected function isAllowedToView(User $user, User $srcUser)
     {
         return $user->organization->id === $srcUser->organization->id;
-    }
-
-    protected function isAllowedToEdit(User $user, User $srcUser)
-    {
-        return $user->isSuper();
     }
 }

@@ -43,13 +43,18 @@ class User extends Authenticatable
 
     public static function _create(array $data)
     {
-        return User::create([
+        $user = User::create([
             'name' => trim(array_get($data, 'name')),
             'email' => trim(array_get($data, 'email')),
             'phone' => trim(array_get($data, 'phone')),
-            'password' => bcrypt(str_random(10)),
+            'password' => bcrypt(\Carbon\Carbon::now()->format('Ymd')),
             'remember_token' => str_random(10)
         ]);
+
+        $user->organization()->associate(Organization::find(array_get($data, 'organization_id')));
+        $user->save();
+
+        return $user;
     }
 
     /**

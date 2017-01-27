@@ -30,7 +30,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @each('backend.organization.index._tr', $organizations, 'organization')              
+                    @each('backend/organization/index/_tr', $organizations, 'organization')              
                 </tbody>
             </table>
         </div>

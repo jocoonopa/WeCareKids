@@ -8,20 +8,22 @@
 
             <h3>
                 <strong>交易明细</strong>
-
-                <small>
-                    <a href="/backend/organization/{{$organization->id}}/wck_usage_record/create" class="btn btn-sm btn-default pull-right">
-                        <i class="fa fa-plus-circle"></i>
-                        新增交易
-                    </a>    
-                </small>   
                 
-                <small>
-                    <a href="/backend/organization" class="btn btn-sm btn-info pull-right">
-                        <i class="fa fa-arrow-circle-left"></i>
-                        加盟商列表
-                    </a>    
-                </small>                
+                @if (Auth::user()->isSuper())
+                    <small>
+                        <a href="/backend/organization/{{$organization->id}}/wck_usage_record/create" class="btn btn-sm btn-success pull-right">
+                            <i class="fa fa-plus-circle"></i>
+                            新增交易
+                        </a>    
+                    </small>   
+                    
+                    <small>
+                        <a href="/backend/organization" class="btn btn-sm btn-info pull-right">
+                            <i class="fa fa-list"></i>
+                            加盟商列表
+                        </a>    
+                    </small>  
+                @endif              
             </h3>
 
             <div class="well">
@@ -34,6 +36,16 @@
                     <li>
                         <label>帐号:</label>
                         {{ $organization->account }}
+                    </li>
+
+                    <li>
+                        <label>地区:</label>
+                        {{ $organization->region }}
+                    </li>
+
+                    <li>
+                        <label>剩余点数:</label>
+                        {{$organization->points}}
                     </li>
                     
                     <li>

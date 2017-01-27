@@ -17,7 +17,7 @@ class AlsRptIbChannelController extends Controller
     {
         parent::__construct();
 
-        $this->middleware('can:edit,channel')->only('toggleOpen');
+        $this->middleware('can:update,als_rpt_ib_channel')->only('toggleOpen');
     }
 
     /**
@@ -142,6 +142,6 @@ class AlsRptIbChannelController extends Controller
 
         $message = $channel->is_open ? '頻道已開啟' : '頻道已關閉';
 
-        return redirect("/backend/user/{$channel->creater->id}/edit")->with('success', $message); 
+        return redirect()->back(); 
     }
 }

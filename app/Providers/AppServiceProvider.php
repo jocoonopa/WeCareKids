@@ -15,6 +15,7 @@ class AppServiceProvider extends ServiceProvider
     {
         \App\Model\AmtAlsRpt::observe(\App\Observers\AmtAlsRptObserver::class);
         \App\Model\Organization::observe(\App\Observers\OrganizationObserver::class);
+        \App\Model\User::observe(\App\Observers\UserObserver::class);
         \App\Model\WckUsageRecord::observe(\App\Observers\WckUsageRecordObserver::class);
     }
 

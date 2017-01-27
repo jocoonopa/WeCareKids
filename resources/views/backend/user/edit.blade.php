@@ -9,9 +9,9 @@
                 <small>编辑</small>
 
                 <small>
-                    <a href="/backend/user" class="btn btn-primary btn-sm pull-right">
-                        <i class="fa fa-arrow-circle-left"></i>
-                        回到列表
+                    <a href="/backend/user" class="btn btn-info btn-sm pull-right">
+                        <i class="fa fa-list"></i>
+                        教师列表
                     </a>
                 </small>
             </h1>
@@ -21,17 +21,6 @@
             {!! Form::model($user, ['url' => "/backend/user/{$user->id}", 'method' => 'put']) !!}
                 @include('backend.user.component._form', compact('user'))
             {!! Form::close() !!}
-
-            <form action="/backend/analysis/r/i/channel/{{$user->channels()->first()->id}}/is_open" method="post" class="pull-right" style="margin-top: -48px;">   
-                {{ csrf_field() }}
-                <input type="hidden" name="_method" value="put" />
-
-                @if($user->channels()->first()->isOpen())
-                    <button type="submit" class="btn btn-success pull-right">關閉Channel</button>
-                @else
-                    <button type="submit" class="btn btn-danger pull-right">打開Channel</button>
-                @endif
-            </form>
         </div>
     </div>
 </div>

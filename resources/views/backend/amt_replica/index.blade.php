@@ -17,61 +17,13 @@
                 <thead>
                     <tr>
                         <th>状态</th>
-                        <th>版本</th>   
                         <th>受测者姓名</th>
                         <th>受测时间</th>
                         <th>操作</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($replicas as $replica)
-                    <tr>
-                        <td>
-                            <a href="/backend/amt_replica/{{$replica->id}}" target="_blank">{{$replica->id}}</a>
-
-                            @if ($replica->isDone())
-                                <span class="label label-success">完成</span>
-                            @else
-                                <span class="label label-default">未开始</span>
-                            @endif
-                        </td>
-                        <td>
-                            <span class="label label-info">V{{$replica->amt_id}}</span> 
-                        </td>
-                        <td>
-                            <a href="/backend/child/{{$replica->child->id}}">
-                                {{ $replica->child->name }}
-                            </a>                            
-                        </td>
-                        <td>
-                            {{ $replica->created_at->format('Y-m-d H:i:s') }}
-                        </td>
-                        <td>     
-                            <a href="/backend/amt_replica/{{$replica->id}}" class="btn btn-info btn-xs pull-left" target="_blank">
-                                <i class="fa fa-eye"></i>
-                                檢視
-                            </a>                
-
-                            @if (\App\Model\AmtReplica::STATUS_ORIGIN_ID === $replica->status)
-                                <a href="/backend/amt_replica/{{$replica->id}}/edit" class="btn btn-xs btn-primary pull-left">
-                                    <i class="fa fa-edit"></i>
-                                    繼續                                    
-                                </a>
-                            @endif
-
-                            <form action="/backend/amt_replica/{{$replica->id}}" class="pull-left" method="post" onsubmit="return confirm('确定删除吗?');">
-                                {{csrf_field()}}
-                                
-                                <input type="hidden" name="_method" value="delete">
-                                
-                                <button class="btn btn-danger btn-xs pull-left" >
-                                    <i class="fa fa-remove"></i>
-                                    删除
-                                </button>
-                            </form>                            
-                        </td>
-                    </tr>
-                    @endforeach
+                    @each('backend/amt_replica/index/_tr', $replicas, 'replica')
                 </tbody>
             </table>
 

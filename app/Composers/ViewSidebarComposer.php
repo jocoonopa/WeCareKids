@@ -47,6 +47,10 @@ class ViewSidebarComposer
                 'url' => '/backend/organization',
             ],
             [
+                'name' => '教師控管',
+                'url' => '/backend/user',
+            ],
+            [
                 'name' => '測評內容管理',
                 'url' => '/backend/amt_replica',
             ],

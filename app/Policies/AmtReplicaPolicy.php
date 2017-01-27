@@ -72,6 +72,12 @@ class AmtReplicaPolicy
      */
     public function delete(User $user, AmtReplica $replica)
     {
+        if (AmtReplica::STATUS_DONE_ID === $replica->status) {
+            Session::flash('error', '此评测已经为完成状态，不可删除!');
+
+            return false;
+        }
+
         return Organization::isSameOrganization($user, $replica->creater);
     }
 }
