@@ -19,54 +19,27 @@
     </div>
 
     <div class="row">
-        <div class="col-md-12 col-sm-12 col-xs-12"">            
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>流水号</th>
-                        <th>小孩姓名</th>
-                        <th>家长</th>
-                        <th>手机</th>
-                        <th>E-Mail</th>
-                        <th>建立时间</th>
-                        <th>最后更新时间</th>
-                        <th>状态</th>
-                        <th>动作</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($cxts as $cxt)
-                    <tr>
-                        <td>{{ $cxt->id }}</td>
-                        <td>{{ $cxt->child_name }}</td>
-                        <td>{{ $cxt->filler_name }}</td>
-                        <td>
-                            <a href="tel:{{ $cxt->phone }} " class="text-info">
-                                {{ $cxt->phone }}
-                            </a>
-                        </td>   
-                        <td>
-                            <a href="mailto: {{$cxt->email}}" class="text-info">
-                                {{$cxt->email}}
-                            </a>
-                        </td>
-                        <td>{{ $cxt->created_at }}</td>
-                        <td>{{ $cxt->updated_at }}</td>
-                        <td>
-                            <span class="label {{\Wck::getCxtStatusLabel($cxt)}}">
-                                {{ $cxt->getStatusDesc() }}
-                            </span>                            
-                        </td>
-                        <td>
-                            <a href="{{"/backend/analysis/r/i/cxt/{$cxt->id}"}}" class="btn btn-xs btn-primary" target="_blank">
-                                <i class="fa fa-edit"></i>
-                                编辑
-                            </a>
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
+        <div class="col-md-12 col-sm-12 col-xs-12"">        
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>流水号</th>
+                            <th>小孩姓名</th>
+                            <th>家长</th>
+                            <th>手机</th>
+                            <th>E-Mail</th>
+                            <th>建立时间</th>
+                            <th>最后更新时间</th>
+                            <th>状态</th>
+                            <th>动作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @each('backend/als_rpt_ib_cxt/index/_tr', $cxts, 'cxt')                        
+                    </tbody>
+                </table>
+            </div>                
 
             {{ $cxts->links() }}
         </div>
