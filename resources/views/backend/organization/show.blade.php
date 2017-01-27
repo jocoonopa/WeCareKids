@@ -7,23 +7,26 @@
             @include ('component/flash')
 
             <h3>
+                <i class="fa fa-list-alt"></i>
                 <strong>交易明细</strong>
                 
-                @if (Auth::user()->isSuper())
+                @can('create', \App\Model\Organization::class)
                     <small>
                         <a href="/backend/organization/{{$organization->id}}/wck_usage_record/create" class="btn btn-sm btn-success pull-right">
                             <i class="fa fa-plus-circle"></i>
                             新增交易
                         </a>    
                     </small>   
-                    
+                @endcan
+                
+                @can('list', \App\Model\Organization::class)
                     <small>
                         <a href="/backend/organization" class="btn btn-sm btn-info pull-right">
                             <i class="fa fa-list"></i>
                             加盟商列表
                         </a>    
                     </small>  
-                @endif              
+                @endcan            
             </h3>
 
             <div class="well">

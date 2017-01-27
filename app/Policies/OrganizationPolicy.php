@@ -12,6 +12,17 @@ class OrganizationPolicy
     use HandlesAuthorization;
 
     /**
+     * Determine whether the user can view the organizations.
+     *
+     * @param  \App\Model\User  $user
+     * @return mixed
+     */
+    public function list(User $user)
+    {
+        return $user->isSuper();
+    }
+
+    /**
      * Determine whether the user can view the organization.
      *
      * @param  \App\Model\User  $user
@@ -20,7 +31,13 @@ class OrganizationPolicy
      */
     public function view(User $user, Organization $organization)
     {
-        return $organization->isAllowedAccess($user);
+        if (!$organization->isAllowedAccess($user)) {
+            Session::flash('error', '您不是系統管理員或加盟商拥有人');
+
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -32,7 +49,7 @@ class OrganizationPolicy
      */
     public function update(User $user, Organization $organization)
     {
-        return $organization->isAllowedAccess($user);
+        return $user->isSuper();
     }
 
     /**
@@ -60,7 +77,7 @@ class OrganizationPolicy
         }
 
         if (0 < $organization->reports()->count()) {
-            Session::flash('error', "{$organization->name} 已經有問卷資料，不可刪除!");
+            Session::flash('error', "{$organization->name} 已经有问卷资料，不可删除!");
 
             return false;
         }
