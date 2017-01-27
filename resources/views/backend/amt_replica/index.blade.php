@@ -46,22 +46,29 @@
                         <td>
                             {{ $replica->created_at->format('Y-m-d H:i:s') }}
                         </td>
-                        <td>                            
-                            <form action="/backend/amt_replica/{{$replica->id}}" class="pull-right" method="post" onsubmit="return confirm('确定删除吗?');">
+                        <td>     
+                            <a href="/backend/amt_replica/{{$replica->id}}" class="btn btn-info btn-xs pull-left" target="_blank">
+                                <i class="fa fa-eye"></i>
+                                檢視
+                            </a>                
+
+                            @if (\App\Model\AmtReplica::STATUS_ORIGIN_ID === $replica->status)
+                                <a href="/backend/amt_replica/{{$replica->id}}/edit" class="btn btn-xs btn-primary pull-left">
+                                    <i class="fa fa-edit"></i>
+                                    繼續                                    
+                                </a>
+                            @endif
+
+                            <form action="/backend/amt_replica/{{$replica->id}}" class="pull-left" method="post" onsubmit="return confirm('确定删除吗?');">
                                 {{csrf_field()}}
                                 
                                 <input type="hidden" name="_method" value="delete">
                                 
-                                <button class="btn btn-danger btn-sm pull-right" >
+                                <button class="btn btn-danger btn-xs pull-left" >
                                     <i class="fa fa-remove"></i>
                                     删除
                                 </button>
-                            </form>
-
-                            <a href="/backend/amt_replica/{{$replica->id}}" class="btn btn-primary btn-sm pull-right" target="_blank">
-                                <i class="fa fa-eye"></i>
-                                前往
-                            </a>
+                            </form>                            
                         </td>
                     </tr>
                     @endforeach

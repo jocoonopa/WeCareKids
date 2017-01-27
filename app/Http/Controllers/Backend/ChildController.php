@@ -47,9 +47,15 @@ class ChildController extends Controller
         return view('backend/child/index', compact('childs', 'amts'));
     }
 
-    public function report(Child $child, AmtAlsReport $replica)
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Model\Child $child
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Child $child)
     {
-        return view('backend/child/report', compact('child', 'replica'));
+        return view('backend/child/show', compact('child'));
     }
 
     /**
@@ -99,17 +105,6 @@ class ChildController extends Controller
 
             return redirect('backend/child')->with('error', "{$e->getMessage()}");
         }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Model\Child $child
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Child $child)
-    {
-        return view('backend/child/show', compact('child'));
     }
 
     /**

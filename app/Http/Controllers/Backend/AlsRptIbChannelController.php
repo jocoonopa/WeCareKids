@@ -13,6 +13,13 @@ class AlsRptIbChannelController extends Controller
 {
     const QRCODE_DEFAULT_SIZE = 350;
 
+    function __construct()
+    {
+        parent::__construct();
+
+        $this->middleware('can:edit,channel')->only('toggleOpen');
+    }
+
     /**
      * 取得使用者建立的所有 channels
      *

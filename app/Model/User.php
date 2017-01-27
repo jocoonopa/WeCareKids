@@ -95,7 +95,7 @@ class User extends Authenticatable
 
     public function replicas()
     {
-        return $this->hasManyThrough('App\Model\AmtReplica', 'App\Model\Amt', 'creater_id', 'amt_id', 'id');
+        return $this->hasMany('App\Model\AmtReplica', 'creater_id', 'id');
     }
 
     public function getOwnChannel()

@@ -16,21 +16,21 @@
     <td>{{ \App\Model\Child::getYMAge($child->birthday) }}</td>
     
     {{--// 家长资讯 --}}
-    @include('backend.child.index.component._tdGuardian', compact('lastReplica', 'child'))                         
+    @include('backend/child/index/component/_tdGuardian', compact('lastReplica', 'child'))                         
     {{-- 家长资讯 //--}}
 
     {{-- 教师 --}}
     <td>
-        @include('backend.child.index.component._tdUser', compact('child'))
+        @include('backend/child/index/component/_tdUser', compact('child'))
     </td>
     
     {{-- 問卷&評測 --}}
     <td>
-        @include('backend.child.index.component._tdAmt', compact('lastReplica', 'child'))
+        @include('backend/child/index/component/_tdAmt', compact('lastReplica', 'child'))
     </td>
 
     {{-- 操作 --}}
     <td>
-        @include('backend.child.index.component._tdChild', compact('child'))                         
+        @include('backend/child/index/component/_tdChild', compact('child'))                         
     </td>
 </tr>

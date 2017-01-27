@@ -5,7 +5,7 @@
     <div class="page-title">
         <div class="title_left">
             <h3>
-                受测者列表
+                孩童列表
             </h3>
         </div>
         <div class="clearfix"></div>
@@ -48,12 +48,12 @@
                         <th>问卷</th>
                         <th>评测</th>
                         <th>教师</th>               
-                        <th>問卷&評測</th>           
+                        <th>问卷&评测</th>           
                         <th>操作</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @each('backend.child.index.component._tr', $childs, 'child')                    
+                    @each('backend/child/index/component/_tr', $childs, 'child')                    
                 </tbody>
             </table>
 

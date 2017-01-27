@@ -3,18 +3,25 @@
 @section('main_container')
 <div class="right_col" role="main">
     <div class="page-title">
-        <div class="title_left">
+        <div>
             <h3>
                 {{$child->name}}
 
-                <small class="pull-right">
-                    <form action="/backend/amt_replica" method="post">
-                        {{ csrf_field() }}
-                        <input type="hidden" name="child_id" value="{{$child->id}}" />
-                        <button type="submit" class="pull-right btn btn-default">新增评测</button>
-                    </form>
-                </small>
-            </h3>
+                <form action="/backend/amt_replica" class="pull-right" method="post">
+                    {{ csrf_field() }}
+                    <input type="hidden" name="child_id" value="{{$child->id}}" />
+                    <button type="submit" class="pull-right btn btn-success btn-sm">
+                        <i class="fa fa-plus"></i>
+                        新增评测
+                    </button>
+                </form>
+
+                <a href="/backend/child" class="btn btn-sm btn-default pull-right">
+                    <i class="fa fa-list"></i>
+
+                    孩童列表
+                </a>
+            </h3>            
         </div>
         <div class="clearfix"></div>
     </div>
@@ -23,12 +30,27 @@
         <div class="col-md-12 col-sm-12 col-xs-12"">
             @include('component/flash')
 
-            <ul>
-                <li>姓名: {{ $child->name }}</li>
-                <li>生日: {{ $child->birthday->format('Y-m-d') }}</li>
-                <li>学校: {{ $child->school_name }}</li>
-                <li>身份证: {{ $child->identifier }}</li>
-            </ul>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>id</th>
+                        <th>姓名</th>
+                        <th>生日</th>
+                        <th>年龄</th>
+                        <th>家长姓名</th>
+                        <th>电话</th>
+                        <th>Email</th>
+                        <th>问卷</th>
+                        <th>评测</th>
+                        <th>教师</th>               
+                        <th>问卷&评测</th>           
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @include('backend.child.index.component._tr', compact('child'))
+                </tbody>
+            </table>
         </div>
     </div>
 
@@ -37,18 +59,16 @@
             <h3>评测历史</h3><hr>
 
             <table class="table table-striped">
-                <tbody>
-                    @foreach ($child->replicas()->get() as $replica)
+                <thead>
                     <tr>
-                        <td>
-                            <a href="/backend/amt_replica/{{$replica->id}}" target="_blank">
-                                {{$replica->id}}
-                            </a>                            
-                        </td>
-                        <td>{{$replica->created_at->format('Y-m-d H:i:s')}}</td>
-                        <td>{{$replica->updated_at->format('Y-m-d H:i:s')}}</td>
+                        <th>報告</th>
+                        <th>評測</th>
+                        <th>問卷</th>
                     </tr>
-                    @endforeach
+                </thead>
+
+                <tbody>
+                    @each('backend/child/show/_history', $child->replicas, 'replica')                    
                 </tbody>
             </table> 
         </div>        

@@ -27,7 +27,7 @@ class AlsRptIbCxtPolicy
      */
     public function view(User $user, AlsRptIbCxt $cxt)
     {
-        return $cxt->status === AlsRptIbCxt::STATUS_HAS_MAP ? false : Organization::isSameOrganization($user, $cxt->report->owner);
+        return $this->isAllowToAccess($user, $cxt);
     }
 
     /**
@@ -39,7 +39,7 @@ class AlsRptIbCxtPolicy
      */
     public function update(User $user, AlsRptIbCxt $cxt)
     {
-        return $cxt->status === AlsRptIbCxt::STATUS_HAS_MAP ? false : Organization::isSameOrganization($user, $cxt->report->owner);
+        return $this->isAllowToAccess($user, $cxt);
     }
 
     /**
@@ -59,6 +59,18 @@ class AlsRptIbCxtPolicy
      */
     public function delete(User $user, AlsRptIbCxt $cxt)
     {
-        return $cxt->status === AlsRptIbCxt::STATUS_HAS_MAP ? false : Organization::isSameOrganization($user, $cxt->report->owner);
+        return $this->isAllowToAccess($user, $cxt);
+    }
+
+    /** 
+     * Is the passed user is allowed to access the cxt.
+     * 
+     * @param  \App\Model\User  $user
+     * @param  \App\Model\AlsRptIbCxt  $cxt
+     * @return boolean          
+     */
+    protected function isAllowToAccess(User $user, AlsRptIbCxt $cxt)
+    {
+        return $cxt->channel->id === $user->channels->first()->id;
     }
 }

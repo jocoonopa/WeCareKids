@@ -9,7 +9,13 @@
     @foreach ($gAttrs as $gAttr)
         <td>
             @foreach ($child->guardians as $guardian)
-                {{ $guardian->$gAttr }}
+                @if ('email' == $gAttr)
+                    <a href="mailto: {{ $guardian->$gAttr }}">
+                        {{ $guardian->$gAttr }}
+                    </a>
+                @else
+                    {{ $guardian->$gAttr }}
+                @endif
             @endforeach
         </td>
     @endforeach

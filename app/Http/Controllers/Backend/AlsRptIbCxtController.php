@@ -18,6 +18,20 @@ class AlsRptIbCxtController extends Controller
     }
 
     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        $channel = Auth::user()->getOwnChannel();
+
+        $cxts = $channel->cxts()->latest()->paginate(env('PERPAGE_COUNT', 50));
+    
+        return view('backend/als_rpt_ib_cxt/index', compact('cxts', 'channel'));
+    }
+
+    /**
      * Display the specified resource.
      *
      * @param  \App\Model\AlsRptIbCxt
@@ -28,18 +42,5 @@ class AlsRptIbCxtController extends Controller
         $privateKey = $cxt->private_key;
         
         return view('frontend/als_rpt_ib_cxt/index', compact('cxt', 'privateKey'));
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        $cxts = AlsRptIbCxt::where('status', '<>', AlsRptIbCxt::STATUS_HASNOT_SUBMIT)->latest()->paginate(env('PERPAGE_COUNT', 50));
-        $channel = Auth::user()->getOwnChannel();
-
-        return view('backend/als_rpt_ib_cxt/index', compact('cxts', 'channel'));
     }
 }

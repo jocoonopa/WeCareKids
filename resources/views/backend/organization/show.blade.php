@@ -19,7 +19,7 @@
                 <small>
                     <a href="/backend/organization" class="btn btn-sm btn-info pull-right">
                         <i class="fa fa-arrow-circle-left"></i>
-                        回到組織列表
+                        加盟商列表
                     </a>    
                 </small>                
             </h3>

@@ -43,14 +43,6 @@ class ChildPolicy
     }
 
     /**
-     * Determine whether the user can create users.
-     *
-     * @param  \App\Model\User  $user
-     * @return mixed
-     */
-    public function create(User $user){}
-
-    /**
      * Determine whether the user can delete the user.
      *
      * @param  \App\Model\User  $user

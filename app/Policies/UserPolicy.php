@@ -48,7 +48,7 @@ class UserPolicy
      */
     public function create(User $user)
     {
-        return $user->isOwner();
+        return $user->isSuper();
     }
 
     /**
@@ -60,7 +60,7 @@ class UserPolicy
      */
     public function delete(User $user, User $srcUser)
     {
-        return false;
+        return $user->isSuper();
     }
 
     protected function isAllowedToView(User $user, User $srcUser)
@@ -70,10 +70,6 @@ class UserPolicy
 
     protected function isAllowedToEdit(User $user, User $srcUser)
     {
-        if ($user->isOwner()) {
-            return $user->organization->id === $srcUser->organization->id;
-        }
-
-        return $user->id === $srcUser->id;
+        return $user->isSuper();
     }
 }

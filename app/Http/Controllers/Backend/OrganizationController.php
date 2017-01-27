@@ -128,10 +128,6 @@ class OrganizationController extends Controller
      */
     public function destroy(Organization $organization)
     {
-        if (0 < $organization->reports()->count()) {
-            return redirect('backend/organization')->with('error', "{$organization->name} 已經有問卷資料，不可刪除!"); 
-        }
-
         $organization->delete();
 
         return redirect('backend/organization')->with('success', "{$organization->name} 刪除完成!");

@@ -5,7 +5,9 @@ namespace App\Policies;
 use App\Model\AmtReplica;
 use App\Model\Organization;
 use App\Model\User;
+use App\Model\WckUsageRecord;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Session;
 
 class AmtReplicaPolicy
 {
@@ -45,14 +47,20 @@ class AmtReplicaPolicy
     /**
      * Determine whether the user can create users.
      *
-     * 組織剩餘點數不足 - WckUsageRecord::COST_PER_REPLICA 時不可新增評測
+     * 组织剩余点数不足 - WckUsageRecord::COST_PER_REPLICA 时不可新增评测
      * 
      * @param  \App\Model\User  $user
      * @return mixed
      */
     public function create(User $user)
     {
-        return -(WckUsageRecord::COST_PER_REPLICA) <= $user->organization->point;
+        if (-(WckUsageRecord::COST_PER_REPLICA) > $user->organization->points) {
+            Session::flash('error', '组织剩余金额不足，无法新增评测!');
+
+            return false;
+        }
+
+        return true;
     }
 
     /**

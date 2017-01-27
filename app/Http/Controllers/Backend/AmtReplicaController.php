@@ -42,7 +42,7 @@ class AmtReplicaController extends Controller
      */
     public function index()
     {
-        $replicas = AmtReplica::latest()->paginate(env('PERPAGE_COUNT', 50));
+        $replicas = Auth::user()->replicas()->latest()->paginate(env('PERPAGE_COUNT', 50));
 
         return view('backend/amt_replica/index', compact('replicas'));
     }

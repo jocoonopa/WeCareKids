@@ -5,17 +5,11 @@ namespace App\Policies;
 use App\Model\Organization;
 use App\Model\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Session;
 
 class OrganizationPolicy
 {
     use HandlesAuthorization;
-
-    public function before($user, $ability)
-    {
-        if ($user->isSuper()) {
-            return true;
-        }
-    }
 
     /**
      * Determine whether the user can view the organization.
@@ -61,6 +55,16 @@ class OrganizationPolicy
      */
     public function delete(User $user, Organization $organization)
     {
-        return false;
+        if (!$user->isSuper()) {
+            return false;
+        }
+
+        if (0 < $organization->reports()->count()) {
+            Session::flash('error', "{$organization->name} 已經有問卷資料，不可刪除!");
+
+            return false;
+        }
+
+        return true;
     }
 }

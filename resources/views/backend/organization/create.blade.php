@@ -7,7 +7,7 @@
             @include('component/flash')
             
             <h3>
-                <strong>新增組織</strong>
+                <strong>新增加盟商</strong>
             </h3>
         </div>
 
