@@ -59,7 +59,7 @@ class Child extends Model
 
     public function guardians()
     {
-        return $this->belongsToMany('App\Model\Guardian');
+        return $this->belongsToMany('App\Model\Guardian')->withPivot('relation');
     }
 
     public function replicas()
@@ -98,7 +98,7 @@ class Child extends Model
 
     public function getSex()
     {
-        return 0 === (int) $this->sex ? '妹妹' : '弟弟';
+        return 0 === (int) $this->sex ? '女' : '男';
     }
 
     public function getAge()

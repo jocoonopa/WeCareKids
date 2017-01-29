@@ -20,7 +20,8 @@ class Kernel extends ConsoleKernel
         Commands\CellSeed::class,
         Commands\SortoutChannel::class,
         Commands\AmtReplicaCal::class,
-        Commands\AmtReplicaDiagGroupCal::class
+        Commands\AmtReplicaDiagGroupCal::class,
+        Commands\MapCxtChildandParent::class,
         // Commands\Inspire::class,
     ];
 

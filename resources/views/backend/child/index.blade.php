@@ -44,6 +44,7 @@
                             <th>姓名</th>
                             <th>生日</th>
                             <th>年龄</th>
+                            <th>性别</th>
                             <th>家长姓名</th>
                             <th>电话</th>
                             <th>Email</th>
