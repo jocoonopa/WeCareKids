@@ -135,27 +135,9 @@ trait AmtAlsRptFetch
         /**
          * 透過電話號碼對應到的家長
          * 
-         * @var \App\Model\Guardian | NULL
+         * @var \App\Model\Guardian
          */
-        $guardian = Guardian::where('mobile', trim($cxt->phone))->first();                
-
-        // Guardian 新增和更新欄位補上
-        if (is_null($guardian)) {
-            $guardian = Guardian::_create($cxt->filler_name, $cxt->phone, $cxt->filler_sex, $cxt->email);
-        } else {
-            $guardian->update([
-                'name' => $cxt->filler_name,
-                'mobile' => $cxt->phone,
-                'sex' => $cxt->filler_sex,                        
-                'email' => $cxt->email
-            ]);
-        }
-
-        // 關聯家長和小朋友
-        $guardian->childs()->syncWithoutDetaching([$child->id]);
-
-        // 更新家長和小朋友 pivot 的 relation 欄位
-        $guardian->childs()->updateExistingPivot($child->id, ['relation' => $cxt->relation]);
+        $guardian = AAR::procGuardian($cxt, $child);
 
         // ~5
         $child->guardians()->syncWithoutDetaching([$guardian->id]);
