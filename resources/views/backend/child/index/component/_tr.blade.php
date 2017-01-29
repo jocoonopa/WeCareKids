@@ -8,15 +8,21 @@
             {{$child->id}}
         </a>                            
     </td>
+
     {{-- name --}}
     <td>{{ $child->name }}</td>
+
     {{-- birthday --}}
     <td>{{ $child->birthday->format('Y-m-d') }}</td>
+
+    {{--  sex --}}
+    <td>{{ $child->getSex() }}</td>
+
     {{-- age --}}
     <td>{{ \App\Model\Child::getYMAge($child->birthday) }}</td>
     
     {{--// 家长资讯 --}}
-    @include('backend/child/index/component/_tdGuardian', compact('lastReplica', 'child'))                         
+    @include('backend/child/index/component/_tdGuardian', compact('lastReplica', 'child'))                      
     {{-- 家长资讯 //--}}
 
     {{-- 教师 --}}

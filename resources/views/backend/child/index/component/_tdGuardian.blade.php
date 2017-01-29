@@ -13,6 +13,10 @@
                     <a href="mailto: {{ $guardian->$gAttr }}">
                         {{ $guardian->$gAttr }}
                     </a>
+                @elseif ('name' == $gAttr)
+                    {{ $guardian->$gAttr }} 
+                    
+                    <span class="label label-info">{{ $guardian->pivot->relation }}</span>
                 @else
                     {{ $guardian->$gAttr }}
                 @endif

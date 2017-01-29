@@ -91,7 +91,9 @@ class SortoutChannel extends Command
     protected function removeUselessChannels(User $user)
     {
         $count = $user->channels->count();
+        
         $channels = $user->channels->slice(0, $count - 1);
+        
         foreach ($channels->all() as $channel) {
             $channel->delete();
         }
