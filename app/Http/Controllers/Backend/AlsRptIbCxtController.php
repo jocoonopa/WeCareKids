@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Model\AlsRptIbCxt;
 use Auth;
+use DB;
+use Wck;
 
 class AlsRptIbCxtController extends Controller
 {
@@ -24,9 +26,18 @@ class AlsRptIbCxtController extends Controller
      */
     public function index()
     {
-        $channel = Auth::user()->getOwnChannel();
-
-        $cxts = $channel->cxts()->latest()->paginate(env('PERPAGE_COUNT', 50));
+        $channel = Wck::getUserChannel();
+        $organization = Auth::user()->organization;
+        $organizationId = is_null($organization) ? 0 : $organization->id;
+       
+        $cxts = AlsRptIbCxt::select('als_rpt_ib_cxts.*')
+            ->leftJoin('als_rpt_ib_channels', 'als_rpt_ib_channels.id', '=', 'als_rpt_ib_cxts.channel_id')
+            ->leftJoin('users', 'users.id', '=', 'als_rpt_ib_channels.creater_id')
+            ->where('users.organization_id', '=', $organizationId)
+            ->orderBy('als_rpt_ib_cxts.created_at', 'desc')
+            ->groupBy('als_rpt_ib_cxts.id')
+            ->paginate(env('PERPAGE_COUNT', 50))
+        ;
     
         return view('backend/als_rpt_ib_cxt/index', compact('cxts', 'channel'));
     }

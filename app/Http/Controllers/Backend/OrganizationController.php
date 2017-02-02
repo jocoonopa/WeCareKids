@@ -15,8 +15,9 @@ class OrganizationController extends Controller
     {
         parent::__construct();
         
+        $this->middleware('can:all,' . \App\Model\Organization::class)->only('index');
         $this->middleware('can:view,organization')->only('show');
-        $this->middleware('can:create,' . \App\Model\Organization::class)->only('index', 'create', 'store');
+        $this->middleware('can:create,' . \App\Model\Organization::class)->only('create', 'store');
         $this->middleware('can:update,organization')->only('edit', 'update');
         $this->middleware('can:delete,organization')->only('destroy');
     }

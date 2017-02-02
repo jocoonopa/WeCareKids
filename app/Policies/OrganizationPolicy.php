@@ -17,7 +17,7 @@ class OrganizationPolicy
      * @param  \App\Model\User  $user
      * @return mixed
      */
-    public function list(User $user)
+    public function all(User $user)
     {
         return $user->isSuper();
     }
