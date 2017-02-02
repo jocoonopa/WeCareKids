@@ -3,10 +3,20 @@
 namespace App\Utility\Services;
 
 use App\Utility\Services\Wck\ViewTrait;
+use Auth;
 
 class WckService
 {
     use ViewTrait;
+
+    protected $cacheChannel;
+
+    protected $user;
+
+    public function __construct()
+    {
+        $this->user = Auth::user();
+    }
 
     /**
      * 判斷輸入值是否意義上為空
@@ -56,5 +66,19 @@ class WckService
         }
 
         return urldecode(json_encode($new));
+    }
+
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    public function getUserChannel()
+    {
+        if (is_null($this->cacheChannel)) {
+            $this->cacheChannel = $this->getUser()->getOwnChannel();
+        }
+
+        return $this->cacheChannel;
     }
 }

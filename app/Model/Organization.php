@@ -66,6 +66,22 @@ class Organization extends Model
         );
     }
 
+    public function replicas()
+    {
+        return $this->hasManyThrough(
+            'App\Model\AmtReplica', 'App\Model\User',
+            'organization_id', 'creater_id', 'id'
+        );
+    }
+
+    public function channels()
+    {
+        return $this->hasManyThrough(
+            'App\Model\AlsRptIbChannel', 'App\Model\User',
+            'organization_id', 'creater_id', 'id'
+        );
+    }
+
     public function usages()
     {
         return $this->hasMany('App\Model\WckUsageRecord', 'organization_id', 'id');

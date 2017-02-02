@@ -132,4 +132,9 @@ class AlsRptIbChannel extends Model
             ->orWhere('open_at', '>', Carbon::now())
         ;
     }
+
+    public function getUrl()
+    {
+        return url("/backend/analysis/r/i/channel/{$this->id}/qrcode");
+    }
 }
