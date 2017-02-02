@@ -195,9 +195,4 @@ class User extends Authenticatable
 
         return $this->isOwner() ? '拥有人' : '教师';
     }
-
-    public function getChannelUrl()
-    {
-        return url("/backend/analysis/r/i/channel/{$this->channels()->first()->id}/qrcode");
-    }
 }

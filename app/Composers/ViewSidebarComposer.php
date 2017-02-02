@@ -65,10 +65,6 @@ class ViewSidebarComposer
     {
         return [
             [
-                'name' => '教师列表',
-                'url' => '/backend/user',
-            ],
-            [
                 'name' => '孩童管理',
                 'url' => '/backend/child',
             ],            
@@ -116,9 +112,11 @@ class ViewSidebarComposer
 
     protected function fetchTutorCounts()
     {
+        $rpts = $this->getUsersReports();
+        
         return [
-            'rpt' => $this->user->reports()->count(),
-            'cxt' => $this->user->reports()->whereNull('cxt_id')->count(),
+            'rpt' => $rpts->count(),
+            'cxt' => $this->getCxtCount($rpts),
             'child' => $this->user->childs()->count(),
             'points' => NULL,
         ];
@@ -126,9 +124,11 @@ class ViewSidebarComposer
 
     protected function fetchOwnerCounts()
     {
+        $rpts = $this->getUsersReports();
+        
         return [
-            'rpt' => $this->user->organization->reports()->count(),
-            'cxt' => $this->user->organization->reports()->whereNull('cxt_id')->count(),
+            'rpt' => $rpts->count(),
+            'cxt' => $this->getCxtCount($rpts),
             'child' => $this->user->organization->childs()->count(),
             'points' => $this->user->organization->points,
         ];
@@ -136,12 +136,26 @@ class ViewSidebarComposer
 
     protected function fetchSuperCounts()
     {
+        $rpts = $this->getUsersReports();
+        
         return [
-            'rpt' => \App\Model\AmtAlsRpt::count(),
-            'cxt' => \App\Model\AmtAlsRpt::whereNull('cxt_id')->count(),
+            'rpt' => $rpts->count(),
+            'cxt' => $this->getCxtCount($rpts),
             'child' => \App\Model\Child::count(),
             'points' => NULL,
         ];
+    }
+
+    protected function getUsersReports()
+    {
+        return $this->user->reports()->with('cxt')->get();
+    }
+
+    protected function getCxtCount($rpts)
+    {
+        return $rpts->filter(function ($rpt) {
+                return !is_null($rpt->cxt);
+            })->count();
     }
 }
 

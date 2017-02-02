@@ -1,8 +1,10 @@
 @if (!is_null($lastReplica))
+    @if (\App\Model\AmtReplica::STATUS_DONE_ID === $lastReplica->status)
     <a href="/backend/amt_als_rpt/{{ $lastReplica->report->id }}" class="pull-right btn btn-info btn-xs" target="_blank">
         <i class="fa fa-eye"></i>
         报告
     </a>
+    @endif
     
     @if (!is_null($lastReplica->report->cxt))
     <a href="/backend/analysis/r/i/cxt/{{ $lastReplica->report->cxt->id }}" class="pull-right btn btn-info btn-xs" target="_blank">

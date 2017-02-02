@@ -42,7 +42,9 @@ class AmtReplicaController extends Controller
      */
     public function index()
     {
-        $replicas = Auth::user()->replicas()->latest()->paginate(env('PERPAGE_COUNT', 50));
+        $organization = Auth::user()->organization;
+
+        $replicas = $organization ? $organization->replicas()->with('child')->latest()->paginate(env('PERPAGE_COUNT', 50)) : NULL;
 
         return view('backend/amt_replica/index', compact('replicas'));
     }
