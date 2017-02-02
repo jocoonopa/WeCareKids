@@ -175,11 +175,7 @@ class User extends Authenticatable
             return false;
         }
 
-        if (is_null($this->organization->owner)) {
-            return false;
-        }
-
-        return $this->organization->owner->id === $this->id;
+        return $this->organization->owner_id === $this->id;
     }
 
     /**

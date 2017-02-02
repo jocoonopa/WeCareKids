@@ -8,10 +8,12 @@ use Illuminate\View\View;
 class ViewSidebarComposer
 {
     protected $user;
+    protected $rpts;
 
     public function __construct()
     {
         $this->user = Auth::user();
+        $this->rpts = $this->getUsersReports();
     }
 
     /**
@@ -111,24 +113,20 @@ class ViewSidebarComposer
     }
 
     protected function fetchTutorCounts()
-    {
-        $rpts = $this->getUsersReports();
-        
+    {        
         return [
-            'rpt' => $rpts->count(),
-            'cxt' => $this->getCxtCount($rpts),
+            'rpt' => $this->rpts->count(),
+            'cxt' => $this->getCxtCount(),
             'child' => $this->user->childs()->count(),
             'points' => NULL,
         ];
     }
 
     protected function fetchOwnerCounts()
-    {
-        $rpts = $this->getUsersReports();
-        
+    {        
         return [
-            'rpt' => $rpts->count(),
-            'cxt' => $this->getCxtCount($rpts),
+            'rpt' => $this->rpts->count(),
+            'cxt' => $this->getCxtCount(),
             'child' => $this->user->organization->childs()->count(),
             'points' => $this->user->organization->points,
         ];
@@ -136,11 +134,9 @@ class ViewSidebarComposer
 
     protected function fetchSuperCounts()
     {
-        $rpts = $this->getUsersReports();
-        
         return [
-            'rpt' => $rpts->count(),
-            'cxt' => $this->getCxtCount($rpts),
+            'rpt' => $this->rpts->count(),
+            'cxt' => $this->getCxtCount(),
             'child' => \App\Model\Child::count(),
             'points' => NULL,
         ];
@@ -148,12 +144,20 @@ class ViewSidebarComposer
 
     protected function getUsersReports()
     {
+        if ($this->user->isSuper()) {
+            return \App\Model\AmtAlsRpt::with('cxt')->get();
+        }
+
+        if ($this->user->isOwner()) {
+            return $this->user->organization->reports()->with('cxt')->get();
+        }
+
         return $this->user->reports()->with('cxt')->get();
     }
 
-    protected function getCxtCount($rpts)
+    protected function getCxtCount()
     {
-        return $rpts->filter(function ($rpt) {
+        return $this->rpts->filter(function ($rpt) {
                 return !is_null($rpt->cxt);
             })->count();
     }
