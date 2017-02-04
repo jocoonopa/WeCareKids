@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
+use App\Http\Requests\CxtRequest;
 use App\Model\AlsRptIbChannel;
 use App\Model\AlsRptIbCxt;
 use Carbon\Carbon;
@@ -40,7 +41,7 @@ class AlsRptIbCxtController extends Controller
 
         // 若沒有私鑰, 導向登入頁準備產生私鑰
         if (is_null($privateKey)) {
-            return redirect("/analysis/r/i/channel/{$channel->id}/cxt/login");
+            return redirect("/analysis/r/i/channel/{$channel->id}/cxt/auth");
         }
 
         /**
@@ -52,21 +53,10 @@ class AlsRptIbCxtController extends Controller
 
         // 若沒有尚未提交的 cxt, 導向登入頁準備新增cxt
         if (is_null($cxt)) {
-            return redirect("/analysis/r/i/channel/{$channel->id}/cxt/login");
+            return redirect("/analysis/r/i/channel/{$channel->id}/cxt/auth");
         }
 
         return view('frontend/als_rpt_ib_cxt/index', compact('cxt', 'privateKey'));
-    }
-
-    /**
-     * 家長 Login 頁面
-     * 
-     * @param  AlsRptIbChannel $channel
-     * @return \Illuminate\Http\Response
-     */
-    public function login(AlsRptIbChannel $channel)
-    {
-        return view('frontend/als_rpt_ib_cxt/login', compact('channel'));
     }
 
     /**
@@ -89,18 +79,7 @@ class AlsRptIbCxtController extends Controller
      */
     public function auth(AlsRptIbChannel $channel, Request $request)
     {
-        $validator = $this->validate($request, [
-            'phone' => 'required|between:10,13',
-        ]);
-
-        if (!is_null($validator)) {
-            return redirect("/analysis/r/i/channel/{$channel->id}/cxt/login")->withErrors($validator)->withInput();
-        }
-        
-        $phone = $request->get('phone');
-
         $cxt = AlsRptIbCxt::createPrototype($channel);
-        $cxt->phone = $phone;
         $cxt->save();
 
         $privateKey = $cxt->private_key;
@@ -135,10 +114,21 @@ class AlsRptIbCxtController extends Controller
      */
     public function update(Request $request, AlsRptIbCxt $cxt)
     {
-        return $request->ajax() ? $this->_updatAjax($request, $cxt) : $this->_update($request, $cxt);
+        if (!$request->ajax()) {
+            abort(404);
+        }
+
+        return $this->_updatAjax($request, $cxt);
     }
 
-    protected function _update(Request $request, AlsRptIbCxt $cxt)
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \App\Http\Requests\CxtRequest $request
+     * @param  \App\Model\AlsRptIbCxt $cxt
+     * @return \Illuminate\Http\Response
+     */
+    protected function submit(CxtRequest $request, AlsRptIbCxt $cxt)
     {
         try {
             $data = $request->all();
@@ -147,9 +137,9 @@ class AlsRptIbCxtController extends Controller
 
             $cxt->update($data);
 
-            return redirect("/analysis/r/i/cxt/{$cxt->id}/finish")->withCookie(Cookie::forget($channel->public_key));
+            return redirect("/analysis/r/i/cxt/{$cxt->id}/finish")->withCookie(Cookie::forget($cxt->channel->public_key));
         } catch (\Exception $e) {
-            return redirect("/analysis/r/i/channel/{$cxt->id}/cxt")->with('error', $e->getMessage());
+            return back()->with('error', $e->getMessage());
         }
     }
 

@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     
-    <title>培奇智能运动</title>
+    <title>{{ trans('wck.company_name') }}</title>
     
     <!-- Bootstrap -->
     <link href="{{ asset("css/bootstrap.min.css") }}" rel="stylesheet">
@@ -29,7 +29,7 @@
                 <form method="post" action="{{ url('/login') }}">
                     {!! csrf_field() !!}
                     
-                    <h1>培奇智能运动</h1>
+                    <h1>{{ trans('wck.company_name') }}</h1>
                     <div class="form-group has-feedback {{ $errors->has('email') ? ' has-error' : '' }}">
                         <input type="email" class="form-control" name="email" value="{{ old('email') }}" placeholder="Email">
                         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
@@ -50,7 +50,11 @@
                         @endif
                     </div>
                     <div>
-                        <input type="submit" class="btn btn-default submit" value="Log in">
+                        <button type="submit" class="btn btn-default submit pull-left">
+                            <i class="fa fa-sign-in"></i>
+                            登入
+                        </button>
+                        
                         <a class="reset_pass" href="{{  url('/password/reset') }}">忘记密码?</a>
                     </div>
                     

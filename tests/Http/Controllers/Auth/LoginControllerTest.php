@@ -11,7 +11,7 @@ class LoginControllerTest extends \Tests\TestCase
      */
     public function testLoginPage()
     {
-        $this->visit('/auth/login')->see('培奇智能运动');
+        $this->visit('/auth/login')->see(trans('wck.company_name'));
     }
 
     public function testDatabase()
