@@ -9,11 +9,11 @@
                 问卷列表
 
                 <small>
-                    <a class="btn btn-info btn-sm" href="{{ "/backend/analysis/r/i/channel/{$channel->id}/qrcode" }}">
+                    <a class="btn btn-info btn-sm" href="{{ "/backend/analysis/r/i/channel/{$channel->id}/qrcode" }}" target="_blank">
                         <i class="fa fa-eye"></i>
                         QRCode
                     </a>
-                    <a class="btn btn-default btn-sm" href="{{URL::to("/analysis/r/i/channel/{$channel->id}/cxt") . "?public_key={$channel->public_key}"}}">
+                    <a class="btn btn-default btn-sm" href="{{URL::to("/analysis/r/i/channel/{$channel->id}/cxt") . "?public_key={$channel->public_key}"}}" target="_blank">
                         <i class="fa fa-external-link"></i>
                         問卷连结
                         </a>

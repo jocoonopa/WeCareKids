@@ -13,7 +13,7 @@
             {{-- @include('component/flash') --}}
             
             @if (env('DISPLAY_GROUP_CONTENT'))
-                <h2>{{ "Q:{$replica->currentGroup->group->content}" }} <small>level: {{$level}}</small></h2>
+                <h2>{{ "Q:{$replica->currentGroup->group->content}" }}</h2>
             @endif
             
             <form action="/backend/amt_replica/{{ $replica->id }}" method="post">

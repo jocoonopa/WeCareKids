@@ -10,7 +10,7 @@
 
 <div class="form-group">
     <label for="child_name">子女姓名</label>
-    <input type="text" id="child_name" name="child_name" class="form-control" value="{{ $cxt->child_name}}">
+    <input type="text" id="child_name" name="child_name" class="form-control" value="{{ $cxt->child_name}}" required>
 </div>
 
 <div class="form-group">
@@ -24,7 +24,11 @@
 
 <div class="form-group">
     <label for="child_birthday">子女出生年月日<small id="child_age" class="lead text-center"></small></label>
-    {!! Form::date('child_birthday', $cxt->child_birthday, ['id' => 'child_birthday', 'class' => 'form-control']) !!}
+    {!! Form::date('child_birthday', $cxt->child_birthday, [
+        'id' => 'child_birthday', 
+        'class' => 'form-control', 
+        'required' => true
+    ]) !!}
 </div>
 
 <div class="form-group">
@@ -44,7 +48,7 @@
 
 <div class="form-group">
     <label for="filler_name">填写人姓名</label>
-    <input type="text" name="filler_name" class="form-control" id="filler_name" value="{{ $cxt->filler_name }}">
+    <input type="text" name="filler_name" class="form-control" id="filler_name" value="{{ $cxt->filler_name }}" required>
 </div>
 
 <div class="form-group">
@@ -63,7 +67,7 @@
 
 <div class="form-group">
     <label for="phone">连络电话</label>
-    <input type="text" name="phone" class="form-control" id="phone" value="{{ $cxt->phone }}" readonly>
+    <input type="number" name="phone" class="form-control" id="phone" value="{{ $cxt->phone }}" required>
 </div>
 
 <div class="form-group">
