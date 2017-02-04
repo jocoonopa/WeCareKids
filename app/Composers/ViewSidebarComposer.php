@@ -60,6 +60,10 @@ class ViewSidebarComposer
                 'name' => '测评管理',
                 'url' => '/backend/amt_replica',
             ],
+            [
+                'name' => '問卷管理',
+                'url' => '/backend/analysis/r/i/cxt',                
+            ],
         ];
     }
 
@@ -96,6 +100,14 @@ class ViewSidebarComposer
                 'name' => '孩童管理',
                 'url' => '/backend/child',
             ],
+            [
+                'name' => '測評管理',
+                'url' => '/backend/amt_replica',
+            ],
+            [
+                'name' => '問卷管理',
+                'url' => '/backend/analysis/r/i/cxt'
+            ],            
         ];
     }
 

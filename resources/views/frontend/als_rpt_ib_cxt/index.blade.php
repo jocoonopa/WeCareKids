@@ -29,6 +29,8 @@ table.als-table td:nth-of-type(3) {
 @section('main_container')
 <div class="row">
     <div class="col-md-10 col-md-offset-1 col-sm-12">
+        @include('component/flash')
+        
         @include('frontend/als_rpt_ib_cxt/index/form')
     </div>
 </div>

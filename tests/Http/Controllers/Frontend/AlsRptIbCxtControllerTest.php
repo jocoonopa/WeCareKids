@@ -17,13 +17,9 @@ class AlsRptIbCxtControllerTest extends \Tests\TestCase
 
         $channel = \App\Model\AlsRptIbChannel::latest()->first();
         
-        $this->visit("/analysis/r/i/channel/{$channel->id}/cxt/login")
-            ->see('电话号码')
-            ->see("/analysis/r/i/channel/{$channel->id}/cxt")
-            ->type('0939160705', 'phone')
-            ->press('确定')
-            ->seePageIs("/analysis/r/i/channel/{$channel->id}/cxt")
-            ->see('優尼爾')
+        $this->visit("/analysis/r/i/channel/{$channel->id}/cxt/auth")
+            ->see('连络电话')
+            ->see('优尼尔')
         ;
     }
 }

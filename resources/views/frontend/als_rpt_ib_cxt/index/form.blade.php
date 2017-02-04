@@ -1,10 +1,8 @@
 <div class="x_panel" style="color: #424242;">                        
     <div>
-        <form action="{{ "/analysis/r/i/cxt/{$cxt->id}" }}" method="post">
-            {{ csrf_field() }}
+        {!! Form::model($cxt, ['url' => "/analysis/r/i/cxt/{$cxt->id}/submit", 'method' => 'put']) !!}
             <input type="hidden" name="cxt_id" value="{{ $cxt->id }}" />
             <input type="hidden" name="private_key" value="{{ $privateKey}}" />
-            <input type="hidden" name="_method" value="put" />
             <input type="hidden" name="content" value="" />  
 
             @include('frontend/als_rpt_ib_cxt/index/form/_button')
@@ -18,9 +16,9 @@
 
             <div class="form-group">
                 @if ($cxt->isNotSubmit())
-                    <button id="_submit" type="submit" class="btn btn-primary">提交</button>
+                    <button type="submit" class="btn btn-primary">提交</button>
                 @endif
             </div>
-        </form>
+        {!! Form::close() !!}
     </div>
 </div>

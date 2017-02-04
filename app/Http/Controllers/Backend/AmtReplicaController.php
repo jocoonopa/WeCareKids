@@ -31,7 +31,6 @@ class AmtReplicaController extends Controller
 
         $this->middleware('can:view,amt_replica')->only('show', 'edit');
         $this->middleware('can:update,amt_replica')->only('edit', 'update');
-        $this->middleware('can:create,' . \App\Model\AmtReplica::class)->only('create', 'store');
         $this->middleware('can:delete,amt_replica')->only('destroy');
     }
     
@@ -90,6 +89,17 @@ class AmtReplicaController extends Controller
      */
     public function create()
     {
+        /**
+         * 使用者
+         * 
+         * @var \App\Model\User
+         */
+        $user = Auth::user();
+
+        if (!$user->can('create', AmtReplica::class)) {
+            return back();
+        }
+
         return view('backend/amt_replica/create');
     }
 
@@ -103,6 +113,17 @@ class AmtReplicaController extends Controller
      */
     public function store(Request $request)
     {
+        /**
+         * 使用者
+         * 
+         * @var \App\Model\User
+         */
+        $user = Auth::user();
+
+        if (!$user->can('create', AmtReplica::class)) {
+            return back();
+        }
+
         /* 
         |--------------------------------------------------------------------------
         | 初始化评测所需实体
@@ -133,13 +154,6 @@ class AmtReplicaController extends Controller
         DB::beginTransaction();
 
         try {
-            /**
-             * 使用者
-             * 
-             * @var \App\Model\User
-             */
-            $user = Auth::user();
-
             /**
              * 欲绑定之 Child 
              * 
