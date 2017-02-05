@@ -13,6 +13,6 @@
 @endsection
 
 @push('scripts')
-<script src="/js/chart.min.js"></script>
-@include('backend/amt_als_rpt/show/script', ['replica' => $report->replica])
+    <script src="/js/chart.min.js"></script>
+    @include('backend/amt_als_rpt/show/script', ['replica' => $report->replica])
 @endpush

@@ -377,6 +377,19 @@ class AmtReplicaController extends Controller
     }
 
     /**
+     * Display the prepare pics.
+     *
+     * @param  App\Model\AmtReplica  $replica
+     * @return \Illuminate\Http\Response
+     */
+    public function prepare(AmtReplica $replica)
+    {
+        $isAgeAboveThree = $replica->child->getAge() >= AmtReplica::AGE_THREAD;
+
+        return view('backend/amt_replica/prepare', compact('replica', 'isAgeAboveThree'));
+    }
+
+    /**
      * Destroy the specified resource.
      *
      * @param  App\Model\AmtReplica  $replica
