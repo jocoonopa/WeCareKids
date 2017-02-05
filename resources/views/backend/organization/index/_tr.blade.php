@@ -52,7 +52,7 @@
         
         <form action="/backend/organization/{{$organization->id}}" class="pull-left" method="post" onsubmit="return confirm('確定要刪除嗎?');">
             {{ csrf_field() }}
-            <input type="hidden" name="_method" value="delete">
+            {{ method_field('DELETE') }}
             
             <button type="submit" class="btn btn-danger btn-xs pull-left">
                 <i class="fa fa-remove"></i>

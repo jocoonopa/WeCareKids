@@ -86,7 +86,7 @@
                     </tr>
                 </thead>
                 <tbody>                                 
-                    @each('backend.organization.show._tr', $usages, 'usage')
+                    @each('backend/organization/show/_tr', $usages, 'usage')
                 </tbody>
             </table>
 

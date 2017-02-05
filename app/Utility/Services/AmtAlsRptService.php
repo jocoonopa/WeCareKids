@@ -98,7 +98,7 @@ class AmtAlsRptService
                 continue;
             }
 
-            $sumLevel += $level;
+            $sumLevel += (int) $level;
             $count ++; 
         }
 

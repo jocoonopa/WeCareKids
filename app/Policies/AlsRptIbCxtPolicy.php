@@ -59,7 +59,7 @@ class AlsRptIbCxtPolicy
      */
     public function delete(User $user, AlsRptIbCxt $cxt)
     {
-        return $this->isAllowToAccess($user, $cxt);
+        return $this->isAllowToAccess($user, $cxt) && !$cxt->isMapped() && $user->isSuper();
     }
 
     /** 
