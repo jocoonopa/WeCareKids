@@ -43,14 +43,6 @@ class AlsRptIbCxtPolicy
     }
 
     /**
-     * Determine whether the user can create users.
-     *
-     * @param  \App\Model\User  $user
-     * @return mixed
-     */
-    public function create(User $user){}
-
-    /**
      * Determine whether the user can delete the cxt.
      *
      * @param  \App\Model\User  $user
@@ -59,7 +51,7 @@ class AlsRptIbCxtPolicy
      */
     public function delete(User $user, AlsRptIbCxt $cxt)
     {
-        return $this->isAllowToAccess($user, $cxt);
+        return $this->isAllowToAccess($user, $cxt) && !$cxt->isMapped() && $user->isSuper();
     }
 
     /** 

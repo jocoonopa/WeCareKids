@@ -3,10 +3,10 @@
     檢視
 </a> 
 
-<a href="{{"/backend/child/{$child->id}/edit"}}" class="pull-left btn btn-primary btn-xs" target="_blank">
+{{-- <a href="{{"/backend/child/{$child->id}/edit"}}" class="pull-left btn btn-primary btn-xs" target="_blank">
     <i class="fa fa-edit"></i>
     编辑
-</a>  
+</a>   --}}
 
 <form class="pull-left form-inline" action="/backend/child/{{$child->id}}" method="post">
     {{ csrf_field() }}

@@ -192,6 +192,11 @@ class AlsRptIbCxt extends Model
         return static::STATUS_HASNOT_SUBMIT === $this->status;
     }
 
+    public function isMapped()
+    {
+        return static::STATUS_HAS_MAP === $this->status;
+    }
+
     public function getStatusDesc()
     {
         switch($this->status)

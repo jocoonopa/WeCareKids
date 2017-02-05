@@ -82,6 +82,8 @@ class ChildController extends Controller
             $user = Auth::user();
 
             $child = Child::create($storeChild->all());
+            $child->organization()->associate($user->organization);
+            $child->save();
 
             $user->childs()->attach($child);
 
