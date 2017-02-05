@@ -373,7 +373,11 @@ class AmtReplicaController extends Controller
      */
     public function show(AmtReplica $replica)
     {
-        return view('backend/amt_replica/show', compact('replica'));
+        if (Auth::user()->isSuper()) {
+            return view('backend/amt_replica/show', compact('replica'));
+        }
+        
+        return redirect("/backend/amt_als_rpt/{$replica->report->id}");
     }
 
     /**
