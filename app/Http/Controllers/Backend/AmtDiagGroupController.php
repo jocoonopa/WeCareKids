@@ -9,6 +9,13 @@ use Illuminate\Http\Request;
 
 class AmtDiagGroupController extends Controller
 {
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->middleware('super.user');
+    }
+
     /**
      * Display a listing of the resource.
      *
