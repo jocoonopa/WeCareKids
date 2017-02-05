@@ -43,7 +43,7 @@ Trait AmtReplicaTrait
         DB::commit();
 
         return true === $isNotFinish 
-            ? redirect("/backend/amt_replica/{$replica->id}/edit")
+            ? redirect("/backend/amt_replica/{$replica->id}/prepare")
             : redirect('/backend/child')->with('warning', "{$replica->child->name}{$replica->child->getSex()} 此问卷没有作答必要");
     }
 

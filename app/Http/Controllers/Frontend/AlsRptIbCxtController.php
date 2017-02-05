@@ -25,7 +25,7 @@ class AlsRptIbCxtController extends Controller
     */
     public function __construct()
     {
-        $this->middleware('access.rpt.channel')->only('index');
+        $this->middleware('access.rpt.channel')->only('index', 'auth');
         $this->middleware('edit.rpt.cxt')->only('update');
     }
 

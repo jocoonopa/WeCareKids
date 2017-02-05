@@ -10,6 +10,7 @@ class AmtReplica extends Model
 {
     const STATUS_ORIGIN_ID = 0;
     const STATUS_DONE_ID = 2;
+    const AGE_THREAD = 3;
 
     /**
      * The attributes that aren't mass assignable.

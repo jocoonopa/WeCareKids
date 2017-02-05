@@ -31,7 +31,7 @@ class OrganizationController extends Controller
     {
         $organizations = Organization::latest()->get();
 
-        return view('backend.organization.index', compact('organizations'));
+        return view('backend/organization/index', compact('organizations'));
     }
 
     /**
@@ -42,7 +42,7 @@ class OrganizationController extends Controller
      */
     public function show(Organization $organization)
     {
-        $usages = $organization->usages()->latest()->paginate(env('PERPAGE_COUNT', 50));
+        $usages = $organization->usages()->orderBy('id', 'desc')->paginate(env('PERPAGE_COUNT', 50));
 
         return view('backend/organization/show', compact('organization', 'usages'));
     }

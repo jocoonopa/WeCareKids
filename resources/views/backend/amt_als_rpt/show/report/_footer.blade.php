@@ -58,7 +58,12 @@
                         <button class="btn btn-lg btn-warning">{{'目前无建议课程'}}</button>
                     @else
                         @foreach ($courses as $course)
-                            <button class="btn btn-lg btn-success">{{$course->name}}</button>
+                            @unless (5 === $course->id)
+                                <a href="/backend/courses/{{$course->id}}" class="btn btn-lg btn-success" target="_blank">{{$course->name}}</a>
+                            @else
+                                <button class="btn btn-lg btn-success">{{$course->name}}</button>
+                            @endunless
+                            
                         @endforeach 
                     @endif
                 </td>

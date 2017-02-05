@@ -17,6 +17,7 @@ class AlsRptIbCxtController extends Controller
         parent::__construct();
 
         $this->middleware('can:view,cxt')->only('show');
+        $this->middleware('can:delete,cxt')->only('destroy');
     }
 
     /**
@@ -53,5 +54,22 @@ class AlsRptIbCxtController extends Controller
         $privateKey = $cxt->private_key;
         
         return view('frontend/als_rpt_ib_cxt/index', compact('cxt', 'privateKey'));
+    }
+
+    /**
+     * Delete the specified resource.
+     *
+     * @param  \App\Model\AlsRptIbCxt
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(AlsRptIbCxt $cxt)
+    {
+        try {
+            $cxt->delete();
+
+            return back()->with('success', "{$cxt->id}刪除完成!");
+        } catch (\Exception $e) {
+            return back()->with('error', "{$e->getMessage()}");
+        }
     }
 }

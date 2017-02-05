@@ -47,6 +47,7 @@ require(app_path() . '/../routes/backend/AmtDiagStandard.php');
 require(app_path() . '/../routes/backend/Organization.php');
 require(app_path() . '/../routes/backend/RecommendCourse.php');
 require(app_path() . '/../routes/backend/WckUsageRecord.php');
+require(app_path() . '/../routes/backend/Course.php');
 
 /*
 |--------------------------------------------------------------------------
