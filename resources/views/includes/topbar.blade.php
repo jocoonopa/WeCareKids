@@ -21,7 +21,7 @@
                         </li>
 
                         <li>
-                            <a href="{{Wck::getUserChannel()->getUrl()}}"> 
+                            <a href="{{Wck::getUserChannel()->getUrl()}}" target="_blank"> 
                                 <i class="fa fa-qrcode pull-right"></i>
                                 QRCode
                             </a>
