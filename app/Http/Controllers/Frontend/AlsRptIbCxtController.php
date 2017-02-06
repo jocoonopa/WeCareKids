@@ -39,11 +39,6 @@ class AlsRptIbCxtController extends Controller
     {
         $privateKey = $request->cookie($channel->public_key);
 
-        // 若沒有私鑰, 導向登入頁準備產生私鑰
-        if (is_null($privateKey)) {
-            return redirect("/analysis/r/i/channel/{$channel->id}/cxt/auth");
-        }
-
         /**
          * 透過私鑰尚未提交的 AlsRptIbCxt
          * 
@@ -53,7 +48,7 @@ class AlsRptIbCxtController extends Controller
 
         // 若沒有尚未提交的 cxt, 導向登入頁準備新增cxt
         if (is_null($cxt)) {
-            return redirect("/analysis/r/i/channel/{$channel->id}/cxt/auth");
+            return redirect("/analysis/r/i/channel/{$channel->id}/cxt/auth?public_key={$channel->public_key}");
         }
 
         return view('frontend/als_rpt_ib_cxt/index', compact('cxt', 'privateKey'));
