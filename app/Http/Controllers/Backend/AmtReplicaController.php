@@ -377,7 +377,10 @@ class AmtReplicaController extends Controller
             return view('backend/amt_replica/show', compact('replica'));
         }
         
-        return redirect("/backend/amt_als_rpt/{$replica->report->id}");
+        return $replica->isDone() ? 
+            redirect("/backend/amt_als_rpt/{$replica->report->id}") :
+            redirect("backend/amt_replica/{$replica->id}/edit")
+        ;
     }
 
     /**

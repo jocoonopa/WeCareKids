@@ -72,7 +72,7 @@ class AmtAlsRptService
             $count ++;
         }
 
-        return floor($sum/$count);
+        return 0 === $count ? 0 : floor($sum/$count);
     }
 
     public function getFeelIntegrationLevel(array $levelStatus)
