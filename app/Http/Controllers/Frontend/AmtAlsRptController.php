@@ -20,6 +20,17 @@ class AmtAlsRptController extends Controller
     }
 
     /**
+     * 顯示課程內容
+     *
+     * @param  $courseId
+     * @return \Illuminate\Http\Response
+     */
+    public function course($courseId)
+    {
+        return view("frontend/amt_als_rpt/course/{$courseId}", ['id' => $courseId]);
+    }
+
+    /**
      * Display the specified resource.
      *
      * @param  \App\Model\AmtAlsRpt $report

@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Requests\StoreChild;
 use App\Model\Amt;
+use App\Model\AmtReplica;
 use App\Model\Child;
+use App\Policies\AmtReplicaPolicy;
 use App\Utility\Controllers\AmtReplicaTrait;
 use Auth;
 use DB;
@@ -99,6 +101,10 @@ class ChildController extends Controller
         DB::beginTransaction();
         
         try {
+            if (!$user->can('create', AmtReplica::class)) {
+                return redirect("/backend/child");
+            }
+
             return $this->replicaFlow($user, $child, Amt::find(Amt::DEFAULT_AMT_ID));
         } catch (\Exception $e) {
             DB::rollback();

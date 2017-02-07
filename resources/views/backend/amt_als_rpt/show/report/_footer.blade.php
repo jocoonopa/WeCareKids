@@ -59,7 +59,7 @@
                     @else
                         @foreach ($courses as $course)
                             @unless (5 === $course->id)
-                                <a href="/backend/courses/{{$course->id}}" class="btn btn-lg btn-success" target="_blank">{{$course->name}}</a>
+                                <a href="/frontend/amt_als_rpt/course/{{$course->id}}" class="btn btn-lg btn-success" target="_blank">{{$course->name}}</a>
                             @else
                                 <button class="btn btn-lg btn-success">{{$course->name}}</button>
                             @endunless
