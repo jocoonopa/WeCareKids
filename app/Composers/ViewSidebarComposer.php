@@ -64,6 +64,10 @@ class ViewSidebarComposer
                 'name' => '問卷管理',
                 'url' => '/backend/analysis/r/i/cxt',                
             ],
+            [
+                'name' => '修改評測內容',
+                'url' => '/backend/amt',
+            ],
         ];
     }
 
