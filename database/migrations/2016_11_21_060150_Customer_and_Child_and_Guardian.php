@@ -15,14 +15,6 @@ class CustomerAndChildAndGuardian extends Migration
     {
         Schema::create('childs', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('customer_id')->unsigned()->index();
-
-            $table
-                ->foreign('customer_id')
-                ->references('id')
-                ->on('customers')
-                ->onDelete('cascade')
-            ;
         });
 
         Schema::create('guardians', function (Blueprint $table) {
