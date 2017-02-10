@@ -49,7 +49,7 @@
         <p>{{ "{$notExpiredReplicas->count()}笔" }}</p>
         {{ $lastReplica->created_at }}
         
-        @if ($lastReplica->report->cxt)
+        @if (is_null($lastReplica->report->cxt))
             <span class="label label-warning">
                 {{ "测评剩余{$lastReplica->getExpiredCountdown()}天过期" }}
             </span>
